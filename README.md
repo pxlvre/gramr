@@ -1,6 +1,6 @@
 # ⚔️ Nothung
 
-> The legendary sword that reforges smart contracts
+> The legendary sword that forges smart contracts
 
 A toolkit for scaffolding OpenZeppelin-powered Solidity smart contracts, tests, and deployment scripts in Foundry projects.
 
@@ -242,13 +242,11 @@ cargo install --path nothungup
 
 ### Future Versions
 
-- [ ] Vyper support
-- [ ] Huff support
-- [ ] Yul support
-- [ ] Rust contracts (Stylus)
+- [ ] Rust contracts (Arbitrum Stylus with OpenZeppelin rust-contracts-stylus)
+- [ ] Cairo support (StarkNet with OpenZeppelin Contracts for Cairo)
 - [ ] Template customization
 - [ ] Interactive mode
-- [ ] Windows installer (macOS already supported)
+- [ ] Windows installer
 - [ ] Contract verification helpers
 - [ ] Gas optimization templates
 
