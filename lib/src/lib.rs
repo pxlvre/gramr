@@ -111,7 +111,7 @@ pub fn parse_extensions(extensions: &[String]) -> Result<Vec<TokenExtension>> {
             "supply" => TokenExtension::ERC1155Supply,
             
             _ => return Err(NothungError::Other(
-                format!("Unknown extension: {}. Available extensions: permit, burnable, capped, pausable, votes, wrapper, flashmint, temporaryapproval, bridgeable, erc1363, erc4626, consecutive, uristorage, royalty, enumerable, supply", ext)
+                format!("Unknown extension: {}. Available extensions: permit, burnable, capped, pausable, votes, wrapper, flashmint, temporaryapproval, bridgeable, erc1363, erc4626, consecutive, uristorage, royalty, wrapper, enumerable, supply", ext)
             )),
         };
         

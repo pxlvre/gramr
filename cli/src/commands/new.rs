@@ -153,11 +153,13 @@ fn validate_extensions_compatibility(base_type: &ContractType, extensions: &[Tok
             (ContractType::ERC1155 | ContractType::ERC1155Upgradeable, TokenExtension::ERC1155Supply) => true,
             (ContractType::ERC1155 | ContractType::ERC1155Upgradeable, TokenExtension::ERC1155URIStorage) => true,
             
-            // Cross-compatible extensions (burnable and pausable work with multiple types)
+            // Cross-compatible extensions (burnable, pausable, wrapper, uristorage work with multiple types)
             (ContractType::ERC721 | ContractType::ERC721Upgradeable, TokenExtension::ERC20Burnable) => true, // Will be converted to ERC721Burnable
             (ContractType::ERC721 | ContractType::ERC721Upgradeable, TokenExtension::ERC20Pausable) => true, // Will be converted to ERC721Pausable
+            (ContractType::ERC721 | ContractType::ERC721Upgradeable, TokenExtension::ERC20Wrapper) => true, // Will be converted to ERC721Wrapper
             (ContractType::ERC1155 | ContractType::ERC1155Upgradeable, TokenExtension::ERC20Burnable) => true, // Will be converted to ERC1155Burnable
             (ContractType::ERC1155 | ContractType::ERC1155Upgradeable, TokenExtension::ERC20Pausable) => true, // Will be converted to ERC1155Pausable
+            (ContractType::ERC1155 | ContractType::ERC1155Upgradeable, TokenExtension::ERC721URIStorage) => true, // Will be converted to ERC1155URIStorage
             
             _ => false,
         };

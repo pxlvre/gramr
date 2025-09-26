@@ -365,9 +365,18 @@ contract {} is Initializable, ERC1155Upgradeable, OwnableUpgradeable, UUPSUpgrad
             _ => "",
         };
 
+        let has_wrapper = extensions.iter().any(|ext| matches!(ext, TokenExtension::ERC721Wrapper | TokenExtension::ERC20Wrapper));
+        
         let constructor_call = match base_type {
             ContractType::ERC20 => format!("ERC20(\"{}\", \"{}\")", self.contract_name, self.get_symbol()),
-            ContractType::ERC721 => format!("ERC721(\"{}\", \"{}\")", self.contract_name, self.get_symbol()),
+            ContractType::ERC721 => {
+                let base_call = format!("ERC721(\"{}\", \"{}\")", self.contract_name, self.get_symbol());
+                if has_wrapper {
+                    format!("{} ERC721Wrapper(IERC721(UNDERLYING_TOKEN))", base_call)
+                } else {
+                    base_call
+                }
+            },
             ContractType::ERC1155 => "ERC1155(\"https://api.example.com/tokens/{id}.json\")".to_string(),
             _ => "".to_string(),
         };
@@ -460,6 +469,12 @@ contract {} is {} {{
             // Convert ERC20Pausable to appropriate token type
             (ContractType::ERC721 | ContractType::ERC721Upgradeable, TokenExtension::ERC20Pausable) => TokenExtension::ERC721Pausable,
             (ContractType::ERC1155 | ContractType::ERC1155Upgradeable, TokenExtension::ERC20Pausable) => TokenExtension::ERC1155Pausable,
+            
+            // Convert wrapper extensions
+            (ContractType::ERC721 | ContractType::ERC721Upgradeable, TokenExtension::ERC20Wrapper) => TokenExtension::ERC721Wrapper,
+            
+            // Convert uristorage extensions
+            (ContractType::ERC1155 | ContractType::ERC1155Upgradeable, TokenExtension::ERC721URIStorage) => TokenExtension::ERC1155URIStorage,
             
             // By default, keep the extension as-is
             _ => extension.clone(),
@@ -591,10 +606,10 @@ contract {} is {} {{
                 "".to_string()
             ),
             TokenExtension::ERC721Wrapper => (
-                "import \"@openzeppelin/contracts/token/ERC721/extensions/ERC721Wrapper.sol\";".to_string(),
+                "import \"@openzeppelin/contracts/token/ERC721/extensions/ERC721Wrapper.sol\";\nimport \"@openzeppelin/contracts/token/ERC721/IERC721.sol\";".to_string(),
                 "ERC721Wrapper".to_string(),
                 "".to_string(),
-                "".to_string()
+                "    // ERC721Wrapper requires an underlying token address\n    // Replace with actual token address when deploying\n    address constant UNDERLYING_TOKEN = address(0x0);".to_string()
             ),
             // Additional ERC1155 Extensions
             TokenExtension::ERC1155Supply => (
@@ -607,7 +622,7 @@ contract {} is {} {{
                 "import \"@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol\";".to_string(),
                 "ERC1155URIStorage".to_string(),
                 "".to_string(),
-                "".to_string()
+                "    function uri(uint256 tokenId) public view virtual override(ERC1155, ERC1155URIStorage) returns (string memory) {\n        return super.uri(tokenId);\n    }".to_string()
             )
         }
     }
