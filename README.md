@@ -14,11 +14,11 @@ Nothung is organized as a Rust workspace with three distinct components:
 
 - **`nothung`** (library) - Core functionality for contract generation that can be used programmatically
 - **`nothung-cli`** - Command-line interface built on top of the library
-- **`nothungup`** - Installer utility for Unix-based systems with dependency checking
+- **`nothungup`** - Installer utility for Unix-based systems (Linux/macOS) with dependency checking
 
 ## 🚀 Installation
 
-### Using nothungup (Recommended for Unix)
+### Using nothungup (Recommended for Linux/macOS)
 
 ```bash
 # Install the installer
@@ -26,7 +26,20 @@ cargo install --git https://github.com/pxlvre/nothung nothungup
 
 # Run installer (checks and installs Rust, Cargo, Foundry if needed)
 nothungup install
+
+# Available options with short flags
+nothungup install -f          # Force reinstall
+nothungup install -l          # Install from local repository (for development)
+nothungup install -s          # Skip dependency checks (faster if deps exist)
+
+# Self-management
+nothungup self uninstall      # Uninstall nothungup itself
 ```
+
+**Platform Support:**
+
+- ✅ **Linux** - All major distributions
+- ✅ **macOS** - Intel and Apple Silicon (M1/M2/M3)
 
 ### Manual Installation
 
@@ -235,7 +248,7 @@ cargo install --path nothungup
 - [ ] Rust contracts (Stylus)
 - [ ] Template customization
 - [ ] Interactive mode
-- [ ] Windows/macOS installers
+- [ ] Windows installer (macOS already supported)
 - [ ] Contract verification helpers
 - [ ] Gas optimization templates
 

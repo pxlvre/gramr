@@ -25,15 +25,15 @@ enum Commands {
     /// Install Nothung and its dependencies
     Install {
         /// Skip dependency checks
-        #[arg(long)]
+        #[arg(long, short = 's')]
         skip_checks: bool,
         
         /// Install from local repository instead of GitHub
-        #[arg(long)]
+        #[arg(long, short = 'l')]
         local: bool,
         
         /// Force reinstall even if already installed
-        #[arg(long)]
+        #[arg(long, short = 'f')]
         force: bool,
     },
     /// Update Nothung to the latest version
@@ -42,6 +42,15 @@ enum Commands {
     Uninstall,
     /// Check system dependencies
     Check,
+    /// Self-management commands
+    #[command(name = "self", subcommand)]
+    SelfCmd(SelfCommands),
+}
+
+#[derive(Subcommand)]
+enum SelfCommands {
+    /// Uninstall nothungup itself
+    Uninstall,
 }
 
 #[derive(Debug)]
@@ -72,6 +81,11 @@ fn run() -> Result<()> {
         Some(Commands::Check) => {
             check_dependencies()?;
             Ok(())
+        }
+        Some(Commands::SelfCmd(self_cmd)) => {
+            match self_cmd {
+                SelfCommands::Uninstall => self_uninstall(),
+            }
         }
         None => install(false, false, false), // Default to install
     }
@@ -330,6 +344,87 @@ fn uninstall() -> Result<()> {
     
     println!();
     println!("{} Nothung uninstalled successfully!", "✓".green().bold());
+    
+    Ok(())
+}
+
+fn self_uninstall() -> Result<()> {
+    println!("{}", "⚔️  Uninstalling nothungup...".cyan().bold());
+    
+    // Get the current executable path
+    let current_exe = std::env::current_exe()
+        .context("Failed to get current executable path")?;
+    
+    println!("Current executable: {}", current_exe.display());
+    
+    // Confirm with user
+    print!("{} Are you sure you want to uninstall nothungup? This will remove the nothungup binary. (yes/no): ", 
+           "?".yellow().bold());
+    io::stdout().flush()?;
+    
+    let mut input = String::new();
+    io::stdin().read_line(&mut input)?;
+    
+    if !input.trim().to_lowercase().starts_with('y') {
+        println!("Uninstall cancelled.");
+        return Ok(());
+    }
+    
+    // On Unix systems, we can't delete the currently running executable
+    // So we create a temporary script to delete it after we exit
+    #[cfg(unix)]
+    {
+        let temp_script = std::env::temp_dir().join("nothungup_uninstall.sh");
+        let script_content = format!(
+            "#!/bin/bash\nsleep 1\nrm -f '{}'\nrm -f '{}'\n",
+            current_exe.display(),
+            temp_script.display()
+        );
+        
+        std::fs::write(&temp_script, script_content)
+            .context("Failed to create uninstall script")?;
+        
+        // Make script executable
+        Command::new("chmod")
+            .args(&["+x"])
+            .arg(&temp_script)
+            .status()
+            .context("Failed to make uninstall script executable")?;
+        
+        println!("{} nothungup will be uninstalled after this process exits.", "✓".green().bold());
+        
+        // Execute the script in the background and exit
+        Command::new("nohup")
+            .arg(&temp_script)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .context("Failed to start uninstall script")?;
+    }
+    
+    #[cfg(windows)]
+    {
+        // On Windows, we can use a batch script
+        let temp_script = std::env::temp_dir().join("nothungup_uninstall.bat");
+        let script_content = format!(
+            "@echo off\ntimeout /t 1 /nobreak >nul\ndel /f \"{}\"\ndel /f \"{}\"\n",
+            current_exe.display(),
+            temp_script.display()
+        );
+        
+        std::fs::write(&temp_script, script_content)
+            .context("Failed to create uninstall script")?;
+        
+        println!("{} nothungup will be uninstalled after this process exits.", "✓".green().bold());
+        
+        // Execute the script and exit
+        Command::new("cmd")
+            .args(&["/C", "start", "/B"])
+            .arg(&temp_script)
+            .spawn()
+            .context("Failed to start uninstall script")?;
+    }
     
     Ok(())
 }
