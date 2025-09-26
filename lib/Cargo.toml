@@ -1,0 +1,27 @@
+[package]
+name = "nothung"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "⚔️ A blazing-fast library for scaffolding smart contracts"
+keywords = ["smart-contracts", "solidity", "ethereum", "foundry", "scaffold"]
+categories = ["development-tools", "blockchain"]
+
+[dependencies]
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+which = { workspace = true }
+colored = { workspace = true }
+fs_extra = { workspace = true }
+
+[lib]
+name = "nothung"
+path = "src/lib.rs"
+
+[features]
+default = []
+macros = []  # Future: procedural macros for contract generation

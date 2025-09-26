@@ -1,0 +1,22 @@
+[package]
+name = "nothungup"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "⚔️ Installer for the Nothung smart contract scaffolding tool"
+keywords = ["installer", "smart-contracts", "solidity", "foundry"]
+categories = ["command-line-utilities", "development-tools::build-utils"]
+
+[[bin]]
+name = "nothungup"
+path = "src/main.rs"
+
+[dependencies]
+colored = { workspace = true }
+which = { workspace = true }
+anyhow = { workspace = true }
+tokio = { workspace = true }
+reqwest = { workspace = true }
+clap = { workspace = true }

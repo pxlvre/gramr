@@ -1,0 +1,20 @@
+[package]
+name = "nothung-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "⚔️ CLI for scaffolding smart contracts with Foundry"
+keywords = ["cli", "smart-contracts", "solidity", "ethereum", "foundry"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "nothung"
+path = "src/main.rs"
+
+[dependencies]
+nothung = { path = "../lib" }
+clap = { workspace = true }
+colored = { workspace = true }
+anyhow = { workspace = true }
