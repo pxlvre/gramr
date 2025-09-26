@@ -2,7 +2,9 @@
 
 > The legendary sword that reforges smart contracts
 
-A blazing-fast Rust toolkit for scaffolding Solidity smart contracts, tests, and deployment scripts in Foundry projects.
+A toolkit for scaffolding OpenZeppelin-powered Solidity smart contracts, tests, and deployment scripts in Foundry projects.
+
+🦀 Built with Rust 🦀
 
 ## 🏗️ Architecture
 
@@ -239,7 +241,7 @@ cargo install --path nothungup
 
 ## 📝 License
 
-MIT OR Apache-2.0
+MIT
 
 ## 🤝 Contributing
 
@@ -247,4 +249,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 🙏 Acknowledgments
 
-Built with ❤️ for the Foundry community by Pol Vidal (@pxlvre) • pxlvre.eth
+Built with ❤️ for the degen- and crab people communities by Pol Vidal (@pxlvre) • pxlvre.eth
