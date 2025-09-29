@@ -7,6 +7,9 @@ pub enum NothungError {
 
     #[error("Foundry is not installed. Please install Foundry first: https://getfoundry.sh")]
     FoundryNotInstalled,
+    
+    #[error("Project not found: {0}")]
+    ProjectNotFound(String),
 
     #[error("File already exists: {0}")]
     FileExists(String),

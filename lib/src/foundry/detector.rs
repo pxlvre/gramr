@@ -1,4 +1,5 @@
 use crate::error::{NothungError, Result};
+use crate::project::Project;
 use std::fs;
 use std::path::{Path, PathBuf};
 use which::which;
@@ -99,5 +100,39 @@ impl FoundryProject {
         }
 
         Ok(())
+    }
+}
+
+impl Project for FoundryProject {
+    fn ensure_directories(&self) -> Result<()> {
+        self.ensure_directories()
+    }
+
+    fn src_dir(&self) -> PathBuf {
+        self.src_dir.clone()
+    }
+
+    fn test_dir(&self) -> PathBuf {
+        self.test_dir.clone()
+    }
+
+    fn script_dir(&self) -> PathBuf {
+        self.script_dir.clone()
+    }
+
+    fn has_openzeppelin(&self) -> bool {
+        self.has_openzeppelin()
+    }
+
+    fn install_openzeppelin(&self) -> Result<()> {
+        self.install_openzeppelin()
+    }
+
+    fn has_openzeppelin_upgradeable(&self) -> bool {
+        self.has_openzeppelin_upgradeable()
+    }
+
+    fn install_openzeppelin_upgradeable(&self) -> Result<()> {
+        self.install_openzeppelin_upgradeable()
     }
 }

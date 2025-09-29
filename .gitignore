@@ -1,5 +1,5 @@
-.tmp/
-
-# Added by cargo
-
+.tmp
 /target
+.idea
+.claude
+.vscode

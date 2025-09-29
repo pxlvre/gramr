@@ -1,61 +1,93 @@
-use nothung::{Result, NothungError, FoundryProject, ContractGenerator, ScriptGenerator, TestGenerator, ContractType, TokenExtension};
+use nothung::{Result, NothungError, ScriptGenerator, TestGenerator, ContractType, TokenExtension, Language, ProjectType, GenericContractGenerator, LibraryGenerator};
 
 pub fn execute_new(
     resource_type: &str,
     name: String,
     solidity: bool,
+    rust_stylus: bool,
     oz_erc20: bool,
     oz_erc721: bool,
     oz_erc1155: bool,
-    oz_upgradeable: bool,
+    upgradeable: bool,
     extensions: Vec<String>,
     with_test: bool,
     with_script: bool,
     pragma: String,
     license: String,
 ) -> Result<()> {
-    if !solidity {
-        return Err(NothungError::Other(
-            "Only Solidity is supported in v1. Use --solidity flag.".to_string()
-        ));
-    }
-
-    let project = FoundryProject::detect()?;
+    let language = Language::from_flags(solidity, rust_stylus)?;
+    let project = ProjectType::detect(&language)?;
 
     match resource_type {
         "contract" => {
-            let contract_type = determine_contract_type(oz_erc20, oz_erc721, oz_erc1155, oz_upgradeable, &extensions)?;
-            let generator = ContractGenerator::new(
+            let contract_type = determine_contract_type(oz_erc20, oz_erc721, oz_erc1155, upgradeable, &extensions, &language)?;
+            let generator = GenericContractGenerator::new(
                 project,
+                language,
                 name,
                 contract_type,
                 with_test,
                 with_script,
-                pragma,
-                license,
+                Some(pragma),
+                Some(license),
+            );
+            generator.generate()
+        }
+        "library" => {
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script {
+                return Err(NothungError::Other(
+                    "Library generation doesn't support contract-specific flags".to_string()
+                ));
+            }
+            let generator = LibraryGenerator::new(
+                project,
+                language,
+                name,
+                Some(pragma),
+                Some(license),
             );
             generator.generate()
         }
         "script" => {
-            if oz_erc20 || oz_erc721 || oz_erc1155 || oz_upgradeable || !extensions.is_empty() || with_test || with_script {
+            if rust_stylus {
+                return Err(NothungError::Other(
+                    "Script generation is not supported for Rust/Stylus projects".to_string()
+                ));
+            }
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script {
                 return Err(NothungError::Other(
                     "Script generation doesn't support contract-specific flags".to_string()
                 ));
             }
-            let generator = ScriptGenerator::new(project, name, pragma, license);
-            generator.generate()
+            match project {
+                ProjectType::Foundry(foundry_project) => {
+                    let generator = ScriptGenerator::new(foundry_project, name, pragma, license);
+                    generator.generate()
+                }
+                _ => Err(NothungError::Other("Script generation is only supported for Foundry projects".to_string()))
+            }
         }
         "test" => {
-            if oz_erc20 || oz_erc721 || oz_erc1155 || oz_upgradeable || !extensions.is_empty() || with_test || with_script {
+            if rust_stylus {
+                return Err(NothungError::Other(
+                    "Test generation is not supported for Rust/Stylus projects".to_string()
+                ));
+            }
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script {
                 return Err(NothungError::Other(
                     "Test generation doesn't support contract-specific flags".to_string()
                 ));
             }
-            let generator = TestGenerator::new(project, name, pragma, license);
-            generator.generate()
+            match project {
+                ProjectType::Foundry(foundry_project) => {
+                    let generator = TestGenerator::new(foundry_project, name, pragma, license);
+                    generator.generate()
+                }
+                _ => Err(NothungError::Other("Test generation is only supported for Foundry projects".to_string()))
+            }
         }
         _ => Err(NothungError::Other(
-            format!("Unsupported resource type: {}. Supported types: contract, script, test", resource_type)
+            format!("Unsupported resource type: {}. Supported types: contract, library, script, test", resource_type)
         )),
     }
 }
@@ -64,8 +96,9 @@ fn determine_contract_type(
     oz_erc20: bool,
     oz_erc721: bool,
     oz_erc1155: bool,
-    oz_upgradeable: bool,
+    upgradeable: bool,
     extensions: &[String],
+    language: &Language,
 ) -> Result<ContractType> {
     // Count how many base token types are specified
     let base_count = [oz_erc20, oz_erc721, oz_erc1155].iter().filter(|&&x| x).count();
@@ -76,9 +109,16 @@ fn determine_contract_type(
         ));
     }
     
-    if oz_upgradeable && base_count == 0 {
+    if upgradeable && base_count == 0 {
         return Err(NothungError::Other(
-            "Must specify a base token type (--oz-erc20, --oz-erc721, or --oz-erc1155) when using --oz-upgradeable".to_string()
+            "Must specify a base token type (--oz-erc20, --oz-erc721, or --oz-erc1155) when using --upgradeable".to_string()
+        ));
+    }
+    
+    // Check if upgradeable is supported for the language
+    if upgradeable && *language == Language::RustStylus {
+        return Err(NothungError::Other(
+            "Upgradeable contracts are not yet supported for Rust/Stylus. OpenZeppelin Stylus library doesn't include upgradeable patterns yet.".to_string()
         ));
     }
 
@@ -97,7 +137,7 @@ fn determine_contract_type(
     }
 
     // Determine base contract type
-    let base_type = match (oz_erc20, oz_erc721, oz_erc1155, oz_upgradeable) {
+    let base_type = match (oz_erc20, oz_erc721, oz_erc1155, upgradeable) {
         (true, false, false, false) => ContractType::ERC20,
         (true, false, false, true) => ContractType::ERC20Upgradeable,
         (false, true, false, false) => ContractType::ERC721,

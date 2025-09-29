@@ -1,18 +1,22 @@
 //! Nothung - A blazing-fast library for scaffolding smart contracts
 //! 
-//! This library provides the core functionality for generating Solidity contracts,
-//! tests, and deployment scripts for Foundry projects.
+//! This library provides the core functionality for generating Solidity and Rust/Stylus contracts,
+//! tests, and deployment scripts for Foundry and Cargo projects.
 
 pub mod error;
 pub mod foundry;
 pub mod generators;
 pub mod templates;
+pub mod language;
+pub mod project;
 
 // Re-export commonly used types
 pub use error::{NothungError, Result};
 pub use foundry::FoundryProject;
-pub use generators::{ContractGenerator, ScriptGenerator, TestGenerator};
-pub use templates::{ContractType, TokenExtension, SolidityTemplate};
+pub use generators::{ContractGenerator, ScriptGenerator, TestGenerator, GenericContractGenerator, LibraryGenerator};
+pub use templates::{ContractType, TokenExtension, SolidityTemplate, StylusTemplate};
+pub use language::Language;
+pub use project::{Project, ProjectType, CargoProject};
 
 // Version info
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");

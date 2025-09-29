@@ -26,15 +26,19 @@ enum Commands {
 
 #[derive(Args)]
 struct NewArgs {
-    /// Type of resource to create (contract, script, or test)
+    /// Type of resource to create (contract, library, script, or test)
     resource_type: String,
     
     /// Name of the resource
     name: String,
     
-    /// Generate a Solidity contract (required for now, other languages coming soon)
+    /// Generate a Solidity contract
     #[arg(long)]
     solidity: bool,
+    
+    /// Generate a Rust/Stylus contract for Arbitrum Stylus
+    #[arg(long = "rust-stylus")]
+    rust_stylus: bool,
     
     /// Inherit from OpenZeppelin ERC20
     #[arg(long = "oz-erc20")]
@@ -48,9 +52,9 @@ struct NewArgs {
     #[arg(long = "oz-erc1155")]
     oz_erc1155: bool,
     
-    /// Use OpenZeppelin Upgradeable contracts
-    #[arg(long = "oz-upgradeable")]
-    oz_upgradeable: bool,
+    /// Use upgradeable version of the contract
+    #[arg(long = "upgradeable")]
+    upgradeable: bool,
     
     /// Add token extensions (comma-separated: burnable,pausable,votes)
     #[arg(long = "extensions", value_delimiter = ',')]
@@ -89,10 +93,11 @@ fn run() -> Result<()> {
                 &args.resource_type,
                 args.name,
                 args.solidity,
+                args.rust_stylus,
                 args.oz_erc20,
                 args.oz_erc721,
                 args.oz_erc1155,
-                args.oz_upgradeable,
+                args.upgradeable,
                 args.extensions,
                 args.with_test,
                 args.with_script,

@@ -3,7 +3,6 @@ use crate::foundry::FoundryProject;
 use crate::templates::{ContractType, SolidityTemplate};
 use colored::*;
 use std::fs;
-use std::path::PathBuf;
 
 pub struct ContractGenerator {
     project: FoundryProject,

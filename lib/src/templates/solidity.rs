@@ -1,50 +1,5 @@
 
-#[derive(Clone, Debug)]
-pub enum ContractType {
-    Basic,
-    ERC20,
-    ERC721,
-    ERC1155,
-    ERC20Upgradeable,
-    ERC721Upgradeable,
-    ERC1155Upgradeable,
-    MultiInheritance {
-        base_type: Box<ContractType>,
-        extensions: Vec<TokenExtension>,
-    },
-}
-
-#[derive(Clone, Debug)]
-pub enum TokenExtension {
-    // ERC20 Extensions
-    ERC20Permit,
-    ERC20Burnable,
-    ERC20Capped,
-    ERC20Pausable,
-    ERC20Votes,
-    ERC20Wrapper,
-    ERC20FlashMint,
-    ERC20TemporaryApproval,
-    ERC20Bridgeable,
-    ERC1363,
-    ERC4626,
-    
-    // ERC721 Extensions
-    ERC721Pausable,
-    ERC721Burnable,
-    ERC721Consecutive,
-    ERC721URIStorage,
-    ERC721Votes,
-    ERC721Royalty,
-    ERC721Wrapper,
-    ERC721Enumerable,
-    
-    // ERC1155 Extensions
-    ERC1155Pausable,
-    ERC1155Burnable,
-    ERC1155Supply,
-    ERC1155URIStorage,
-}
+use super::{ContractType, TokenExtension, Template};
 
 pub struct SolidityTemplate {
     contract_name: String,
@@ -651,5 +606,61 @@ contract {} is {} {{
             .take(3)
             .collect::<String>()
             .to_uppercase()
+    }
+    
+    pub fn generate_library(&self) -> String {
+        format!(
+r#"// SPDX-License-Identifier: {}
+pragma solidity ^{};
+
+/// @title {}
+/// @notice A library contract for reusable utility functions
+/// @dev Add your custom functions here
+library {} {{
+    /// @notice Example function - replace with your own
+    /// @param value The input value
+    /// @return The processed result
+    function exampleFunction(uint256 value) internal pure returns (uint256) {{
+        return value * 2;
+    }}
+    
+    /// @notice Example struct for data organization
+    struct Data {{
+        uint256 id;
+        address owner;
+        bool isActive;
+    }}
+    
+    /// @notice Example function that works with structs
+    /// @param data The input data struct
+    /// @return Whether the data is valid
+    function validateData(Data memory data) internal pure returns (bool) {{
+        return data.owner != address(0) && data.isActive;
+    }}
+}}
+"#,
+            self.license,
+            self.pragma,
+            self.contract_name,
+            self.contract_name
+        )
+    }
+}
+
+impl Template for SolidityTemplate {
+    fn generate_contract(&self) -> String {
+        self.generate_contract()
+    }
+    
+    fn generate_test(&self) -> String {
+        self.generate_test()
+    }
+    
+    fn generate_script(&self) -> String {
+        self.generate_script()
+    }
+    
+    fn generate_library(&self) -> String {
+        self.generate_library()
     }
 }
