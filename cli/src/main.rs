@@ -77,6 +77,10 @@ struct NewArgs {
     /// SPDX License Identifier
     #[arg(long = "license", default_value = "UNLICENSED")]
     license: String,
+    
+    /// Include section markers (comment blocks for organizing contract code)
+    #[arg(long = "with-section-markers")]
+    with_section_markers: bool,
 }
 
 fn main() {
@@ -105,6 +109,7 @@ fn run() -> Result<()> {
                 args.with_script,
                 args.pragma,
                 args.license,
+                args.with_section_markers,
             )
         }
         Commands::Wizard => {

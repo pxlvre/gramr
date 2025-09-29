@@ -14,6 +14,8 @@ pub enum ContractType {
     ERC20Upgradeable,
     ERC721Upgradeable,
     ERC1155Upgradeable,
+    Interface,
+    Abstract,
     MultiInheritance {
         base_type: Box<ContractType>,
         extensions: Vec<TokenExtension>,
@@ -57,4 +59,6 @@ pub trait Template {
     fn generate_test(&self) -> String;
     fn generate_script(&self) -> String;
     fn generate_library(&self) -> String;
+    fn generate_interface(&self) -> String;
+    fn generate_abstract_contract(&self) -> String;
 }

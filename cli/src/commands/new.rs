@@ -1,4 +1,4 @@
-use nothung::{Result, NothungError, ScriptGenerator, TestGenerator, ContractType, TokenExtension, Language, ProjectType, GenericContractGenerator, LibraryGenerator};
+use nothung::{Result, NothungError, ScriptGenerator, TestGenerator, ContractType, TokenExtension, Language, ProjectType, GenericContractGenerator, LibraryGenerator, InterfaceGenerator, AbstractContractGenerator, ConfigGenerator};
 
 pub fn execute_new(
     resource_type: &str,
@@ -14,6 +14,7 @@ pub fn execute_new(
     with_script: bool,
     pragma: String,
     license: String,
+    with_section_markers: bool,
 ) -> Result<()> {
     let language = Language::from_flags(solidity, rust_stylus)?;
     let project = ProjectType::detect(&language)?;
@@ -34,7 +35,7 @@ pub fn execute_new(
             generator.generate()
         }
         "library" => {
-            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script {
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script || with_section_markers {
                 return Err(NothungError::Other(
                     "Library generation doesn't support contract-specific flags".to_string()
                 ));
@@ -54,7 +55,7 @@ pub fn execute_new(
                     "Script generation is not supported for Rust/Stylus projects".to_string()
                 ));
             }
-            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script {
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script || with_section_markers {
                 return Err(NothungError::Other(
                     "Script generation doesn't support contract-specific flags".to_string()
                 ));
@@ -73,7 +74,7 @@ pub fn execute_new(
                     "Test generation is not supported for Rust/Stylus projects".to_string()
                 ));
             }
-            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script {
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script || with_section_markers {
                 return Err(NothungError::Other(
                     "Test generation doesn't support contract-specific flags".to_string()
                 ));
@@ -86,8 +87,51 @@ pub fn execute_new(
                 _ => Err(NothungError::Other("Test generation is only supported for Foundry projects".to_string()))
             }
         }
+        "interface" => {
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script || with_section_markers {
+                return Err(NothungError::Other(
+                    "Interface generation doesn't support contract-specific flags".to_string()
+                ));
+            }
+            let generator = InterfaceGenerator::new(
+                project,
+                language,
+                name,
+                Some(pragma),
+                Some(license),
+            );
+            generator.generate()
+        }
+        "abstract" => {
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script {
+                return Err(NothungError::Other(
+                    "Abstract contract generation doesn't support contract-specific flags (except --with-section-markers)".to_string()
+                ));
+            }
+            let generator = AbstractContractGenerator::new(
+                project,
+                language,
+                name,
+                Some(pragma),
+                Some(license),
+            );
+            generator.generate()
+        }
+        "config" => {
+            if oz_erc20 || oz_erc721 || oz_erc1155 || upgradeable || !extensions.is_empty() || with_test || with_script || with_section_markers {
+                return Err(NothungError::Other(
+                    "Config generation doesn't support contract-specific flags".to_string()
+                ));
+            }
+            let generator = ConfigGenerator::new(
+                project,
+                language,
+                name,
+            );
+            generator.generate()
+        }
         _ => Err(NothungError::Other(
-            format!("Unsupported resource type: {}. Supported types: contract, library, script, test", resource_type)
+            format!("Unsupported resource type: {}. Supported types: contract, library, script, test, interface, abstract, config", resource_type)
         )),
     }
 }

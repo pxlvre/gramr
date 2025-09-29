@@ -306,6 +306,9 @@ impl Template for StylusTemplate {
             ContractType::ERC20Upgradeable => self.generate_erc20_upgradeable_contract(),
             ContractType::ERC721Upgradeable => self.generate_erc721_upgradeable_contract(),
             ContractType::ERC1155Upgradeable => self.generate_erc1155_upgradeable_contract(),
+            ContractType::Interface | ContractType::Abstract => {
+                panic!("Interface and Abstract contracts are not supported for Rust/Stylus")
+            },
             ContractType::MultiInheritance { base_type, extensions } => {
                 self.generate_multi_inheritance_contract(base_type, extensions)
             }
@@ -466,6 +469,42 @@ impl {}Error {{
             self.contract_name,
             snake_name,
             self.contract_name,
+            self.contract_name
+        )
+    }
+    
+    fn generate_interface(&self) -> String {
+        // Interfaces are not typically used in Rust/Stylus - use traits instead
+        format!(
+r#"// Interfaces are not directly supported in Rust/Stylus
+// Use traits instead for similar functionality
+// 
+// Example trait definition:
+//
+// pub trait {} {{
+//     fn example_function(&self) -> bool;
+// }}
+"#,
+            self.contract_name
+        )
+    }
+    
+    fn generate_abstract_contract(&self) -> String {
+        // Abstract contracts don't exist in Rust - use traits instead
+        format!(
+r#"// Abstract contracts are not supported in Rust/Stylus
+// Use traits for similar patterns
+//
+// Example trait with default implementations:
+//
+// pub trait {} {{
+//     fn abstract_function(&self) -> U256;
+//     
+//     fn concrete_function(&self) -> String {{
+//         "This is a concrete function".to_string()
+//     }}
+// }}
+"#,
             self.contract_name
         )
     }

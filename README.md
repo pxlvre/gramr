@@ -103,11 +103,23 @@ nothung new contract MultiToken --solidity --oz-erc1155 --extensions supply,paus
 # Generate with test and deployment script
 nothung new contract MyToken --solidity --oz-erc20 --with-test --with-script
 
+# Generate with section markers (organized comment blocks)
+nothung new contract MyToken --solidity --oz-erc20 --with-section-markers
+
 # Generate upgradeable contracts
 nothung new contract MyToken --solidity --oz-erc20 --upgradeable
 
 # Generate libraries
 nothung new library MathUtils --solidity
+
+# Generate interfaces
+nothung new interface IMyToken --solidity
+
+# Generate abstract contracts
+nothung new abstract BaseToken --solidity
+
+# Generate config files (placeholder for future)
+nothung new config slither --solidity
 ```
 
 #### Rust/Stylus Contracts (Experimental)
@@ -132,7 +144,7 @@ nothung new <TYPE> <NAME> [OPTIONS]
 
 **Arguments:**
 
-- `TYPE`: `contract`, `library`, `script`, or `test`
+- `TYPE`: `contract`, `library`, `interface`, `abstract`, `script`, `test`, or `config`
 - `NAME`: Name of the resource
 
 **Language Options:**
@@ -152,6 +164,7 @@ nothung new <TYPE> <NAME> [OPTIONS]
 
 - `--with-test` - Generate test file (Solidity only)
 - `--with-script` - Generate deployment script (Solidity only)
+- `--with-section-markers` - Include organized comment blocks for code sections
 - `--pragma <VERSION>` - Solidity version (default: 0.8.30, Solidity only)
 - `--license <LICENSE>` - SPDX identifier (default: UNLICENSED, Solidity only)
 
@@ -203,19 +216,26 @@ fn main() -> nothung::Result<()> {
 #### Solidity (Full Support)
 - ✅ **Contracts** - ERC20, ERC721, ERC1155 tokens
 - ✅ **Libraries** - Reusable utility functions
+- ✅ **Interfaces** - Contract interface definitions
+- ✅ **Abstract Contracts** - Abstract base contracts
 - ✅ **Upgradeable** variants of all token standards
 - ✅ **Test generation** - Foundry test files
 - ✅ **Script generation** - Deployment scripts
+- ✅ **Section markers** - Organized comment blocks for code structure
+- ✅ **Config scaffolding** - Quick config file generation (coming soon)
 - ✅ **All extensions** - Complete OpenZeppelin extension support
 - ✅ **Interactive wizard** - Guided creation process
 
 #### Rust/Stylus (Experimental)
 - ✅ **Contracts** - Basic ERC20, ERC721, ERC1155 tokens
 - ✅ **Libraries** - Trait-based reusable patterns
+- ❌ **Interfaces** - Use traits instead (guided by error messages)
+- ❌ **Abstract Contracts** - Use traits with default implementations instead
 - ❌ **Upgradeable contracts** - Not yet supported by OpenZeppelin Stylus
 - ❌ **Test generation** - Use `cargo test` instead
 - ❌ **Script generation** - Use `stylus deploy` instead
 - ❌ **Extensions** - Limited extension support (coming soon)
+- ❌ **Config generation** - Not applicable for Rust/Stylus projects
 - ✅ **Interactive wizard** - Guided creation with clear limitations
 
 ### OpenZeppelin Extensions (Solidity)

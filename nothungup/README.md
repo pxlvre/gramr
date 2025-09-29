@@ -110,6 +110,8 @@ Get started with:
   → wotan                                    # Interactive wizard
   → nothung wizard                           # Also launches wizard
   → nothung new contract MyToken --solidity --oz-erc20  # Direct CLI
+  → nothung new interface IMyToken --solidity           # Generate interface
+  → nothung new abstract BaseToken --solidity           # Generate abstract contract
 ```
 
 ### Update Existing Installation

@@ -49,9 +49,18 @@ nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnab
 # Create with test and script
 nothung new contract MyToken --solidity --oz-erc20 --with-test --with-script
 
-# Generate test or script separately
+# Create with organized section markers
+nothung new contract MyToken --solidity --oz-erc20 --with-section-markers
+
+# Generate different resource types
+nothung new library MathUtils --solidity
+nothung new interface IMyToken --solidity
+nothung new abstract BaseToken --solidity
 nothung new test MyTest --solidity
 nothung new script DeployScript --solidity
+
+# Generate config files (placeholder)
+nothung new config slither --solidity
 ```
 
 ### Command Structure
@@ -61,7 +70,7 @@ nothung new <TYPE> <NAME> [OPTIONS]
 ```
 
 **Arguments:**
-- `TYPE`: Resource type (`contract`, `library`, `script`, `test`)
+- `TYPE`: Resource type (`contract`, `library`, `interface`, `abstract`, `script`, `test`, `config`)
 - `NAME`: Name of the resource to generate
 
 **Global Options:**
@@ -73,10 +82,11 @@ nothung new <TYPE> <NAME> [OPTIONS]
 - `--oz-erc20` - Inherit from OpenZeppelin ERC20
 - `--oz-erc721` - Inherit from OpenZeppelin ERC721  
 - `--oz-erc1155` - Inherit from OpenZeppelin ERC1155
-- `--oz-upgradeable` - Use upgradeable variants
+- `--upgradeable` - Use upgradeable variants
 - `--extensions <LIST>` - Comma-separated extensions
 - `--with-test` - Generate test file
 - `--with-script` - Generate deployment script
+- `--with-section-markers` - Include organized comment blocks for code sections
 
 ### Available Extensions
 
@@ -91,11 +101,11 @@ nothung new <TYPE> <NAME> [OPTIONS]
 ## Examples
 
 ```bash
-# Complex ERC20 with multiple extensions
+# Complex ERC20 with multiple extensions and section markers
 nothung new contract GovernanceToken --solidity \
   --oz-erc20 \
   --extensions permit,votes,pausable \
-  --with-test --with-script
+  --with-test --with-script --with-section-markers
 
 # NFT collection with enumeration and royalties
 nothung new contract ArtCollection --solidity \
@@ -108,6 +118,11 @@ nothung new contract GameAssets --solidity \
   --oz-erc1155 \
   --extensions supply,pausable \
   --pragma 0.8.25
+
+# Generate supporting files
+nothung new interface IArtCollection --solidity --license MIT
+nothung new abstract BaseCollection --solidity --with-section-markers
+nothung new library CollectionUtils --solidity
 ```
 
 ## Requirements

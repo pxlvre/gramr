@@ -645,6 +645,55 @@ library {} {{
             self.contract_name
         )
     }
+
+    pub fn generate_interface(&self) -> String {
+        format!(
+r#"// SPDX-License-Identifier: {}
+pragma solidity ^{};
+
+/// @title I{}
+/// @notice Interface for {}
+/// @dev Define your function signatures here
+interface I{} {{
+    // Add your function signatures here
+    // Example:
+    // function exampleFunction(uint256 value) external returns (bool);
+}}
+"#,
+            self.license,
+            self.pragma,
+            self.contract_name,
+            self.contract_name,
+            self.contract_name
+        )
+    }
+
+    pub fn generate_abstract_contract(&self) -> String {
+        format!(
+r#"// SPDX-License-Identifier: {}
+pragma solidity ^{};
+
+/// @title {}
+/// @notice Abstract contract for {}
+/// @dev Implement the required functions in the inheriting contract
+abstract contract {} {{
+    // Add your abstract functions and state variables here
+    // Example:
+    // function abstractFunction() public virtual returns (uint256);
+    
+    // You can also implement concrete functions
+    function concreteFunction() public pure returns (string memory) {{
+        return "This is a concrete function";
+    }}
+}}
+"#,
+            self.license,
+            self.pragma,
+            self.contract_name,
+            self.contract_name,
+            self.contract_name
+        )
+    }
 }
 
 impl Template for SolidityTemplate {
@@ -662,5 +711,13 @@ impl Template for SolidityTemplate {
     
     fn generate_library(&self) -> String {
         self.generate_library()
+    }
+    
+    fn generate_interface(&self) -> String {
+        self.generate_interface()
+    }
+    
+    fn generate_abstract_contract(&self) -> String {
+        self.generate_abstract_contract()
     }
 }

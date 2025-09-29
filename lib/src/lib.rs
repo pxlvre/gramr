@@ -13,7 +13,7 @@ pub mod project;
 // Re-export commonly used types
 pub use error::{NothungError, Result};
 pub use foundry::FoundryProject;
-pub use generators::{ContractGenerator, ScriptGenerator, TestGenerator, GenericContractGenerator, LibraryGenerator};
+pub use generators::{ContractGenerator, ScriptGenerator, TestGenerator, GenericContractGenerator, LibraryGenerator, InterfaceGenerator, AbstractContractGenerator, ConfigGenerator};
 pub use templates::{ContractType, TokenExtension, SolidityTemplate, StylusTemplate};
 pub use language::Language;
 pub use project::{Project, ProjectType, CargoProject};
