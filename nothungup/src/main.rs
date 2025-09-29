@@ -134,7 +134,9 @@ fn install(skip_checks: bool, local: bool, force: bool) -> Result<()> {
     println!("{} Nothung installed successfully!", "✓".green().bold());
     println!();
     println!("Get started with:");
-    println!("  {} nothung new contract MyToken --solidity --oz-erc20", "→".cyan());
+    println!("  {} wotan                                    # Interactive wizard", "→".cyan());
+    println!("  {} nothung wizard                           # Also launches wizard", "→".cyan());
+    println!("  {} nothung new contract MyToken --solidity --oz-erc20  # Direct CLI", "→".cyan());
     println!();
     
     Ok(())
@@ -253,14 +255,26 @@ fn install_from_local() -> Result<()> {
         return Err(anyhow!("Build failed"));
     }
     
-    // Install the binary
+    // Install the CLI binary
     let output = Command::new("cargo")
         .args(&["install", "--path", "cli", "--force"])
         .status()
-        .context("Failed to install Nothung")?;
+        .context("Failed to install Nothung CLI")?;
     
     if !output.success() {
-        return Err(anyhow!("Installation failed"));
+        return Err(anyhow!("Nothung CLI installation failed"));
+    }
+    
+    // Install Wotan wizard
+    let output = Command::new("cargo")
+        .args(&["install", "--path", "wotan", "--force"])
+        .status()
+        .context("Failed to install Wotan wizard")?;
+    
+    if !output.success() {
+        println!("{} Wotan wizard installation failed, but continuing...", "⚠️".yellow());
+    } else {
+        println!("{} Wotan wizard installed!", "✓".green());
     }
     
     Ok(())
@@ -286,16 +300,30 @@ fn install_from_github() -> Result<()> {
         return Err(anyhow!("Failed to clone repository"));
     }
     
-    // Build and install
+    // Build and install Nothung CLI
     let output = Command::new("cargo")
         .args(&["install", "--path"])
         .arg(temp_dir.join("cli"))
         .args(&["--force"])
         .status()
-        .context("Failed to install Nothung")?;
+        .context("Failed to install Nothung CLI")?;
     
     if !output.success() {
-        return Err(anyhow!("Installation failed"));
+        return Err(anyhow!("Nothung CLI installation failed"));
+    }
+    
+    // Build and install Wotan wizard
+    let output = Command::new("cargo")
+        .args(&["install", "--path"])
+        .arg(temp_dir.join("wotan"))
+        .args(&["--force"])
+        .status()
+        .context("Failed to install Wotan wizard")?;
+    
+    if !output.success() {
+        println!("{} Wotan wizard installation failed, but continuing...", "⚠️".yellow());
+    } else {
+        println!("{} Wotan wizard installed!", "✓".green());
     }
     
     // Clean up

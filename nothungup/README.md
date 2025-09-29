@@ -4,7 +4,7 @@
 
 ## About
 
-Nothungup is the official installer for Nothung that automatically checks for system dependencies (Rust, Cargo, Foundry) and offers to install missing components. It provides a seamless installation experience similar to `rustup` and `foundryup`.
+Nothungup is the official installer for Nothung that automatically checks for system dependencies (Rust, Cargo, Foundry) and offers to install missing components. It installs both the Nothung CLI and Wotan interactive wizard, providing a seamless installation experience similar to `rustup` and `foundryup`.
 
 ## Installation
 
@@ -77,7 +77,7 @@ nothungup --help
 1. **Dependency Check** - Scans system for required tools
 2. **Interactive Prompts** - Asks permission to install missing dependencies
 3. **Automatic Installation** - Downloads and installs Rust/Foundry if needed
-4. **Nothung Installation** - Builds and installs the Nothung CLI
+4. **Nothung Installation** - Builds and installs the Nothung CLI and Wotan wizard
 5. **Verification** - Confirms successful installation
 
 ## Example Sessions
@@ -103,10 +103,13 @@ Installing Foundry...
   Add '$HOME/.foundry/bin' to your PATH
 
 Installing Nothung from GitHub...
+✓ Wotan wizard installed!
 ✓ Nothung installed successfully!
 
 Get started with:
-  → nothung new contract MyToken --solidity --oz-erc20
+  → wotan                                    # Interactive wizard
+  → nothung wizard                           # Also launches wizard
+  → nothung new contract MyToken --solidity --oz-erc20  # Direct CLI
 ```
 
 ### Update Existing Installation
@@ -116,6 +119,7 @@ $ nothungup update
 ⚔️  Updating Nothung...
 
 Installing Nothung from GitHub...
+✓ Wotan wizard installed!
 ✓ Nothung updated successfully!
 ```
 
@@ -136,7 +140,7 @@ Checking system dependencies...
 
 ### `nothungup install`
 
-Installs Nothung and its dependencies.
+Installs Nothung CLI, Wotan interactive wizard, and their dependencies.
 
 **Options:**
 - `--skip-checks` - Skip dependency verification
@@ -145,11 +149,11 @@ Installs Nothung and its dependencies.
 
 ### `nothungup update`
 
-Updates Nothung to the latest version from GitHub. Equivalent to `install --force` but skips dependency checks.
+Updates Nothung CLI and Wotan wizard to the latest version from GitHub. Equivalent to `install --force` but skips dependency checks.
 
 ### `nothungup uninstall`
 
-Removes Nothung from the system using `cargo uninstall nothung-cli`.
+Removes Nothung CLI from the system using `cargo uninstall nothung-cli`. Note: This doesn't automatically uninstall Wotan - use `cargo uninstall wotan` separately if needed.
 
 ### `nothungup check`
 
@@ -190,7 +194,7 @@ Nothungup uses these installation methods:
 
 - **Rust**: Downloads and runs the official rustup installer
 - **Foundry**: Downloads and runs the official foundryup installer  
-- **Nothung**: Uses `cargo install` to build from source
+- **Nothung**: Uses `cargo install` to build both CLI and Wotan wizard from source
 
 ## Future Plans
 
@@ -202,6 +206,7 @@ Nothungup uses these installation methods:
 
 ## See Also
 
-- [Nothung CLI](../cli/) - The tool being installed
+- [Nothung CLI](../cli/) - Direct command-line interface
+- [Wotan](../wotan/) - Interactive wizard for guided contract creation
 - [Nothung library](../lib/) - Core functionality
 - [Main README](../README.md) - Full project documentation

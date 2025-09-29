@@ -8,12 +8,13 @@ A toolkit for scaffolding OpenZeppelin-powered smart contracts, tests, and deplo
 
 ## 🏗️ Architecture
 
-Nothung is organized as a Rust workspace with three distinct components:
+Nothung is organized as a Rust workspace with four distinct components:
 
 ### 📦 Packages
 
 - **`nothung`** (library) - Core functionality for contract generation that can be used programmatically
 - **`nothung-cli`** - Command-line interface built on top of the library
+- **`wotan`** - 🧙‍♂️ Interactive wizard for guided smart contract creation
 - **`nothungup`** - Installer utility for Unix-based systems (Linux/macOS) with dependency checking
 
 ## 🚀 Installation
@@ -46,6 +47,9 @@ nothungup self uninstall      # Uninstall nothungup itself
 ```bash
 # Install the CLI directly
 cargo install --git https://github.com/pxlvre/nothung nothung-cli
+
+# Install the interactive wizard
+cargo install --git https://github.com/pxlvre/nothung wotan
 ```
 
 ### Build from Source
@@ -58,7 +62,28 @@ cargo install --path cli
 
 ## 📖 Usage
 
-### CLI Usage
+### 🧙‍♂️ Interactive Wizard (Recommended)
+
+The easiest way to get started is with the interactive wizard:
+
+```bash
+# Start the wizard (two ways)
+wotan           # Direct wizard command
+nothung wizard  # Via nothung CLI
+```
+
+The wizard guides you through:
+- **Resource selection** - Contract, library, script, or test
+- **Language choice** - Solidity (full support) or Rust/Stylus (experimental)  
+- **Token standards** - ERC20, ERC721, ERC1155 with extensions
+- **Generation options** - Tests, scripts, upgradeable contracts
+- **Configuration** - Pragma versions, licenses, and more
+
+Perfect for beginners and faster for experienced developers!
+
+### 🔧 Direct CLI Usage
+
+For direct command-line usage without the wizard:
 
 #### Solidity Contracts (Full Support)
 
@@ -80,6 +105,9 @@ nothung new contract MyToken --solidity --oz-erc20 --with-test --with-script
 
 # Generate upgradeable contracts
 nothung new contract MyToken --solidity --oz-erc20 --upgradeable
+
+# Generate libraries
+nothung new library MathUtils --solidity
 ```
 
 #### Rust/Stylus Contracts (Experimental)
@@ -89,6 +117,9 @@ nothung new contract MyToken --solidity --oz-erc20 --upgradeable
 nothung new contract MyToken --rust-stylus --oz-erc20
 nothung new contract MyNFT --rust-stylus --oz-erc721
 nothung new contract MyMultiToken --rust-stylus --oz-erc1155
+
+# Generate libraries  
+nothung new library DataUtils --rust-stylus
 
 # Note: Limited support - see Rust/Stylus section below
 ```
@@ -101,7 +132,7 @@ nothung new <TYPE> <NAME> [OPTIONS]
 
 **Arguments:**
 
-- `TYPE`: `contract`, `script`, or `test`
+- `TYPE`: `contract`, `library`, `script`, or `test`
 - `NAME`: Name of the resource
 
 **Language Options:**
@@ -170,22 +201,22 @@ fn main() -> nothung::Result<()> {
 ### Languages Supported
 
 #### Solidity (Full Support)
-- ✅ **ERC20** - Fungible tokens
-- ✅ **ERC721** - Non-fungible tokens (NFTs)
-- ✅ **ERC1155** - Multi-token standard
-- ✅ **Upgradeable** variants of all standards
+- ✅ **Contracts** - ERC20, ERC721, ERC1155 tokens
+- ✅ **Libraries** - Reusable utility functions
+- ✅ **Upgradeable** variants of all token standards
 - ✅ **Test generation** - Foundry test files
 - ✅ **Script generation** - Deployment scripts
 - ✅ **All extensions** - Complete OpenZeppelin extension support
+- ✅ **Interactive wizard** - Guided creation process
 
 #### Rust/Stylus (Experimental)
-- ✅ **ERC20** - Basic fungible tokens
-- ✅ **ERC721** - Basic NFT contracts
-- ✅ **ERC1155** - Basic multi-token contracts
+- ✅ **Contracts** - Basic ERC20, ERC721, ERC1155 tokens
+- ✅ **Libraries** - Trait-based reusable patterns
 - ❌ **Upgradeable contracts** - Not yet supported by OpenZeppelin Stylus
 - ❌ **Test generation** - Use `cargo test` instead
 - ❌ **Script generation** - Use `stylus deploy` instead
 - ❌ **Extensions** - Limited extension support (coming soon)
+- ✅ **Interactive wizard** - Guided creation with clear limitations
 
 ### OpenZeppelin Extensions (Solidity)
 
@@ -327,17 +358,17 @@ cargo install --path nothungup
 
 ### v0.1.0 (Current)
 
-- ✅ Solidity contract generation
-- ✅ Full OpenZeppelin (tokens) integration
-- ✅ All token extensions support
-- ✅ Library/CLI separation
-- ✅ Unix installer with dependency management
-- ✅ Multi-inheritance support
+- ✅ **Interactive wizard** - 🧙‍♂️ Wotan guided contract creation
+- ✅ **Solidity support** - Full contract, library, script, test generation
+- ✅ **Library generation** - Reusable utility contracts and modules
+- ✅ **Full OpenZeppelin integration** - All token standards and extensions
+- ✅ **Multi-inheritance support** - Complex token combinations
+- ✅ **Unix installer** - Dependency checking and management
 
 ### Experimental Features
 
 - ✅ **Rust/Stylus contracts** - Basic token generation for Arbitrum Stylus
-  - ⚠️ **Limited support**: Contract-only generation, no upgradeable contracts yet
+  - ⚠️ **Limited support**: Contract and library generation, no upgradeable contracts yet
   - 🔮 **Coming soon**: Extensions, upgradeable patterns, better Cargo integration
 
 ### Future Versions

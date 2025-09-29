@@ -20,6 +20,8 @@ struct Cli {
 enum Commands {
     /// Create a new contract, test, or script
     New(NewArgs),
+    /// Launch interactive wizard (calls wotan)
+    Wizard,
     /// Show version information
     Version,
 }
@@ -105,10 +107,39 @@ fn run() -> Result<()> {
                 args.license,
             )
         }
+        Commands::Wizard => {
+            launch_wizard()
+        }
         Commands::Version => {
             println!("⚔️  Nothung v{}", env!("CARGO_PKG_VERSION"));
             println!("    The legendary sword that reforges smart contracts");
             Ok(())
+        }
+    }
+}
+
+fn launch_wizard() -> nothung::Result<()> {
+    use std::process::Command;
+    
+    // Try to run wotan
+    match Command::new("wotan").status() {
+        Ok(status) => {
+            if status.success() {
+                Ok(())
+            } else {
+                Err(nothung::NothungError::Other(
+                    "Wotan wizard exited with error".to_string()
+                ))
+            }
+        }
+        Err(_) => {
+            eprintln!("{} Wotan wizard not found. Please install it with:", "Error:".red().bold());
+            eprintln!("  {}", "nothungup install".cyan());
+            eprintln!("  or");
+            eprintln!("  {}", "cargo install --git https://github.com/pxlvre/nothung wotan".cyan());
+            Err(nothung::NothungError::Other(
+                "Wotan wizard not installed".to_string()
+            ))
         }
     }
 }

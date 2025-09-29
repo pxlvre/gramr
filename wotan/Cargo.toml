@@ -1,0 +1,21 @@
+[package]
+name = "wotan"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Interactive wizard for generating smart contracts with Nothung"
+
+[[bin]]
+name = "wotan"
+path = "src/main.rs"
+
+[dependencies]
+nothung = { path = "../lib" }
+inquire.workspace = true
+anyhow.workspace = true
+colored.workspace = true
+clap = { workspace = true, features = ["derive"] }
+serde.workspace = true
+serde_json.workspace = true

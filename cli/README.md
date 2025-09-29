@@ -1,10 +1,18 @@
-# Nothung CLI
+# ⚔️ Nothung CLI
 
-⚔️ Command-line interface for the Nothung smart contract scaffolding toolkit.
+> Command-line interface for the Nothung smart contract scaffolding toolkit
 
-## About
+The Nothung CLI provides a powerful command-line interface for rapidly generating smart contracts, libraries, tests, and deployment scripts. Supports both Solidity (Foundry) and Rust/Stylus (Arbitrum) projects with full OpenZeppelin integration.
 
-The Nothung CLI provides a simple command-line interface for rapidly generating Solidity contracts, tests, and deployment scripts for Foundry projects. It's built on top of the `nothung` library and provides an intuitive way to scaffold smart contracts with OpenZeppelin integrations.
+## 🧙‍♂️ Prefer Interactive? Try Wotan!
+
+For a guided experience, use the interactive wizard:
+
+```bash
+nothung wizard  # Launch interactive wizard
+# or
+wotan          # Direct wizard command
+```
 
 ## Installation
 
@@ -53,7 +61,7 @@ nothung new <TYPE> <NAME> [OPTIONS]
 ```
 
 **Arguments:**
-- `TYPE`: Resource type (`contract`, `script`, `test`)
+- `TYPE`: Resource type (`contract`, `library`, `script`, `test`)
 - `NAME`: Name of the resource to generate
 
 **Global Options:**
