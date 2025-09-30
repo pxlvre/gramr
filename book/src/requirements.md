@@ -389,7 +389,7 @@ foundryup
 
 ```bash
 # Using installer
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 
 # Using gramrup
 gramrup update

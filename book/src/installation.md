@@ -7,7 +7,7 @@ There are several ways to install Gramr depending on your needs and platform.
 The fastest way to get started:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 ```
 
 This script will:
@@ -235,7 +235,7 @@ To update to the latest version:
 
 ```bash
 # Using the installer
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 
 # Using gramrup
 gramrup update

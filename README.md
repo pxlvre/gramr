@@ -15,7 +15,7 @@ A blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts, tes
 ### One-Line Installation
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 ```
 
 ### Interactive Wizard
@@ -95,7 +95,7 @@ Gramr is organized as a Rust workspace with four components:
 ### Option 1: One-Line Installer (Recommended)
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 ```
 
 This installs `gramr`, `wotan`, and `gramrup` binaries.

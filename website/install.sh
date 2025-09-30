@@ -1,6 +1,6 @@
 #!/bin/sh
 # Gramr installer script
-# Usage: curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+# Usage: curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 
 set -e
 

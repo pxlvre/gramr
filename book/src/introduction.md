@@ -46,7 +46,7 @@ Gramr streamlines smart contract development by providing:
 
 ```bash
 # Install Gramr
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 
 # Start interactive wizard
 wotan

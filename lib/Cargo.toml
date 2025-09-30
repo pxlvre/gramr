@@ -8,6 +8,9 @@ repository.workspace = true
 description = "⚔️ A blazing-fast library for scaffolding smart contracts"
 keywords = ["smart-contracts", "solidity", "ethereum", "foundry", "scaffold"]
 categories = ["development-tools", "blockchain"]
+readme = "README.md"
+documentation = "https://docs.rs/gramr"
+homepage = "https://getgramr.pxlvre.dev"
 
 [dependencies]
 anyhow = { workspace = true }

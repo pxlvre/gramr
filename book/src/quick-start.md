@@ -5,7 +5,7 @@ Get up and running with gramr in under 5 minutes!
 ## 📦 Installation
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 ```
 
 ## 🎯 Your First Contract

@@ -23,7 +23,7 @@ Yes! Gramr is completely free and open-source under MIT/Apache-2.0 licenses.
 The fastest way is our one-line installer:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
 ```
 
 See the [Installation Guide](./installation.md) for all options.
@@ -262,7 +262,7 @@ Yes! Feature requests are welcome on GitHub Issues. Consider:
 ### How do I stay updated?
 
 - Follow releases on [GitHub](https://github.com/pxlvre/gramr/releases)
-- Update with: `curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh`
+- Update with: `curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh`
 - Or use: `gramrup update`
 
 ## Comparison Questions

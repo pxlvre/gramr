@@ -25,7 +25,7 @@
         <section class="install-section">
             <h2>Quick Install</h2>
             <div class="install-box">
-                <code class="install-command">curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh</code>
+                <code class="install-command">curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh</code>
                 <button class="copy-btn" onclick="copyInstallCommand()">Copy</button>
             </div>
         </section>
@@ -93,7 +93,7 @@
 
     <script>
         function copyInstallCommand() {
-            const command = "curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh";
+            const command = "curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh";
             navigator.clipboard.writeText(command).then(() => {
                 const btn = document.querySelector('.copy-btn');
                 const originalText = btn.textContent;
