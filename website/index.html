@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nothung - The Legendary Smart Contract Forge</title>
+    <meta name="description" content="A blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts. Supports Solidity and Rust/Stylus.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+</head>
+<body>
+    <main class="container">
+        <header class="hero">
+            <h1 class="title">
+                <span class="sword">⚔️</span>
+                Nothung
+            </h1>
+            <p class="subtitle">The legendary sword that forges smart contracts</p>
+            <p class="description">
+                A blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts, tests, and deployment scripts. 
+                Supports Solidity (Foundry) and Rust (Arbitrum Stylus) projects.
+            </p>
+        </header>
+
+        <section class="install-section">
+            <h2>Quick Install</h2>
+            <div class="install-box">
+                <code class="install-command">curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh</code>
+                <button class="copy-btn" onclick="copyInstallCommand()">Copy</button>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>🧙‍♂️ Interactive Wizard</h3>
+                    <p>Zero-configuration contract creation with step-by-step guidance</p>
+                </div>
+                <div class="feature">
+                    <h3>⚡ Lightning Fast CLI</h3>
+                    <p>Direct command-line contract generation in milliseconds</p>
+                </div>
+                <div class="feature">
+                    <h3>🏗️ Multiple Languages</h3>
+                    <p>Solidity (Foundry) and Rust (Arbitrum Stylus) support</p>
+                </div>
+                <div class="feature">
+                    <h3>🔧 Complete Toolchain</h3>
+                    <p>Tests, deployment scripts, and documentation included</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="quick-example">
+            <h2>Get Started in Seconds</h2>
+            <div class="code-block">
+                <code>
+# Start interactive wizard<br>
+<span class="prompt">$</span> <span class="command">wotan</span><br><br>
+
+# Or use CLI directly<br>
+<span class="prompt">$</span> <span class="command">nothung new contract MyToken --solidity --oz-erc20</span><br><br>
+
+# Generate NFT with extensions<br>
+<span class="prompt">$</span> <span class="command">nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable</span>
+                </code>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-buttons">
+                <a href="https://getnothung.pxlvre.dev" class="btn btn-primary" download>
+                    Download Installer
+                </a>
+                <a href="https://getnothung.pxlvre.dev/docs" class="btn btn-secondary">
+                    Read Documentation
+                </a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>
+                Built with ❤️ by <a href="https://github.com/pxlvre">Pol Vidal</a> • pxlvre.eth
+            </p>
+            <div class="links">
+                <a href="https://github.com/pxlvre/nothung">GitHub</a>
+                <a href="https://github.com/pxlvre/nothung/releases">Releases</a>
+                <a href="https://docs.rs/nothung">API Docs</a>
+                <a href="https://github.com/pxlvre/nothung/issues">Issues</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        function copyInstallCommand() {
+            const command = "curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh";
+            navigator.clipboard.writeText(command).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

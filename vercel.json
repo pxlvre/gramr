@@ -1,7 +1,18 @@
 {
   "name": "nothung-installer",
   "alias": ["getnothung.pxlvre.dev"],
+  "github": {
+    "enabled": false
+  },
   "routes": [
+    {
+      "src": "/docs/(.*)",
+      "dest": "https://pxlvre.github.io/nothung/$1"
+    },
+    {
+      "src": "/docs",
+      "dest": "https://pxlvre.github.io/nothung/"
+    },
     {
       "src": "/",
       "dest": "/install.sh",

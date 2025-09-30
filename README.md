@@ -2,416 +2,326 @@
 
 > The legendary sword that forges smart contracts
 
-A toolkit for scaffolding OpenZeppelin-powered smart contracts, tests, and deployment scripts. Supports Solidity (Foundry) and Rust (Arbitrum Stylus) projects.
+A blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts, tests, and deployment scripts. Supports Solidity (Foundry) and Rust (Arbitrum Stylus) projects.
 
 🦀 Built with Rust 🦀
 
+[![CI](https://github.com/pxlvre/nothung/workflows/CI/badge.svg)](https://github.com/pxlvre/nothung/actions)
+[![Release](https://github.com/pxlvre/nothung/workflows/Release/badge.svg)](https://github.com/pxlvre/nothung/releases)
+[![Docker](https://github.com/pxlvre/nothung/workflows/Docker/badge.svg)](https://github.com/pxlvre/nothung/pkgs/container/nothung)
+
+## 🚀 Quick Start
+
+### One-Line Installation
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+```
+
+### Interactive Wizard
+
+```bash
+wotan
+```
+
+The wizard guides you through creating any type of smart contract with zero configuration!
+
+### CLI Usage
+
+```bash
+# ERC20 Token
+nothung new contract MyToken --solidity --oz-erc20
+
+# ERC721 NFT with extensions
+nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
+```
+
+## 📖 Documentation
+
+- **[Installation Guide](https://getnothung.pxlvre.dev/docs/installation)** - Complete installation instructions
+- **[Quick Start](https://getnothung.pxlvre.dev/docs/quick-start)** - Get up and running in 5 minutes
+- **[CLI Reference](https://getnothung.pxlvre.dev/docs/cli-reference)** - Complete command documentation
+- **[Wotan Wizard](https://getnothung.pxlvre.dev/docs/wotan)** - Interactive mode guide
+- **[API Documentation](https://docs.rs/nothung)** - Rust library docs
+
 ## 🏗️ Architecture
 
-Nothung is organized as a Rust workspace with four distinct components:
+Nothung is organized as a Rust workspace with four components:
 
-### 📦 Packages
+### 📦 Components
 
-- **`nothung`** (library) - Core functionality for contract generation that can be used programmatically
-- **`nothung-cli`** - Command-line interface built on top of the library
-- **`wotan`** - Interactive wizard for guided smart contract creation
-- **`nothungup`** - Installer utility for Unix-based systems (Linux/macOS) with dependency checking
+- **`nothung`** (library) - Core functionality for contract generation
+- **`nothung-cli`** - Command-line interface 
+- **`wotan`** - Interactive wizard for guided creation
+- **`nothungup`** - Installer with dependency management
 
-## 🚀 Installation
+## 🎯 Features
 
-### Using nothungup (Recommended for Linux/macOS)
+### Smart Contract Types
+
+✅ **Contracts** - ERC20, ERC721, ERC1155 tokens  
+✅ **Libraries** - Reusable utility functions  
+✅ **Interfaces** - Contract interface definitions  
+✅ **Abstract Contracts** - Abstract base contracts  
+✅ **Tests** - Foundry test files  
+✅ **Scripts** - Deployment scripts  
+
+### Token Standards & Extensions
+
+**ERC20** (11 extensions): permit, burnable, capped, pausable, votes, wrapper, flashmint, temporaryapproval, bridgeable, erc1363, erc4626
+
+**ERC721** (8 extensions): pausable, burnable, consecutive, uristorage, votes, royalty, wrapper, enumerable
+
+**ERC1155** (4 extensions): pausable, burnable, supply, uristorage
+
+### Language Support
+
+#### Solidity (Full Support)
+- ✅ All contract types and extensions
+- ✅ Upgradeable patterns
+- ✅ Test and script generation
+- ✅ Complete OpenZeppelin integration
+
+#### Rust/Stylus (Experimental)  
+- ✅ Basic ERC20, ERC721, ERC1155 contracts
+- ✅ Library generation
+- ❌ Extensions (coming soon)
+- ❌ Upgradeable contracts (not yet supported by OpenZeppelin Stylus)
+
+## 📥 Installation
+
+### Option 1: One-Line Installer (Recommended)
 
 ```bash
-# Install the installer
-cargo install --git https://github.com/pxlvre/nothung nothungup
-
-# Run installer (checks and installs Rust, Cargo, Foundry if needed)
-nothungup install
-
-# Available options with short flags
-nothungup install -f          # Force reinstall
-nothungup install -l          # Install from local repository (for development)
-nothungup install -s          # Skip dependency checks (faster if deps exist)
-
-# Self-management
-nothungup self uninstall      # Uninstall nothungup itself
+curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
 ```
 
-**Platform Support:**
+This installs `nothung`, `wotan`, and `nothungup` binaries.
 
-- ✅ **Linux** - All major distributions
-- ✅ **macOS** - Intel and Apple Silicon (M1/M2/M3)
-
-### Manual Installation
+### Option 2: Using Cargo
 
 ```bash
-# Install the CLI directly
+# Install from crates.io (library only)
+cargo install nothung
+
+# Install from GitHub (all tools)
 cargo install --git https://github.com/pxlvre/nothung nothung-cli
-
-# Install the interactive wizard
 cargo install --git https://github.com/pxlvre/nothung wotan
+cargo install --git https://github.com/pxlvre/nothung nothungup
 ```
 
-### Build from Source
+### Option 3: Using Docker
+
+```bash
+# Run with Docker
+docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/nothung:latest nothung --help
+
+# Development environment
+docker-compose up -d nothung-dev
+```
+
+### Option 4: Build from Source
 
 ```bash
 git clone https://github.com/pxlvre/nothung
 cd nothung
-cargo install --path cli
+cargo build --release --all
 ```
 
-## 📖 Usage
+## 🧙‍♂️ Interactive Wizard
 
-### 🧙‍♂️ Interactive Wizard (Recommended)
-
-The easiest way to get started is with the interactive wizard:
+Start the interactive wizard for guided contract creation:
 
 ```bash
-# Start the wizard (two ways)
-wotan           # Direct wizard command
-nothung wizard  # Via nothung CLI
+wotan
+# OR
+nothung wizard
 ```
 
-The wizard guides you through:
+The wizard handles:
+- Resource type selection (contract, library, script, test)
+- Language choice (Solidity or Rust/Stylus)
+- Token standard selection with previews
+- Extension configuration
+- Generation options (tests, scripts, upgradeable)
 
-- **Resource selection** - Contract, library, script, or test
-- **Language choice** - Solidity (full support) or Rust/Stylus (experimental)
-- **Token standards** - ERC20, ERC721, ERC1155 with extensions
-- **Generation options** - Tests, scripts, upgradeable contracts
-- **Configuration** - Pragma versions, licenses, and more
+## 🔧 CLI Reference
 
-Perfect for beginners and faster for experienced developers!
-
-### 🔧 Direct CLI Usage
-
-For direct command-line usage without the wizard:
-
-#### Solidity Contracts (Full Support)
-
-```bash
-# Generate a basic contract
-nothung new contract MyToken --solidity
-
-# Generate an ERC20 token
-nothung new contract MyToken --solidity --oz-erc20
-
-# Generate an ERC721 NFT with extensions
-nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable,royalty
-
-# Generate an ERC1155 multi-token with extensions
-nothung new contract MultiToken --solidity --oz-erc1155 --extensions supply,pausable
-
-# Generate with test and deployment script
-nothung new contract MyToken --solidity --oz-erc20 --with-test --with-script
-
-# Generate with section markers (organized comment blocks)
-nothung new contract MyToken --solidity --oz-erc20 --with-section-markers
-
-# Generate upgradeable contracts
-nothung new contract MyToken --solidity --oz-erc20 --upgradeable
-
-# Generate libraries
-nothung new library MathUtils --solidity
-
-# Generate interfaces
-nothung new interface IMyToken --solidity
-
-# Generate abstract contracts
-nothung new abstract BaseToken --solidity
-
-# Generate config files (placeholder for future)
-nothung new config slither --solidity
-```
-
-#### Rust/Stylus Contracts (Experimental)
-
-```bash
-# Generate basic Rust contracts for Arbitrum Stylus
-nothung new contract MyToken --rust-stylus --oz-erc20
-nothung new contract MyNFT --rust-stylus --oz-erc721
-nothung new contract MyMultiToken --rust-stylus --oz-erc1155
-
-# Generate libraries
-nothung new library DataUtils --rust-stylus
-
-# Note: Limited support - see Rust/Stylus section below
-```
-
-#### Command Structure
+### Basic Usage
 
 ```bash
 nothung new <TYPE> <NAME> [OPTIONS]
 ```
 
-**Arguments:**
+### Contract Generation
 
-- `TYPE`: `contract`, `library`, `interface`, `abstract`, `script`, `test`, or `config`
-- `NAME`: Name of the resource
+```bash
+# Basic contract
+nothung new contract MyContract --solidity
 
-**Language Options:**
+# ERC20 Token
+nothung new contract MyToken --solidity --oz-erc20
 
-- `--solidity` - Generate Solidity code for Foundry projects
-- `--rust-stylus` - Generate Rust code for Arbitrum Stylus projects
+# ERC721 NFT with extensions  
+nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
 
-**Token Options:**
+# ERC1155 Multi-token
+nothung new contract GameAssets --solidity --oz-erc1155 --extensions supply,pausable
 
-- `--oz-erc20` - Inherit from OpenZeppelin ERC20
-- `--oz-erc721` - Inherit from OpenZeppelin ERC721
-- `--oz-erc1155` - Inherit from OpenZeppelin ERC1155
-- `--upgradeable` - Use upgradeable contracts (Solidity only)
-- `--extensions <LIST>` - Comma-separated token extensions
+# Upgradeable contract
+nothung new contract MyToken --solidity --oz-erc20 --oz-upgradeable
 
-**Generation Options:**
+# With tests and deployment script
+nothung new contract MyToken --solidity --oz-erc20 --with-test --with-script
+```
 
-- `--with-test` - Generate test file (Solidity only)
-- `--with-script` - Generate deployment script (Solidity only)
-- `--with-section-markers` - Include organized comment blocks for code sections
-- `--pragma <VERSION>` - Solidity version (default: 0.8.30, Solidity only)
-- `--license <LICENSE>` - SPDX identifier (default: UNLICENSED, Solidity only)
+### Other Resource Types
 
-### Library Usage
+```bash
+# Library
+nothung new library MathUtils --solidity
+
+# Interface  
+nothung new interface IMyToken --solidity
+
+# Abstract contract
+nothung new abstract BaseToken --solidity
+
+# Test file
+nothung new test TokenTest --solidity
+
+# Deployment script
+nothung new script DeployToken --solidity
+```
+
+### Rust/Stylus Contracts
+
+```bash
+# Basic Rust contracts for Arbitrum Stylus
+nothung new contract MyToken --rust-stylus --oz-erc20
+nothung new contract MyNFT --rust-stylus --oz-erc721
+nothung new library Utils --rust-stylus
+```
+
+### Options
+
+**Languages:**
+- `--solidity` - Generate Solidity code (Foundry projects)
+- `--rust-stylus` - Generate Rust code (Arbitrum Stylus projects)
+
+**Token Standards:**
+- `--oz-erc20` - OpenZeppelin ERC20 token
+- `--oz-erc721` - OpenZeppelin ERC721 NFT
+- `--oz-erc1155` - OpenZeppelin ERC1155 multi-token
+
+**Patterns:**
+- `--oz-upgradeable` - Use upgradeable contract patterns
+- `--extensions <LIST>` - Comma-separated extensions
+
+**Generation:**
+- `--with-test` - Generate test file
+- `--with-script` - Generate deployment script
+- `--with-section-markers` - Add organized comment sections
+
+**Configuration:**
+- `--pragma <VERSION>` - Solidity version (default: 0.8.30)
+- `--license <LICENSE>` - SPDX license identifier (default: MIT)
+
+## 🐳 Docker Usage
+
+### Quick Commands
+
+```bash
+# Production container
+docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/nothung:latest \
+  nothung new contract MyToken --solidity --oz-erc20
+
+# Development environment  
+docker-compose up -d nothung-dev
+docker-compose exec nothung-dev bash
+```
+
+### Available Images
+
+- `ghcr.io/pxlvre/nothung:latest` - Production (200MB)
+- `ghcr.io/pxlvre/nothung-dev:latest` - Development (1.5GB)
+- `ghcr.io/pxlvre/nothung-docs:latest` - Documentation server
+
+## 🛠️ System Requirements
+
+### Required
+- **Rust** 1.70+ and **Cargo**
+
+### For Solidity Projects (Recommended)
+- **Foundry** (`forge`, `anvil`, `cast`)
+
+### For Rust/Stylus Projects (Experimental)
+- **Rust nightly**
+- **cargo-stylus** (optional)
+
+## 📚 Library Usage
 
 Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-nothung = { git = "https://github.com/pxlvre/nothung" }
+nothung = "0.1"
 ```
 
-Use programmatically in Rust:
+Use programmatically:
 
 ```rust
-use nothung::{ContractBuilder, ContractType, TokenExtension, FoundryProject};
+use nothung::{GenericContractGenerator, ContractType, ProjectType, Language};
 
 fn main() -> nothung::Result<()> {
-    // Generate contract source code
-    let source = ContractBuilder::new("MyToken")
-        .contract_type(ContractType::ERC20)
-        .pragma("0.8.30")
-        .license("MIT")
-        .build();
-
-    println!("{}", source);
-
-    // Or write directly to a Foundry project
-    let project = FoundryProject::detect()?;
-
-    ContractBuilder::new("MyNFT")
-        .contract_type(ContractType::MultiInheritance {
-            base_type: Box::new(ContractType::ERC721),
-            extensions: vec![
-                TokenExtension::ERC721Enumerable,
-                TokenExtension::ERC721Burnable,
-            ],
-        })
-        .generate(project)?;
-
+    let project = ProjectType::detect_project_type(".")?;
+    
+    let generator = GenericContractGenerator::new(
+        project,
+        Language::Solidity,
+        "MyToken",
+        ContractType::ERC20,
+        None,
+    );
+    
+    generator.generate()?;
     Ok(())
 }
-```
-
-## 🎯 Features
-
-### Languages Supported
-
-#### Solidity (Full Support)
-
-- ✅ **Contracts** - ERC20, ERC721, ERC1155 tokens
-- ✅ **Libraries** - Reusable utility functions
-- ✅ **Interfaces** - Contract interface definitions
-- ✅ **Abstract Contracts** - Abstract base contracts
-- ✅ **Upgradeable** variants of all token standards
-- ✅ **Test generation** - Foundry test files
-- ✅ **Script generation** - Deployment scripts
-- ✅ **Section markers** - Organized comment blocks for code structure
-- ✅ **Config scaffolding** - Quick config file generation (coming soon)
-- ✅ **All extensions** - Complete OpenZeppelin extension support
-- ✅ **Interactive wizard** - Guided creation process
-
-#### Rust/Stylus (Experimental)
-
-- ✅ **Contracts** - Basic ERC20, ERC721, ERC1155 tokens
-- ✅ **Libraries** - Trait-based reusable patterns
-- ❌ **Interfaces** - Use traits instead (guided by error messages)
-- ❌ **Abstract Contracts** - Use traits with default implementations instead
-- ❌ **Upgradeable contracts** - Not yet supported by OpenZeppelin Stylus
-- ❌ **Test generation** - Use `cargo test` instead
-- ❌ **Script generation** - Use `stylus deploy` instead
-- ❌ **Extensions** - Limited extension support (coming soon)
-- ❌ **Config generation** - Not applicable for Rust/Stylus projects
-- ✅ **Interactive wizard** - Guided creation with clear limitations
-
-### OpenZeppelin Extensions (Solidity)
-
-#### ERC20 Extensions (11 supported)
-
-- `permit` - Gasless approvals (EIP-2612)
-- `burnable` - Token burning capability
-- `capped` - Maximum supply limit
-- `pausable` - Emergency pause functionality
-- `votes` - On-chain voting & delegation
-- `wrapper` - Wrap other ERC20 tokens
-- `flashmint` - Flash loan support
-- `temporaryapproval` - Single-transaction approvals
-- `bridgeable` - Cross-chain compatibility
-- `erc1363` - Payable token standard
-- `erc4626` - Tokenized vault standard
-
-#### ERC721 Extensions (8 supported)
-
-- `pausable` - Emergency pause functionality
-- `burnable` - NFT burning capability
-- `consecutive` - Efficient batch minting
-- `uristorage` - Dynamic metadata URIs
-- `votes` - NFT-based voting
-- `royalty` - ERC2981 royalty standard
-- `wrapper` - Wrap other NFTs
-- `enumerable` - Token enumeration
-
-#### ERC1155 Extensions (4 supported)
-
-- `pausable` - Emergency pause functionality
-- `burnable` - Multi-token burning
-- `supply` - Track token supplies
-- `uristorage` - Per-token URI storage
-
-### Cross-Compatible Extensions
-
-Extensions like `burnable` and `pausable` automatically adapt to the base token type:
-
-- Using `--oz-erc721 --extensions burnable` applies ERC721Burnable
-- Using `--oz-erc1155 --extensions burnable` applies ERC1155Burnable
-
-## 🦀 Rust/Stylus Support (Experimental)
-
-Nothung now supports generating Rust contracts for [Arbitrum Stylus](https://arbitrum.io/stylus), a next-generation smart contract environment that runs WebAssembly alongside the EVM.
-
-### What Works
-
-```bash
-# Basic token contracts
-nothung new contract MyToken --rust-stylus --oz-erc20
-nothung new contract MyNFT --rust-stylus --oz-erc721
-nothung new contract MyMultiToken --rust-stylus --oz-erc1155
-```
-
-Generated contracts use [OpenZeppelin Contracts for Stylus](https://github.com/OpenZeppelin/rust-contracts-stylus) and include:
-
-- **Standard token functionality** - All basic ERC20/721/1155 methods
-- **Automatic dependency management** - Installs `openzeppelin-stylus` crate
-- **Idiomatic Rust code** - Follows Rust best practices and Stylus patterns
-- **WebAssembly compilation** - Ready for Stylus deployment
-
-### Current Limitations
-
-❌ **Upgradeable contracts** - OpenZeppelin Stylus doesn't support upgradeable patterns yet
-❌ **Extensions** - Limited to basic token functionality for now  
-❌ **Test generation** - Use standard `cargo test` workflow instead
-❌ **Script generation** - Use `stylus deploy` for deployment
-
-### Error Messages
-
-Nothung provides clear error messages for unsupported combinations:
-
-```bash
-# This will show a helpful error
-nothung new contract MyToken --rust-stylus --oz-erc20 --upgradeable
-# Error: "Upgradeable contracts are not yet supported for Rust/Stylus..."
-
-nothung new contract MyToken --rust-stylus --oz-erc20 --with-test
-# Error: "Test generation is not supported for Rust/Stylus projects. Use 'cargo test' instead."
-```
-
-### Development Workflow
-
-1. **Generate contract**: `nothung new contract MyToken --rust-stylus --oz-erc20`
-2. **Build**: `cargo build --release --target wasm32-unknown-unknown`
-3. **Test**: `cargo test`
-4. **Deploy**: `stylus deploy --private-key $PRIVATE_KEY`
-
-### Future Roadmap
-
-- 🔮 **Extension support** - Token extensions like burnable, pausable
-- 🔮 **Upgradeable patterns** - When OpenZeppelin Stylus adds support
-- 🔮 **Test generation** - Stylus-specific test templates
-- 🔮 **Better Cargo integration** - Automatic toolchain setup
-
-## 🛠️ System Requirements
-
-### Required
-
-- **Rust** 1.70+ - Programming language and toolchain
-- **Cargo** - Rust package manager
-
-### For Solidity Projects (Recommended)
-
-- **Foundry** - Smart contract development framework
-  - `forge` - Compiler and test runner
-  - `anvil` - Local blockchain
-  - `cast` - Contract interaction CLI
-
-### For Rust/Stylus Projects (Experimental)
-
-- **Rust nightly** - Required for OpenZeppelin Stylus contracts
-- **cargo-stylus** - Stylus development tools (optional)
-- **stylus** CLI - For deployment to Arbitrum Stylus
-
-## 🔧 Development
-
-```bash
-# Clone the repository
-git clone https://github.com/pxlvre/nothung
-cd nothung
-
-# Build all packages
-cargo build --workspace
-
-# Run tests
-cargo test --workspace
-
-# Build optimized binaries
-cargo build --release --workspace
-
-# Install locally for testing
-cargo install --path cli
-cargo install --path nothungup
 ```
 
 ## 🗺️ Roadmap
 
 ### v0.1.0 (Current)
+- ✅ Complete Solidity support
+- ✅ Interactive wizard (Wotan)
+- ✅ Experimental Rust/Stylus support
+- ✅ Docker containerization
+- ✅ One-line installer
 
-- ✅ **Interactive wizard** - 🧙‍♂️ Wotan guided contract creation
-- ✅ **Solidity support** - Full contract, library, script, test generation
-- ✅ **Library generation** - Reusable utility contracts and modules
-- ✅ **Full OpenZeppelin integration** - All token standards and extensions
-- ✅ **Multi-inheritance support** - Complex token combinations
-- ✅ **Unix installer** - Dependency checking and management
-
-### Experimental Features
-
-- ✅ **Rust/Stylus contracts** - Basic token generation for Arbitrum Stylus
-  - ⚠️ **Limited support**: Contract and library generation, no upgradeable contracts yet
-  - 🔮 **Coming soon**: Extensions, upgradeable patterns, better Cargo integration
-
-### Future Versions
-
-- [ ] **Full Rust/Stylus support** - Extensions, upgradeable contracts, test generation
-- [ ] **Cairo support** - StarkNet with OpenZeppelin Contracts for Cairo
-- [ ] **Template customization** - Custom contract templates
-- [ ] **Interactive mode** - Step-by-step contract creation
-- [ ] **Windows installer** - Native Windows support
-- [ ] **Contract verification helpers** - Automated verification workflows
-- [ ] **Gas optimization templates** - Performance-optimized contract variants
-
-## 📝 License
-
-MIT
+### v0.2.0 (Planned)
+- [ ] Full Rust/Stylus extension support
+- [ ] Cairo/StarkNet support
+- [ ] Template customization
+- [ ] Windows support
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! See our [Contributing Guide](https://getnothung.pxlvre.dev/docs/contributing).
+
+## 📜 License
+
+MIT or Apache-2.0
 
 ## 🙏 Acknowledgments
 
-Built with ❤️ for the degen- and crab people communities by Pol Vidal (@pxlvre) • pxlvre.eth
+Built with ❤️ by [Pol Vidal](https://github.com/pxlvre) • pxlvre.eth
+
+Special thanks to the OpenZeppelin, Foundry, and Arbitrum teams.
+
+---
+
+**Links:**
+- [Documentation](https://getnothung.pxlvre.dev/docs)
+- [GitHub Releases](https://github.com/pxlvre/nothung/releases)  
+- [Docker Images](https://github.com/pxlvre/nothung/pkgs/container/nothung)
+- [Rust Docs](https://docs.rs/nothung)

@@ -1,0 +1,365 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #000;
+    background-color: #fff;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero section */
+.hero {
+    text-align: center;
+    padding: 80px 0 60px;
+    border-bottom: 2px solid #000;
+    margin-bottom: 60px;
+}
+
+.title {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+}
+
+.sword {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 4.5rem;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+    font-style: italic;
+    color: #333;
+}
+
+.description {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #444;
+    line-height: 1.7;
+}
+
+/* Install section */
+.install-section {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.install-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.install-box {
+    background-color: #000;
+    color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    margin: 0 auto;
+    max-width: 800px;
+    position: relative;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.install-command {
+    font-size: 1.2rem;
+    display: block;
+    word-break: break-all;
+    padding-right: 80px;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* Features section */
+.features {
+    margin-bottom: 80px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.feature {
+    text-align: center;
+    padding: 40px 20px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+}
+
+.feature h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.feature p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Quick example section */
+.quick-example {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.quick-example h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.code-block {
+    background-color: #000;
+    color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    text-align: left;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.prompt {
+    color: #888;
+}
+
+.command {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* CTA section */
+.cta-section {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border: 2px solid #000;
+}
+
+.btn-primary {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #fff;
+    color: #000;
+}
+
+.btn-secondary:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* Footer */
+.footer {
+    border-top: 2px solid #000;
+    padding: 40px 0;
+    text-align: center;
+    color: #666;
+}
+
+.footer p {
+    margin-bottom: 20px;
+}
+
+.footer a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.links {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.links a {
+    color: #666;
+    font-weight: 400;
+}
+
+.links a:hover {
+    color: #000;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .title {
+        font-size: 3rem;
+    }
+    
+    .sword {
+        font-size: 3.5rem;
+        margin-right: 10px;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .description {
+        font-size: 1.1rem;
+    }
+    
+    .install-section h2,
+    .quick-example h2 {
+        font-size: 2rem;
+    }
+    
+    .install-box,
+    .code-block {
+        padding: 20px;
+        font-size: 1rem;
+    }
+    
+    .copy-btn {
+        position: static;
+        margin-top: 20px;
+        width: 100%;
+    }
+    
+    .install-command {
+        padding-right: 0;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .feature {
+        padding: 30px 20px;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 200px;
+    }
+    
+    .links {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero {
+        padding: 60px 0 40px;
+    }
+    
+    .title {
+        font-size: 2.5rem;
+    }
+    
+    .sword {
+        font-size: 3rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .description {
+        font-size: 1rem;
+    }
+    
+    .install-section h2,
+    .quick-example h2 {
+        font-size: 1.8rem;
+    }
+    
+    .code-block {
+        font-size: 0.9rem;
+        padding: 15px;
+    }
+    
+    .feature h3 {
+        font-size: 1.2rem;
+    }
+}
