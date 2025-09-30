@@ -1,11 +1,11 @@
 # Quick Start
 
-Get up and running with Nothung in under 5 minutes!
+Get up and running with gramr in under 5 minutes!
 
 ## 📦 Installation
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
 ```
 
 ## 🎯 Your First Contract
@@ -19,8 +19,9 @@ wotan
 ```
 
 The wizard will guide you through:
+
 1. **Resource Type** - Contract, library, script, or test
-2. **Language** - Solidity or Rust/Stylus  
+2. **Language** - Solidity or Rust/Stylus
 3. **Token Standard** - ERC20, ERC721, ERC1155, or basic
 4. **Extensions** - Burnable, pausable, votes, etc.
 5. **Options** - Tests, scripts, upgradeable patterns
@@ -29,13 +30,13 @@ The wizard will guide you through:
 
 ```bash
 # Create an ERC20 token
-nothung new contract MyToken --solidity --oz-erc20
+gramr new contract MyToken --solidity --oz-erc20
 
 # Create an NFT with extensions
-nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
+gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
 
 # Create a multi-token with tests and scripts
-nothung new contract GameAssets --solidity --oz-erc1155 --extensions supply,pausable --with-test --with-script
+gramr new contract GameAssets --solidity --oz-erc1155 --extensions supply,pausable --with-test --with-script
 ```
 
 ## 🏗️ Setting Up a Project
@@ -57,7 +58,7 @@ forge build
 
 ```bash
 # Generate an ERC20 token with extensions
-nothung new contract MyAwesomeToken --solidity --oz-erc20 --extensions burnable,pausable --with-test --with-script
+gramr new contract MyAwesomeToken --solidity --oz-erc20 --extensions burnable,pausable --with-test --with-script
 
 # This creates:
 # - src/MyAwesomeToken.sol (contract)
@@ -84,69 +85,72 @@ forge coverage
 
 ```bash
 # Basic ERC20
-nothung new contract BasicToken --solidity --oz-erc20
+gramr new contract BasicToken --solidity --oz-erc20
 
 # Token with common extensions
-nothung new contract UtilityToken --solidity --oz-erc20 --extensions burnable,pausable
+gramr new contract UtilityToken --solidity --oz-erc20 --extensions burnable,pausable
 
 # Governance token
-nothung new contract GovernanceToken --solidity --oz-erc20 --extensions votes,permit
+gramr new contract GovernanceToken --solidity --oz-erc20 --extensions votes,permit
 
 # DeFi token with all features
-nothung new contract DeFiToken --solidity --oz-erc20 --extensions burnable,pausable,votes,permit,capped
+gramr new contract DeFiToken --solidity --oz-erc20 --extensions burnable,pausable,votes,permit,capped
 ```
 
 ### ERC721 NFT Examples
 
 ```bash
 # Basic NFT
-nothung new contract BasicNFT --solidity --oz-erc721
+gramr new contract BasicNFT --solidity --oz-erc721
 
 # NFT with metadata and enumeration
-nothung new contract CollectibleNFT --solidity --oz-erc721 --extensions enumerable,uristorage
+gramr new contract CollectibleNFT --solidity --oz-erc721 --extensions enumerable,uristorage
 
 # Gaming NFT with all features
-nothung new contract GameNFT --solidity --oz-erc721 --extensions enumerable,burnable,pausable,royalty
+gramr new contract GameNFT --solidity --oz-erc721 --extensions enumerable,burnable,pausable,royalty
 ```
 
 ### ERC1155 Multi-Token Examples
 
 ```bash
 # Basic multi-token
-nothung new contract GameAssets --solidity --oz-erc1155
+gramr new contract GameAssets --solidity --oz-erc1155
 
 # Multi-token with supply tracking
-nothung new contract TradingCards --solidity --oz-erc1155 --extensions supply,uristorage
+gramr new contract TradingCards --solidity --oz-erc1155 --extensions supply,uristorage
 
 # Advanced multi-token
-nothung new contract AdvancedAssets --solidity --oz-erc1155 --extensions supply,burnable,pausable
+gramr new contract AdvancedAssets --solidity --oz-erc1155 --extensions supply,burnable,pausable
 ```
 
 ### Upgradeable Contracts
 
 ```bash
 # Upgradeable ERC20
-nothung new contract UpgradeableToken --solidity --oz-erc20 --oz-upgradeable
+gramr new contract UpgradeableToken --solidity --oz-erc20 --oz-upgradeable
 
 # Upgradeable NFT
-nothung new contract UpgradeableNFT --solidity --oz-erc721 --oz-upgradeable --extensions enumerable
+gramr new contract UpgradeableNFT --solidity --oz-erc721 --oz-upgradeable --extensions enumerable
 ```
 
 ## 🛠️ Development Workflow
 
 ### 1. Plan Your Contract
+
 ```bash
 # Use the wizard to explore options
 wotan
 ```
 
 ### 2. Generate Code
+
 ```bash
 # Generate with tests and deployment scripts
-nothung new contract MyContract --solidity --oz-erc20 --extensions burnable --with-test --with-script
+gramr new contract MyContract --solidity --oz-erc20 --extensions burnable --with-test --with-script
 ```
 
 ### 3. Develop and Test
+
 ```bash
 # Continuous compilation during development
 forge build --watch
@@ -159,6 +163,7 @@ forge test --match-test testMint
 ```
 
 ### 4. Deploy
+
 ```bash
 # Deploy to local network
 anvil  # In another terminal
@@ -172,16 +177,17 @@ forge script script/MyContract.s.sol --rpc-url http://localhost:8545 --broadcast
 ### Custom Pragma and License
 
 ```bash
-nothung new contract MyContract --solidity --oz-erc20 --pragma 0.8.25 --license MIT
+gramr new contract MyContract --solidity --oz-erc20 --pragma 0.8.25 --license MIT
 ```
 
 ### Section Markers for Organization
 
 ```bash
-nothung new contract MyContract --solidity --oz-erc20 --with-section-markers
+gramr new contract MyContract --solidity --oz-erc20 --with-section-markers
 ```
 
 This adds organized comment sections to your contract:
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
@@ -194,15 +200,15 @@ contract MyContract is ERC20 {
     // ========================================
     // CONSTRUCTOR
     // ========================================
-    
+
     constructor() ERC20("MyContract", "MC") {
         // Constructor implementation
     }
-    
+
     // ========================================
     // PUBLIC FUNCTIONS
     // ========================================
-    
+
     // Your public functions here
 }
 ```
@@ -217,7 +223,7 @@ rustup install nightly
 rustup default nightly
 
 # Generate Rust contract
-nothung new contract MyToken --rust-stylus --oz-erc20
+gramr new contract MyToken --rust-stylus --oz-erc20
 
 # Build for Stylus
 cargo build --release --target wasm32-unknown-unknown
@@ -230,13 +236,13 @@ cargo test
 
 ```bash
 # Clone and start development environment
-git clone https://github.com/pxlvre/nothung
-cd nothung
-docker-compose up -d nothung-dev
+git clone https://github.com/pxlvre/gramr
+cd gramr
+docker-compose up -d gramr-dev
 
-# Use Nothung inside container
-docker-compose exec nothung-dev bash
-nothung new contract MyToken --solidity --oz-erc20
+# Use gramr inside container
+docker-compose exec gramr-dev bash
+gramr new contract MyToken --solidity --oz-erc20
 ```
 
 ## 🚀 Production Usage
@@ -247,7 +253,7 @@ nothung new contract MyToken --solidity --oz-erc20
 # .github/workflows/contracts.yml
 - name: Generate contracts
   run: |
-    nothung new contract ProductionToken --solidity --oz-erc20 --extensions burnable,pausable
+    gramr new contract ProductionToken --solidity --oz-erc20 --extensions burnable,pausable
     forge build
     forge test
 ```
@@ -256,8 +262,8 @@ nothung new contract MyToken --solidity --oz-erc20
 
 ```bash
 # Use production image
-docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/nothung:latest \
-  nothung new contract MyToken --solidity --oz-erc20
+docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/gramr:latest \
+  gramr new contract MyToken --solidity --oz-erc20
 ```
 
 ## 🔍 What's Next?
@@ -267,7 +273,7 @@ Now that you have the basics:
 1. **Explore the Wizard** - Run `wotan` to see all available options
 2. **Learn Extensions** - Check out the [Extensions Guide](./extensions.md)
 3. **Read CLI Reference** - Master all commands in [CLI Reference](./cli-reference.md)
-4. **Integrate Libraries** - Use Nothung programmatically with the [Library API](./library.md)
+4. **Integrate Libraries** - Use gramr programmatically with the [Library API](./library.md)
 5. **Deploy Contracts** - Learn deployment patterns in [Project Integration](./integration.md)
 
 ## 💡 Tips & Tricks

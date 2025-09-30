@@ -2,14 +2,14 @@ mod commands;
 
 use clap::{Parser, Subcommand, Args};
 use colored::*;
-use nothung::Result;
+use gramr::Result;
 
 #[derive(Parser)]
 #[command(
-    name = "nothung",
+    name = "gramr",
     version,
     about = "⚔️ A blazing-fast CLI for scaffolding smart contracts",
-    long_about = "Nothung is a Rust-based CLI tool that rapidly generates boilerplate for Solidity contracts, tests, and deployment scripts in Foundry projects."
+    long_about = "Gramr is a Rust-based CLI tool that rapidly generates boilerplate for Solidity contracts, tests, and deployment scripts in Foundry projects."
 )]
 struct Cli {
     #[command(subcommand)]
@@ -116,14 +116,14 @@ fn run() -> Result<()> {
             launch_wizard()
         }
         Commands::Version => {
-            println!("⚔️  Nothung v{}", env!("CARGO_PKG_VERSION"));
+            println!("⚔️  Gramr v{}", env!("CARGO_PKG_VERSION"));
             println!("    The legendary sword that reforges smart contracts");
             Ok(())
         }
     }
 }
 
-fn launch_wizard() -> nothung::Result<()> {
+fn launch_wizard() -> gramr::Result<()> {
     use std::process::Command;
     
     // Try to run wotan
@@ -132,17 +132,17 @@ fn launch_wizard() -> nothung::Result<()> {
             if status.success() {
                 Ok(())
             } else {
-                Err(nothung::NothungError::Other(
+                Err(gramr::GramrError::Other(
                     "Wotan wizard exited with error".to_string()
                 ))
             }
         }
         Err(_) => {
             eprintln!("{} Wotan wizard not found. Please install it with:", "Error:".red().bold());
-            eprintln!("  {}", "nothungup install".cyan());
+            eprintln!("  {}", "gramrup install".cyan());
             eprintln!("  or");
-            eprintln!("  {}", "cargo install --git https://github.com/pxlvre/nothung wotan".cyan());
-            Err(nothung::NothungError::Other(
+            eprintln!("  {}", "cargo install --git https://github.com/pxlvre/gramr wotan".cyan());
+            Err(gramr::GramrError::Other(
                 "Wotan wizard not installed".to_string()
             ))
         }

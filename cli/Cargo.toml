@@ -1,5 +1,5 @@
 [package]
-name = "nothung-cli"
+name = "gramr-cli"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -10,11 +10,11 @@ keywords = ["cli", "smart-contracts", "solidity", "ethereum", "foundry"]
 categories = ["command-line-utilities", "development-tools"]
 
 [[bin]]
-name = "nothung"
+name = "gramr"
 path = "src/main.rs"
 
 [dependencies]
-nothung = { path = "../lib" }
+gramr = { path = "../lib" }
 clap = { workspace = true }
 colored = { workspace = true }
 anyhow = { workspace = true }

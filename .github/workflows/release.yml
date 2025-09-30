@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,11 +17,11 @@ jobs:
       version: ${{ steps.get_version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Get version from tag
         id: get_version
         run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-      
+
       - name: Generate changelog
         id: changelog
         run: |
@@ -33,7 +33,7 @@ jobs:
           else
             COMMITS=$(git log --pretty=format:"- %s (%h)" ${LAST_TAG}..HEAD)
           fi
-          
+
           # Create release body
           echo "BODY<<EOF" >> $GITHUB_OUTPUT
           echo "## What's Changed" >> $GITHUB_OUTPUT
@@ -43,10 +43,10 @@ jobs:
           echo "## Installation" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo '```bash' >> $GITHUB_OUTPUT
-          echo 'curl --proto "=https" --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh' >> $GITHUB_OUTPUT
+          echo 'curl --proto "=https" --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh' >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-      
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -68,24 +68,24 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            binary_name: nothung
-            asset_name: nothung-linux-amd64
+            binary_name: gramr
+            asset_name: gramr-linux-amd64
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            binary_name: nothung
-            asset_name: nothung-linux-arm64
+            binary_name: gramr
+            asset_name: gramr-linux-arm64
           - os: macos-latest
             target: x86_64-apple-darwin
-            binary_name: nothung
-            asset_name: nothung-darwin-amd64
+            binary_name: gramr
+            asset_name: gramr-darwin-amd64
           - os: macos-latest
             target: aarch64-apple-darwin
-            binary_name: nothung
-            asset_name: nothung-darwin-arm64
-    
+            binary_name: gramr
+            asset_name: gramr-darwin-arm64
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -93,37 +93,37 @@ jobs:
           target: ${{ matrix.target }}
           profile: minimal
           override: true
-      
+
       - name: Install cross-compilation tools
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-aarch64-linux-gnu
-      
+
       - name: Build release binary
         run: |
           if [[ "${{ matrix.target }}" == "aarch64-unknown-linux-gnu" ]]; then
             cargo install cross
-            cross build --release --target ${{ matrix.target }} --bin nothung
+            cross build --release --target ${{ matrix.target }} --bin gramr
             cross build --release --target ${{ matrix.target }} --bin wotan
-            cross build --release --target ${{ matrix.target }} --bin nothungup
+            cross build --release --target ${{ matrix.target }} --bin gramrup
           else
-            cargo build --release --target ${{ matrix.target }} --bin nothung
+            cargo build --release --target ${{ matrix.target }} --bin gramr
             cargo build --release --target ${{ matrix.target }} --bin wotan
-            cargo build --release --target ${{ matrix.target }} --bin nothungup
+            cargo build --release --target ${{ matrix.target }} --bin gramrup
           fi
-      
+
       - name: Create archive
         run: |
           mkdir -p dist
-          cp target/${{ matrix.target }}/release/nothung dist/
+          cp target/${{ matrix.target }}/release/gramr dist/
           cp target/${{ matrix.target }}/release/wotan dist/
-          cp target/${{ matrix.target }}/release/nothungup dist/
+          cp target/${{ matrix.target }}/release/gramrup dist/
           cp README.md LICENSE dist/
           cd dist
           tar -czf ../${{ matrix.asset_name }}.tar.gz *
           cd ..
-      
+
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
@@ -140,23 +140,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           profile: minimal
           override: true
-      
+
       - name: Login to crates.io
         run: cargo login ${{ secrets.CRATES_TOKEN }}
-      
-      - name: Publish nothung library
+
+      - name: Publish gramr library
         run: |
           cd lib
           cargo publish --allow-dirty
-        continue-on-error: true  # In case version already exists
-  
+        continue-on-error: true # In case version already exists
+
   publish-docker-images:
     name: Publish Docker Images
     needs: create-release
@@ -166,21 +166,21 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      
+
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Extract version
         id: version
         run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-      
+
       - name: Build and push production image
         uses: docker/build-push-action@v5
         with:
@@ -191,7 +191,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:latest
             ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}
-      
+
       - name: Build and push dev image
         uses: docker/build-push-action@v5
         with:
@@ -209,24 +209,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Create installation script
         run: |
           cat > install.sh << 'EOF'
           #!/bin/sh
           set -e
-          
-          # Nothung installer script
-          # This script installs nothung, wotan, and nothungup
-          
+
+          # Gramr installer script
+          # This script installs gramr, wotan, and gramrup
+
           VERSION="${1:-latest}"
-          INSTALL_DIR="${NOTHUNG_INSTALL_DIR:-$HOME/.nothung}"
+          INSTALL_DIR="${GRAMR_INSTALL_DIR:-$HOME/.gramr}"
           BIN_DIR="$INSTALL_DIR/bin"
-          
+
           # Detect OS and architecture
           OS="$(uname -s)"
           ARCH="$(uname -m)"
-          
+
           case "$OS" in
               Linux*)
                   case "$ARCH" in
@@ -247,44 +247,44 @@ jobs:
                   exit 1
                   ;;
           esac
-          
+
           # Get latest version if not specified
           if [ "$VERSION" = "latest" ]; then
-              VERSION=$(curl -s https://api.github.com/repos/pxlvre/nothung/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+              VERSION=$(curl -s https://api.github.com/repos/pxlvre/gramr/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
           fi
-          
-          echo "Installing Nothung $VERSION for $PLATFORM..."
-          
+
+          echo "Installing Gramr $VERSION for $PLATFORM..."
+
           # Download and extract
-          DOWNLOAD_URL="https://github.com/pxlvre/nothung/releases/download/$VERSION/nothung-$PLATFORM.tar.gz"
-          
+          DOWNLOAD_URL="https://github.com/pxlvre/gramr/releases/download/$VERSION/gramr-$PLATFORM.tar.gz"
+
           mkdir -p "$BIN_DIR"
           curl -L "$DOWNLOAD_URL" | tar -xz -C "$BIN_DIR"
-          
+
           # Make binaries executable
-          chmod +x "$BIN_DIR/nothung"
+          chmod +x "$BIN_DIR/gramr"
           chmod +x "$BIN_DIR/wotan"
-          chmod +x "$BIN_DIR/nothungup"
-          
+          chmod +x "$BIN_DIR/gramrup"
+
           # Add to PATH instruction
           echo ""
-          echo "Nothung installed successfully to $BIN_DIR"
+          echo "Gramr installed successfully to $BIN_DIR"
           echo ""
-          echo "To add nothung to your PATH, run:"
+          echo "To add gramr to your PATH, run:"
           echo "  export PATH=\"$BIN_DIR:\$PATH\""
           echo ""
           echo "You may want to add this to your shell profile (.bashrc, .zshrc, etc.)"
           echo ""
           echo "Get started with:"
-          echo "  nothung --help"
+          echo "  gramr --help"
           echo "  wotan"
           EOF
-          
+
       - name: Deploy to Vercel
         run: |
-          # This will be configured to deploy the script to getnothung.pxlvre.dev
+          # This will be configured to deploy the script to getgramr.pxlvre.dev
           echo "Script deployment will be configured with Vercel"
-          
+
       - name: Upload installation script as release asset
         uses: actions/upload-release-asset@v1
         env:

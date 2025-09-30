@@ -5,14 +5,14 @@ edition.workspace = true
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Interactive wizard for generating smart contracts with Nothung"
+description = "Interactive wizard for generating smart contracts with Gramr"
 
 [[bin]]
 name = "wotan"
 path = "src/main.rs"
 
 [dependencies]
-nothung = { path = "../lib" }
+gramr = { path = "../lib" }
 inquire.workspace = true
 anyhow.workspace = true
 colored.workspace = true

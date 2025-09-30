@@ -1,4 +1,4 @@
-use crate::{Result, NothungError, ProjectType, Language};
+use crate::{Result, GramrError, ProjectType, Language};
 
 /// Config generator for creating configuration files (placeholder for now)
 pub struct ConfigGenerator {
@@ -23,7 +23,7 @@ impl ConfigGenerator {
 
     /// Generate the config (placeholder)
     pub fn generate(&self) -> Result<()> {
-        Err(NothungError::Other(
+        Err(GramrError::Other(
             format!("Config generation for '{}' is not yet implemented! This will be used to quickly scaffold config files like slither.json, foundry.toml, etc.", self.name)
         ))
     }

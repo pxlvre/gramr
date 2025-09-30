@@ -1,4 +1,4 @@
-# ⚔️ Nothung
+# ⚔️ 𝖌𝖗𝖆𝖒𝖗
 
 > The legendary sword that forges smart contracts
 
@@ -6,16 +6,16 @@ A blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts, tes
 
 🦀 Built with Rust 🦀
 
-[![CI](https://github.com/pxlvre/nothung/workflows/CI/badge.svg)](https://github.com/pxlvre/nothung/actions)
-[![Release](https://github.com/pxlvre/nothung/workflows/Release/badge.svg)](https://github.com/pxlvre/nothung/releases)
-[![Docker](https://github.com/pxlvre/nothung/workflows/Docker/badge.svg)](https://github.com/pxlvre/nothung/pkgs/container/nothung)
+[![CI](https://github.com/pxlvre/gramr/workflows/CI/badge.svg)](https://github.com/pxlvre/gramr/actions)
+[![Release](https://github.com/pxlvre/gramr/workflows/Release/badge.svg)](https://github.com/pxlvre/gramr/releases)
+[![Docker](https://github.com/pxlvre/gramr/workflows/Docker/badge.svg)](https://github.com/pxlvre/gramr/pkgs/container/gramr)
 
 ## 🚀 Quick Start
 
 ### One-Line Installation
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
 ```
 
 ### Interactive Wizard
@@ -30,30 +30,30 @@ The wizard guides you through creating any type of smart contract with zero conf
 
 ```bash
 # ERC20 Token
-nothung new contract MyToken --solidity --oz-erc20
+gramr new contract MyToken --solidity --oz-erc20
 
 # ERC721 NFT with extensions
-nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
+gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
 ```
 
 ## 📖 Documentation
 
-- **[Installation Guide](https://getnothung.pxlvre.dev/docs/installation)** - Complete installation instructions
-- **[Quick Start](https://getnothung.pxlvre.dev/docs/quick-start)** - Get up and running in 5 minutes
-- **[CLI Reference](https://getnothung.pxlvre.dev/docs/cli-reference)** - Complete command documentation
-- **[Wotan Wizard](https://getnothung.pxlvre.dev/docs/wotan)** - Interactive mode guide
-- **[API Documentation](https://docs.rs/nothung)** - Rust library docs
+- **[Installation Guide](https://getgramr.pxlvre.dev/docs/installation)** - Complete installation instructions
+- **[Quick Start](https://getgramr.pxlvre.dev/docs/quick-start)** - Get up and running in 5 minutes
+- **[CLI Reference](https://getgramr.pxlvre.dev/docs/cli-reference)** - Complete command documentation
+- **[Wotan Wizard](https://getgramr.pxlvre.dev/docs/wotan)** - Interactive mode guide
+- **[API Documentation](https://docs.rs/gramr)** - Rust library docs
 
 ## 🏗️ Architecture
 
-Nothung is organized as a Rust workspace with four components:
+Gramr is organized as a Rust workspace with four components:
 
 ### 📦 Components
 
-- **`nothung`** (library) - Core functionality for contract generation
-- **`nothung-cli`** - Command-line interface 
+- **`gramr`** (library) - Core functionality for contract generation
+- **`gramr-cli`** - Command-line interface
 - **`wotan`** - Interactive wizard for guided creation
-- **`nothungup`** - Installer with dependency management
+- **`gramrup`** - Installer with dependency management
 
 ## 🎯 Features
 
@@ -64,7 +64,7 @@ Nothung is organized as a Rust workspace with four components:
 ✅ **Interfaces** - Contract interface definitions  
 ✅ **Abstract Contracts** - Abstract base contracts  
 ✅ **Tests** - Foundry test files  
-✅ **Scripts** - Deployment scripts  
+✅ **Scripts** - Deployment scripts
 
 ### Token Standards & Extensions
 
@@ -77,12 +77,14 @@ Nothung is organized as a Rust workspace with four components:
 ### Language Support
 
 #### Solidity (Full Support)
+
 - ✅ All contract types and extensions
 - ✅ Upgradeable patterns
 - ✅ Test and script generation
 - ✅ Complete OpenZeppelin integration
 
-#### Rust/Stylus (Experimental)  
+#### Rust/Stylus (Experimental)
+
 - ✅ Basic ERC20, ERC721, ERC1155 contracts
 - ✅ Library generation
 - ❌ Extensions (coming soon)
@@ -93,38 +95,38 @@ Nothung is organized as a Rust workspace with four components:
 ### Option 1: One-Line Installer (Recommended)
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
 ```
 
-This installs `nothung`, `wotan`, and `nothungup` binaries.
+This installs `gramr`, `wotan`, and `gramrup` binaries.
 
 ### Option 2: Using Cargo
 
 ```bash
 # Install from crates.io (library only)
-cargo install nothung
+cargo install gramr
 
 # Install from GitHub (all tools)
-cargo install --git https://github.com/pxlvre/nothung nothung-cli
-cargo install --git https://github.com/pxlvre/nothung wotan
-cargo install --git https://github.com/pxlvre/nothung nothungup
+cargo install --git https://github.com/pxlvre/gramr gramr-cli
+cargo install --git https://github.com/pxlvre/gramr wotan
+cargo install --git https://github.com/pxlvre/gramr gramrup
 ```
 
 ### Option 3: Using Docker
 
 ```bash
 # Run with Docker
-docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/nothung:latest nothung --help
+docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/gramr:latest gramr --help
 
 # Development environment
-docker-compose up -d nothung-dev
+docker-compose up -d gramr-dev
 ```
 
 ### Option 4: Build from Source
 
 ```bash
-git clone https://github.com/pxlvre/nothung
-cd nothung
+git clone https://github.com/pxlvre/gramr
+cd gramr
 cargo build --release --all
 ```
 
@@ -135,10 +137,11 @@ Start the interactive wizard for guided contract creation:
 ```bash
 wotan
 # OR
-nothung wizard
+gramr wizard
 ```
 
 The wizard handles:
+
 - Resource type selection (contract, library, script, test)
 - Language choice (Solidity or Rust/Stylus)
 - Token standard selection with previews
@@ -150,80 +153,85 @@ The wizard handles:
 ### Basic Usage
 
 ```bash
-nothung new <TYPE> <NAME> [OPTIONS]
+gramr new <TYPE> <NAME> [OPTIONS]
 ```
 
 ### Contract Generation
 
 ```bash
 # Basic contract
-nothung new contract MyContract --solidity
+gramr new contract MyContract --solidity
 
 # ERC20 Token
-nothung new contract MyToken --solidity --oz-erc20
+gramr new contract MyToken --solidity --oz-erc20
 
-# ERC721 NFT with extensions  
-nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
+# ERC721 NFT with extensions
+gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
 
 # ERC1155 Multi-token
-nothung new contract GameAssets --solidity --oz-erc1155 --extensions supply,pausable
+gramr new contract GameAssets --solidity --oz-erc1155 --extensions supply,pausable
 
 # Upgradeable contract
-nothung new contract MyToken --solidity --oz-erc20 --oz-upgradeable
+gramr new contract MyToken --solidity --oz-erc20 --oz-upgradeable
 
 # With tests and deployment script
-nothung new contract MyToken --solidity --oz-erc20 --with-test --with-script
+gramr new contract MyToken --solidity --oz-erc20 --with-test --with-script
 ```
 
 ### Other Resource Types
 
 ```bash
 # Library
-nothung new library MathUtils --solidity
+gramr new library MathUtils --solidity
 
-# Interface  
-nothung new interface IMyToken --solidity
+# Interface
+gramr new interface IMyToken --solidity
 
 # Abstract contract
-nothung new abstract BaseToken --solidity
+gramr new abstract BaseToken --solidity
 
 # Test file
-nothung new test TokenTest --solidity
+gramr new test TokenTest --solidity
 
 # Deployment script
-nothung new script DeployToken --solidity
+gramr new script DeployToken --solidity
 ```
 
 ### Rust/Stylus Contracts
 
 ```bash
 # Basic Rust contracts for Arbitrum Stylus
-nothung new contract MyToken --rust-stylus --oz-erc20
-nothung new contract MyNFT --rust-stylus --oz-erc721
-nothung new library Utils --rust-stylus
+gramr new contract MyToken --rust-stylus --oz-erc20
+gramr new contract MyNFT --rust-stylus --oz-erc721
+gramr new library Utils --rust-stylus
 ```
 
 ### Options
 
 **Languages:**
+
 - `--solidity` - Generate Solidity code (Foundry projects)
 - `--rust-stylus` - Generate Rust code (Arbitrum Stylus projects)
 
 **Token Standards:**
+
 - `--oz-erc20` - OpenZeppelin ERC20 token
 - `--oz-erc721` - OpenZeppelin ERC721 NFT
 - `--oz-erc1155` - OpenZeppelin ERC1155 multi-token
 
 **Patterns:**
+
 - `--oz-upgradeable` - Use upgradeable contract patterns
 - `--extensions <LIST>` - Comma-separated extensions
 
 **Generation:**
+
 - `--with-test` - Generate test file
 - `--with-script` - Generate deployment script
 - `--with-section-markers` - Add organized comment sections
 
 **Configuration:**
+
 - `--pragma <VERSION>` - Solidity version (default: 0.8.30)
 - `--license <LICENSE>` - SPDX license identifier (default: MIT)
 
@@ -233,29 +241,32 @@ nothung new library Utils --rust-stylus
 
 ```bash
 # Production container
-docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/nothung:latest \
-  nothung new contract MyToken --solidity --oz-erc20
+docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/gramr:latest \
+  gramr new contract MyToken --solidity --oz-erc20
 
-# Development environment  
-docker-compose up -d nothung-dev
-docker-compose exec nothung-dev bash
+# Development environment
+docker-compose up -d gramr-dev
+docker-compose exec gramr-dev bash
 ```
 
 ### Available Images
 
-- `ghcr.io/pxlvre/nothung:latest` - Production (200MB)
-- `ghcr.io/pxlvre/nothung-dev:latest` - Development (1.5GB)
-- `ghcr.io/pxlvre/nothung-docs:latest` - Documentation server
+- `ghcr.io/pxlvre/gramr:latest` - Production (200MB)
+- `ghcr.io/pxlvre/gramr-dev:latest` - Development (1.5GB)
+- `ghcr.io/pxlvre/gramr-docs:latest` - Documentation server
 
 ## 🛠️ System Requirements
 
 ### Required
+
 - **Rust** 1.70+ and **Cargo**
 
 ### For Solidity Projects (Recommended)
+
 - **Foundry** (`forge`, `anvil`, `cast`)
 
 ### For Rust/Stylus Projects (Experimental)
+
 - **Rust nightly**
 - **cargo-stylus** (optional)
 
@@ -265,17 +276,17 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-nothung = "0.1"
+gramr = "0.1"
 ```
 
 Use programmatically:
 
 ```rust
-use nothung::{GenericContractGenerator, ContractType, ProjectType, Language};
+use gramr::{GenericContractGenerator, ContractType, ProjectType, Language};
 
-fn main() -> nothung::Result<()> {
+fn main() -> gramr::Result<()> {
     let project = ProjectType::detect_project_type(".")?;
-    
+
     let generator = GenericContractGenerator::new(
         project,
         Language::Solidity,
@@ -283,7 +294,7 @@ fn main() -> nothung::Result<()> {
         ContractType::ERC20,
         None,
     );
-    
+
     generator.generate()?;
     Ok(())
 }
@@ -292,6 +303,7 @@ fn main() -> nothung::Result<()> {
 ## 🗺️ Roadmap
 
 ### v0.1.0 (Current)
+
 - ✅ Complete Solidity support
 - ✅ Interactive wizard (Wotan)
 - ✅ Experimental Rust/Stylus support
@@ -299,6 +311,7 @@ fn main() -> nothung::Result<()> {
 - ✅ One-line installer
 
 ### v0.2.0 (Planned)
+
 - [ ] Full Rust/Stylus extension support
 - [ ] Cairo/StarkNet support
 - [ ] Template customization
@@ -306,7 +319,7 @@ fn main() -> nothung::Result<()> {
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Contributing Guide](https://getnothung.pxlvre.dev/docs/contributing).
+We welcome contributions! See our [Contributing Guide](https://getgramr.pxlvre.dev/docs/contributing).
 
 ## 📜 License
 
@@ -321,7 +334,8 @@ Special thanks to the OpenZeppelin, Foundry, and Arbitrum teams.
 ---
 
 **Links:**
-- [Documentation](https://getnothung.pxlvre.dev/docs)
-- [GitHub Releases](https://github.com/pxlvre/nothung/releases)  
-- [Docker Images](https://github.com/pxlvre/nothung/pkgs/container/nothung)
-- [Rust Docs](https://docs.rs/nothung)
+
+- [Documentation](https://getgramr.pxlvre.dev/docs)
+- [GitHub Releases](https://github.com/pxlvre/gramr/releases)
+- [Docker Images](https://github.com/pxlvre/gramr/pkgs/container/gramr)
+- [Rust Docs](https://docs.rs/gramr)

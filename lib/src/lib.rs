@@ -1,4 +1,4 @@
-//! Nothung - A blazing-fast library for scaffolding smart contracts
+//! Gramr - A blazing-fast library for scaffolding smart contracts
 //! 
 //! This library provides the core functionality for generating Solidity and Rust/Stylus contracts,
 //! tests, and deployment scripts for Foundry and Cargo projects.
@@ -11,7 +11,7 @@ pub mod language;
 pub mod project;
 
 // Re-export commonly used types
-pub use error::{NothungError, Result};
+pub use error::{GramrError, Result};
 pub use foundry::FoundryProject;
 pub use generators::{ContractGenerator, ScriptGenerator, TestGenerator, GenericContractGenerator, LibraryGenerator, InterfaceGenerator, AbstractContractGenerator, ConfigGenerator};
 pub use templates::{ContractType, TokenExtension, SolidityTemplate, StylusTemplate};
@@ -114,7 +114,7 @@ pub fn parse_extensions(extensions: &[String]) -> Result<Vec<TokenExtension>> {
             // ERC1155 Extensions
             "supply" => TokenExtension::ERC1155Supply,
             
-            _ => return Err(NothungError::Other(
+            _ => return Err(GramrError::Other(
                 format!("Unknown extension: {}. Available extensions: permit, burnable, capped, pausable, votes, wrapper, flashmint, temporaryapproval, bridgeable, erc1363, erc4626, consecutive, uristorage, royalty, wrapper, enumerable, supply", ext)
             )),
         };
@@ -123,4 +123,256 @@ pub fn parse_extensions(extensions: &[String]) -> Result<Vec<TokenExtension>> {
     }
     
     Ok(result)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_version_constant() {
+        assert!(!VERSION.is_empty());
+        assert!(VERSION.chars().any(|c| c.is_ascii_digit()));
+    }
+
+    mod contract_builder_tests {
+        use super::*;
+
+        #[test]
+        fn test_new_contract_builder() {
+            let builder = ContractBuilder::new("TestContract");
+            assert_eq!(builder.name, "TestContract");
+            assert!(matches!(builder.contract_type, ContractType::Basic));
+            assert_eq!(builder.pragma, "0.8.30");
+            assert_eq!(builder.license, "UNLICENSED");
+        }
+
+        #[test]
+        fn test_contract_builder_chain() {
+            let builder = ContractBuilder::new("MyToken")
+                .contract_type(ContractType::ERC20)
+                .pragma("0.8.25")
+                .license("MIT");
+            
+            assert_eq!(builder.name, "MyToken");
+            assert!(matches!(builder.contract_type, ContractType::ERC20));
+            assert_eq!(builder.pragma, "0.8.25");
+            assert_eq!(builder.license, "MIT");
+        }
+
+        #[test]
+        fn test_contract_builder_with_different_types() {
+            let erc20_builder = ContractBuilder::new("Token").contract_type(ContractType::ERC20);
+            assert!(matches!(erc20_builder.contract_type, ContractType::ERC20));
+
+            let erc721_builder = ContractBuilder::new("NFT").contract_type(ContractType::ERC721);
+            assert!(matches!(erc721_builder.contract_type, ContractType::ERC721));
+
+            let erc1155_builder = ContractBuilder::new("Multi").contract_type(ContractType::ERC1155);
+            assert!(matches!(erc1155_builder.contract_type, ContractType::ERC1155));
+        }
+
+        #[test]
+        fn test_build_basic_contract() {
+            let contract = ContractBuilder::new("BasicContract")
+                .pragma("0.8.20")
+                .license("MIT")
+                .build();
+            
+            assert!(contract.contains("BasicContract"));
+            assert!(contract.contains("0.8.20"));
+            assert!(contract.contains("MIT"));
+            assert!(contract.contains("pragma solidity"));
+        }
+
+        #[test]
+        fn test_build_erc20_contract() {
+            let contract = ContractBuilder::new("MyToken")
+                .contract_type(ContractType::ERC20)
+                .build();
+            
+            assert!(contract.contains("MyToken"));
+            assert!(contract.contains("ERC20"));
+            assert!(contract.contains("import"));
+        }
+
+        #[test]
+        fn test_build_with_empty_name() {
+            let contract = ContractBuilder::new("")
+                .build();
+            
+            // Should still generate valid solidity
+            assert!(contract.contains("pragma solidity"));
+        }
+
+        #[test]
+        fn test_build_with_special_characters_in_name() {
+            let contract = ContractBuilder::new("My_Token_123")
+                .build();
+            
+            assert!(contract.contains("My_Token_123"));
+        }
+    }
+
+    mod parse_extensions_tests {
+        use super::*;
+
+        #[test]
+        fn test_parse_empty_extensions() {
+            let result = parse_extensions(&[]);
+            assert!(result.is_ok());
+            assert!(result.unwrap().is_empty());
+        }
+
+        #[test]
+        fn test_parse_single_erc20_extension() {
+            let result = parse_extensions(&["burnable".to_string()]);
+            assert!(result.is_ok());
+            let extensions = result.unwrap();
+            assert_eq!(extensions.len(), 1);
+            assert!(matches!(extensions[0], TokenExtension::ERC20Burnable));
+        }
+
+        #[test]
+        fn test_parse_multiple_erc20_extensions() {
+            let result = parse_extensions(&[
+                "burnable".to_string(),
+                "pausable".to_string(),
+                "permit".to_string(),
+            ]);
+            assert!(result.is_ok());
+            let extensions = result.unwrap();
+            assert_eq!(extensions.len(), 3);
+        }
+
+        #[test]
+        fn test_parse_erc721_extensions() {
+            let result = parse_extensions(&[
+                "enumerable".to_string(),
+                "uristorage".to_string(),
+                "royalty".to_string(),
+            ]);
+            assert!(result.is_ok());
+            let extensions = result.unwrap();
+            assert_eq!(extensions.len(), 3);
+            assert!(matches!(extensions[0], TokenExtension::ERC721Enumerable));
+            assert!(matches!(extensions[1], TokenExtension::ERC721URIStorage));
+            assert!(matches!(extensions[2], TokenExtension::ERC721Royalty));
+        }
+
+        #[test]
+        fn test_parse_erc1155_extensions() {
+            let result = parse_extensions(&["supply".to_string()]);
+            assert!(result.is_ok());
+            let extensions = result.unwrap();
+            assert_eq!(extensions.len(), 1);
+            assert!(matches!(extensions[0], TokenExtension::ERC1155Supply));
+        }
+
+        #[test]
+        fn test_parse_case_insensitive() {
+            let result = parse_extensions(&[
+                "BURNABLE".to_string(),
+                "Pausable".to_string(),
+                "peRmIt".to_string(),
+            ]);
+            assert!(result.is_ok());
+            let extensions = result.unwrap();
+            assert_eq!(extensions.len(), 3);
+        }
+
+        #[test]
+        fn test_parse_unknown_extension() {
+            let result = parse_extensions(&["unknown".to_string()]);
+            assert!(result.is_err());
+            
+            if let Err(GramrError::Other(msg)) = result {
+                assert!(msg.contains("Unknown extension: unknown"));
+                assert!(msg.contains("Available extensions:"));
+            } else {
+                panic!("Expected GramrError::Other");
+            }
+        }
+
+        #[test]
+        fn test_parse_mixed_valid_invalid() {
+            let result = parse_extensions(&[
+                "burnable".to_string(),
+                "invalid".to_string(),
+            ]);
+            assert!(result.is_err());
+        }
+
+        #[test]
+        fn test_parse_all_erc20_extensions() {
+            let extensions = vec![
+                "permit".to_string(),
+                "burnable".to_string(),
+                "capped".to_string(),
+                "pausable".to_string(),
+                "votes".to_string(),
+                "wrapper".to_string(),
+                "flashmint".to_string(),
+                "temporaryapproval".to_string(),
+                "bridgeable".to_string(),
+                "erc1363".to_string(),
+                "erc4626".to_string(),
+            ];
+            
+            let result = parse_extensions(&extensions);
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap().len(), 11);
+        }
+
+        #[test]
+        fn test_parse_duplicate_extensions() {
+            let result = parse_extensions(&[
+                "burnable".to_string(),
+                "burnable".to_string(),
+            ]);
+            assert!(result.is_ok());
+            let extensions = result.unwrap();
+            assert_eq!(extensions.len(), 2); // Duplicates allowed
+        }
+
+        #[test]
+        fn test_parse_whitespace_extensions() {
+            let result = parse_extensions(&[" burnable ".to_string()]);
+            assert!(result.is_err()); // Whitespace not trimmed
+        }
+    }
+
+    #[test]
+    fn test_module_exports() {
+        // Test that key types are properly exported
+        let _error: GramrError = GramrError::Other("test".to_string());
+        let _lang = Language::Solidity;
+        let _contract_type = ContractType::Basic;
+        let _token_ext = TokenExtension::ERC20Burnable;
+        
+        // This test ensures the public API is accessible
+        assert!(true);
+    }
+
+    #[test]
+    fn test_contract_builder_string_conversions() {
+        let builder = ContractBuilder::new("Test".to_string())
+            .pragma("0.8.19".to_string())
+            .license("Apache-2.0".to_string());
+        
+        assert_eq!(builder.name, "Test");
+        assert_eq!(builder.pragma, "0.8.19");
+        assert_eq!(builder.license, "Apache-2.0");
+    }
+
+    #[test]
+    fn test_contract_builder_str_conversions() {
+        let builder = ContractBuilder::new("Test")
+            .pragma("0.8.19")
+            .license("Apache-2.0");
+        
+        assert_eq!(builder.name, "Test");
+        assert_eq!(builder.pragma, "0.8.19");
+        assert_eq!(builder.license, "Apache-2.0");
+    }
 }

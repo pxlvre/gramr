@@ -2,11 +2,11 @@
   "redirects": [
     {
       "source": "/docs/(.*)",
-      "destination": "https://pxlvre.github.io/nothung/$1"
+      "destination": "https://pxlvre.github.io/gramr/$1"
     },
     {
       "source": "/docs",
-      "destination": "https://pxlvre.github.io/nothung/"
+      "destination": "https://pxlvre.github.io/gramr/"
     },
     {
       "source": "/sh",

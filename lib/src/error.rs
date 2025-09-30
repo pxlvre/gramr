@@ -1,7 +1,7 @@
 use thiserror::Error;
 
 #[derive(Error, Debug)]
-pub enum NothungError {
+pub enum GramrError {
     #[error("Not in a Foundry project. Please run this command from a Foundry project directory.")]
     NotFoundryProject,
 
@@ -30,4 +30,4 @@ pub enum NothungError {
     Other(String),
 }
 
-pub type Result<T> = std::result::Result<T, NothungError>;
+pub type Result<T> = std::result::Result<T, GramrError>;

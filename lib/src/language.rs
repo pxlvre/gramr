@@ -1,4 +1,4 @@
-use crate::error::{NothungError, Result};
+use crate::error::{GramrError, Result};
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Language {
@@ -11,11 +11,11 @@ impl Language {
         match (solidity, rust_stylus) {
             (true, false) => Ok(Language::Solidity),
             (false, true) => Ok(Language::RustStylus),
-            (false, false) => Err(NothungError::Other(
-                "Must specify either --solidity or --rust-stylus".to_string()
+            (false, false) => Err(GramrError::Other(
+                "Must specify either --solidity or --rust-stylus".to_string(),
             )),
-            (true, true) => Err(NothungError::Other(
-                "Cannot specify both --solidity and --rust-stylus".to_string()
+            (true, true) => Err(GramrError::Other(
+                "Cannot specify both --solidity and --rust-stylus".to_string(),
             )),
         }
     }

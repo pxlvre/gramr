@@ -1,9 +1,10 @@
-use crate::error::{NothungError, Result};
+use crate::error::{GramrError, Result};
 use crate::project::Project;
 use std::fs;
 use std::path::{Path, PathBuf};
 use which::which;
 
+#[derive(Clone)]
 pub struct FoundryProject {
     pub root: PathBuf,
     pub src_dir: PathBuf,
@@ -16,7 +17,7 @@ impl FoundryProject {
         let current_dir = std::env::current_dir()?;
 
         if !Self::has_forge()? {
-            return Err(NothungError::FoundryNotInstalled);
+            return Err(GramrError::FoundryNotInstalled);
         }
 
         let root = Self::find_foundry_root(&current_dir)?;
@@ -46,7 +47,7 @@ impl FoundryProject {
             }
 
             if !current.pop() {
-                return Err(NothungError::NotFoundryProject);
+                return Err(GramrError::NotFoundryProject);
             }
         }
     }
@@ -77,7 +78,7 @@ impl FoundryProject {
             .output()?;
 
         if !output.status.success() {
-            return Err(NothungError::ForgeCommandError(
+            return Err(GramrError::ForgeCommandError(
                 String::from_utf8_lossy(&output.stderr).to_string(),
             ));
         }
@@ -94,7 +95,7 @@ impl FoundryProject {
             .output()?;
 
         if !output.status.success() {
-            return Err(NothungError::ForgeCommandError(
+            return Err(GramrError::ForgeCommandError(
                 String::from_utf8_lossy(&output.stderr).to_string(),
             ));
         }

@@ -1,15 +1,15 @@
-# ⚔️ Nothung CLI
+# ⚔️ Gramr CLI
 
-> Command-line interface for the Nothung smart contract scaffolding toolkit
+> Command-line interface for the Gramr smart contract scaffolding toolkit
 
-The Nothung CLI provides a powerful command-line interface for rapidly generating smart contracts, libraries, tests, and deployment scripts. Supports both Solidity (Foundry) and Rust/Stylus (Arbitrum) projects with full OpenZeppelin integration.
+The Gramr CLI provides a powerful command-line interface for rapidly generating smart contracts, libraries, tests, and deployment scripts. Supports both Solidity (Foundry) and Rust/Stylus (Arbitrum) projects with full OpenZeppelin integration.
 
 ## 🧙‍♂️ Prefer Interactive? Try Wotan!
 
 For a guided experience, use the interactive wizard:
 
 ```bash
-nothung wizard  # Launch interactive wizard
+gramr wizard  # Launch interactive wizard
 # or
 wotan          # Direct wizard command
 ```
@@ -23,13 +23,13 @@ wotan          # Direct wizard command
 cargo install --path cli
 
 # Or install from GitHub
-cargo install --git https://github.com/pxlvre/nothung nothung-cli
+cargo install --git https://github.com/pxlvre/gramr gramr-cli
 ```
 
-### Using nothungup
+### Using gramrup
 
 ```bash
-nothungup install
+gramrup install
 ```
 
 ## Usage
@@ -38,49 +38,52 @@ nothungup install
 
 ```bash
 # Create a basic contract
-nothung new contract MyContract --solidity
+gramr new contract MyContract --solidity
 
 # Create an ERC20 token
-nothung new contract MyToken --solidity --oz-erc20
+gramr new contract MyToken --solidity --oz-erc20
 
 # Create an ERC721 with extensions
-nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
+gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
 
 # Create with test and script
-nothung new contract MyToken --solidity --oz-erc20 --with-test --with-script
+gramr new contract MyToken --solidity --oz-erc20 --with-test --with-script
 
 # Create with organized section markers
-nothung new contract MyToken --solidity --oz-erc20 --with-section-markers
+gramr new contract MyToken --solidity --oz-erc20 --with-section-markers
 
 # Generate different resource types
-nothung new library MathUtils --solidity
-nothung new interface IMyToken --solidity
-nothung new abstract BaseToken --solidity
-nothung new test MyTest --solidity
-nothung new script DeployScript --solidity
+gramr new library MathUtils --solidity
+gramr new interface IMyToken --solidity
+gramr new abstract BaseToken --solidity
+gramr new test MyTest --solidity
+gramr new script DeployScript --solidity
 
 # Generate config files (placeholder)
-nothung new config slither --solidity
+gramr new config slither --solidity
 ```
 
 ### Command Structure
 
 ```bash
-nothung new <TYPE> <NAME> [OPTIONS]
+gramr new <TYPE> <NAME> [OPTIONS]
 ```
 
 **Arguments:**
+
 - `TYPE`: Resource type (`contract`, `library`, `interface`, `abstract`, `script`, `test`, `config`)
 - `NAME`: Name of the resource to generate
 
 **Global Options:**
+
 - `--solidity` - Generate Solidity code (required)
 - `--pragma <VERSION>` - Solidity version (default: 0.8.30)
 - `--license <LICENSE>` - SPDX license (default: UNLICENSED)
 
 **Contract Options:**
+
 - `--oz-erc20` - Inherit from OpenZeppelin ERC20
-- `--oz-erc721` - Inherit from OpenZeppelin ERC721  
+- `--oz-erc721` - Inherit from OpenZeppelin ERC721
 - `--oz-erc1155` - Inherit from OpenZeppelin ERC1155
 - `--upgradeable` - Use upgradeable variants
 - `--extensions <LIST>` - Comma-separated extensions
@@ -102,27 +105,27 @@ nothung new <TYPE> <NAME> [OPTIONS]
 
 ```bash
 # Complex ERC20 with multiple extensions and section markers
-nothung new contract GovernanceToken --solidity \
+gramr new contract GovernanceToken --solidity \
   --oz-erc20 \
   --extensions permit,votes,pausable \
   --with-test --with-script --with-section-markers
 
 # NFT collection with enumeration and royalties
-nothung new contract ArtCollection --solidity \
+gramr new contract ArtCollection --solidity \
   --oz-erc721 \
   --extensions enumerable,royalty,uristorage \
   --license MIT
 
 # Multi-token with supply tracking
-nothung new contract GameAssets --solidity \
+gramr new contract GameAssets --solidity \
   --oz-erc1155 \
   --extensions supply,pausable \
   --pragma 0.8.25
 
 # Generate supporting files
-nothung new interface IArtCollection --solidity --license MIT
-nothung new abstract BaseCollection --solidity --with-section-markers
-nothung new library CollectionUtils --solidity
+gramr new interface IArtCollection --solidity --license MIT
+gramr new abstract BaseCollection --solidity --with-section-markers
+gramr new library CollectionUtils --solidity
 ```
 
 ## Requirements
@@ -132,6 +135,6 @@ nothung new library CollectionUtils --solidity
 
 ## See Also
 
-- [nothung library](../lib/) - Core functionality
-- [nothungup installer](../nothungup/) - System installer
+- [gramr library](../lib/) - Core functionality
+- [gramrup installer](../gramrup/) - System installer
 - [Main README](../README.md) - Full project documentation

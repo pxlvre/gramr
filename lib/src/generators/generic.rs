@@ -1,4 +1,4 @@
-use crate::error::{NothungError, Result};
+use crate::error::{GramrError, Result};
 use crate::language::Language;
 use crate::project::{Project, ProjectType};
 use crate::templates::{ContractType, Template, SolidityTemplate, StylusTemplate};
@@ -78,17 +78,17 @@ impl GenericContractGenerator {
 
     fn validate_name(&self) -> Result<()> {
         if self.contract_name.is_empty() {
-            return Err(NothungError::Other("Contract name cannot be empty".to_string()));
+            return Err(GramrError::Other("Contract name cannot be empty".to_string()));
         }
 
         if !self.contract_name.chars().next().unwrap().is_alphabetic() {
-            return Err(NothungError::Other(
+            return Err(GramrError::Other(
                 "Contract name must start with a letter".to_string()
             ));
         }
 
         if !self.contract_name.chars().all(|c| c.is_alphanumeric() || c == '_') {
-            return Err(NothungError::Other(
+            return Err(GramrError::Other(
                 "Contract name can only contain letters, numbers, and underscores".to_string()
             ));
         }
@@ -99,13 +99,13 @@ impl GenericContractGenerator {
     fn validate_language_compatibility(&self) -> Result<()> {
         if self.language == Language::RustStylus {
             if self.with_test {
-                return Err(NothungError::Other(
+                return Err(GramrError::Other(
                     "Test generation (--with-test) is not supported for Rust/Stylus projects. Use 'cargo test' instead.".to_string()
                 ));
             }
             
             if self.with_script {
-                return Err(NothungError::Other(
+                return Err(GramrError::Other(
                     "Script generation (--with-script) is not supported for Rust/Stylus projects. Use deployment tools like 'stylus deploy' instead.".to_string()
                 ));
             }
@@ -184,7 +184,7 @@ impl GenericContractGenerator {
         let file_path = self.project.src_dir().join(format!("{}.{}", self.contract_name, file_extension));
         
         fs::write(&file_path, content)
-            .map_err(|e| NothungError::Other(format!("Failed to write contract file: {}", e)))?;
+            .map_err(|e| GramrError::Other(format!("Failed to write contract file: {}", e)))?;
         
         println!("{} Created contract: {}", "✓".green(), file_path.display());
         Ok(())
@@ -206,7 +206,7 @@ impl GenericContractGenerator {
         };
         
         fs::write(&file_path, content)
-            .map_err(|e| NothungError::Other(format!("Failed to write test file: {}", e)))?;
+            .map_err(|e| GramrError::Other(format!("Failed to write test file: {}", e)))?;
         
         println!("{} Created test: {}", "✓".green(), file_path.display());
         Ok(())
@@ -221,7 +221,7 @@ impl GenericContractGenerator {
                 let file_path = self.project.script_dir().join(file_name);
                 
                 fs::write(&file_path, content)
-                    .map_err(|e| NothungError::Other(format!("Failed to write script file: {}", e)))?;
+                    .map_err(|e| GramrError::Other(format!("Failed to write script file: {}", e)))?;
                 
                 println!("{} Created script: {}", "✓".green(), file_path.display());
             }
@@ -232,10 +232,10 @@ impl GenericContractGenerator {
                 
                 // Ensure scripts directory exists
                 fs::create_dir_all(self.project.script_dir())
-                    .map_err(|e| NothungError::Other(format!("Failed to create scripts directory: {}", e)))?;
+                    .map_err(|e| GramrError::Other(format!("Failed to create scripts directory: {}", e)))?;
                 
                 fs::write(&file_path, content)
-                    .map_err(|e| NothungError::Other(format!("Failed to write deployment instructions: {}", e)))?;
+                    .map_err(|e| GramrError::Other(format!("Failed to write deployment instructions: {}", e)))?;
                 
                 println!("{} Created deployment instructions: {}", "✓".green(), file_path.display());
             }

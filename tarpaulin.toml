@@ -1,0 +1,24 @@
+[workspace]
+count = true
+out = ["Html", "Lcov", "Json"]
+output-dir = "coverage"
+exclude = [
+    "*/target/*",
+    "*/test*",
+    "*/tests/*",
+    "*/examples/*",
+    "*/benches/*",
+    "*/.cargo/*",
+    "*/cli/src/main.rs",
+    "*/gramrup/src/main.rs",
+    "*/wotan/src/main.rs",
+]
+exclude-files = [
+    "*/target/*",
+    "*/test*",
+    "*/tests/*",
+    "*/examples/*",
+    "*/benches/*",
+]
+timeout = "300s"
+fail-under = 80

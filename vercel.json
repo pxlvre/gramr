@@ -1,17 +1,17 @@
 {
-  "name": "nothung-installer",
-  "alias": ["getnothung.pxlvre.dev"],
+  "name": "gramr-installer",
+  "alias": ["getgramr.pxlvre.dev"],
   "github": {
     "enabled": false
   },
   "routes": [
     {
       "src": "/docs/(.*)",
-      "dest": "https://pxlvre.github.io/nothung/$1"
+      "dest": "https://pxlvre.github.io/gramr/$1"
     },
     {
       "src": "/docs",
-      "dest": "https://pxlvre.github.io/nothung/"
+      "dest": "https://pxlvre.github.io/gramr/"
     },
     {
       "src": "/",

@@ -1,15 +1,15 @@
-# ⚔️ Nothung
+# ⚔️ Gramr
 
 > **The legendary sword that forges smart contracts**
 
-Nothung is a blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts, tests, and deployment scripts. Built with Rust for maximum performance and reliability.
+Gramr is a blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts, tests, and deployment scripts. Built with Rust for maximum performance and reliability.
 
-## What is Nothung?
+## What is Gramr?
 
-Nothung streamlines smart contract development by providing:
+Gramr streamlines smart contract development by providing:
 
 - **🧙‍♂️ Interactive Wizard** - Zero-configuration contract creation with Wotan
-- **⚡ Lightning Fast CLI** - Direct command-line contract generation  
+- **⚡ Lightning Fast CLI** - Direct command-line contract generation
 - **🏗️ Multiple Languages** - Solidity (Foundry) and Rust (Arbitrum Stylus)
 - **🔧 Complete Toolchain** - Tests, deployment scripts, and documentation
 - **📦 Easy Installation** - One-line installer with dependency management
@@ -17,16 +17,18 @@ Nothung streamlines smart contract development by providing:
 ## Key Features
 
 ### Smart Contract Types
+
 ✅ **Contracts** - ERC20, ERC721, ERC1155 tokens with all extensions  
 ✅ **Libraries** - Reusable utility functions and modules  
 ✅ **Interfaces** - Contract interface definitions  
 ✅ **Abstract Contracts** - Abstract base contracts  
 ✅ **Tests** - Complete Foundry test suites  
-✅ **Scripts** - Deployment and interaction scripts  
+✅ **Scripts** - Deployment and interaction scripts
 
 ### Language Support
 
 **Solidity (Full Support)**
+
 - Complete OpenZeppelin integration
 - All token standards and extensions
 - Upgradeable contract patterns
@@ -34,6 +36,7 @@ Nothung streamlines smart contract development by providing:
 - Foundry project integration
 
 **Rust/Stylus (Experimental)**
+
 - Basic ERC20, ERC721, ERC1155 contracts
 - Library generation with traits
 - Arbitrum Stylus compatibility
@@ -42,17 +45,17 @@ Nothung streamlines smart contract development by providing:
 ## Quick Example
 
 ```bash
-# Install Nothung
-curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+# Install Gramr
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
 
 # Start interactive wizard
 wotan
 
 # Or use CLI directly
-nothung new contract MyToken --solidity --oz-erc20 --extensions burnable,pausable
+gramr new contract MyToken --solidity --oz-erc20 --extensions burnable,pausable
 ```
 
-## Why Nothung?
+## Why Gramr?
 
 **🚀 Blazing Fast** - Generate complete contracts in seconds, not hours
 
@@ -68,12 +71,12 @@ nothung new contract MyToken --solidity --oz-erc20 --extensions burnable,pausabl
 
 ## Architecture
 
-Nothung is built as a Rust workspace with four core components:
+Gramr is built as a Rust workspace with four core components:
 
-- **`nothung`** - Core library for programmatic use
-- **`nothung-cli`** - Command-line interface
+- **`gramr`** - Core library for programmatic use
+- **`gramr-cli`** - Command-line interface
 - **`wotan`** - Interactive wizard
-- **`nothungup`** - Installer and dependency manager
+- **`gramrup`** - Installer and dependency manager
 
 ## Community & Support
 

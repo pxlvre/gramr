@@ -11,10 +11,10 @@ const FOUNDRY_INSTALL_URL: &str =
 
 #[derive(Parser)]
 #[command(
-    name = "nothungup",
+    name = "gramrup",
     version,
-    about = "⚔️ Installer for Nothung - The legendary sword that forges smart contracts",
-    long_about = "Nothungup installs Nothung and its dependencies (Rust, Cargo, Foundry) on Unix-based systems"
+    about = "⚔️ Installer for Gramr - The legendary sword that forges smart contracts",
+    long_about = "Gramrup installs Gramr and its dependencies (Rust, Cargo, Foundry) on Unix-based systems"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -23,7 +23,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Install Nothung and its dependencies
+    /// Install Gramr and its dependencies
     Install {
         /// Skip dependency checks
         #[arg(long, short = 's')]
@@ -37,9 +37,9 @@ enum Commands {
         #[arg(long, short = 'f')]
         force: bool,
     },
-    /// Update Nothung to the latest version
+    /// Update Gramr to the latest version
     Update,
-    /// Uninstall Nothung
+    /// Uninstall Gramr
     Uninstall,
     /// Check system dependencies
     Check,
@@ -50,7 +50,7 @@ enum Commands {
 
 #[derive(Subcommand)]
 enum SelfCommands {
-    /// Uninstall nothungup itself
+    /// Uninstall gramrup itself
     Uninstall,
 }
 
@@ -95,16 +95,14 @@ fn run() -> Result<()> {
 fn install(skip_checks: bool, local: bool, force: bool) -> Result<()> {
     println!(
         "{}",
-        "⚔️  Nothungup - Forging the legendary sword..."
-            .cyan()
-            .bold()
+        "⚔️  Gramrup - Forging the legendary sword...".cyan().bold()
     );
     println!();
 
-    // Check if nothung is already installed
-    if !force && which("nothung").is_ok() {
-        println!("{} Nothung is already installed!", "✓".green().bold());
-        println!("Use 'nothungup update' to update or 'nothungup install --force' to reinstall");
+    // Check if gramr is already installed
+    if !force && which("gramr").is_ok() {
+        println!("{} Gramr is already installed!", "✓".green().bold());
+        println!("Use 'gramrup update' to update or 'gramrup install --force' to reinstall");
         return Ok(());
     }
 
@@ -116,7 +114,7 @@ fn install(skip_checks: bool, local: bool, force: bool) -> Result<()> {
             if prompt_install("Rust and Cargo")? {
                 install_rust()?;
             } else {
-                return Err(anyhow!("Rust and Cargo are required to install Nothung"));
+                return Err(anyhow!("Rust and Cargo are required to install Gramr"));
             }
         }
 
@@ -132,7 +130,7 @@ fn install(skip_checks: bool, local: bool, force: bool) -> Result<()> {
         }
     }
 
-    // Install Nothung
+    // Install Gramr
     if local {
         install_from_local()?;
     } else {
@@ -140,7 +138,7 @@ fn install(skip_checks: bool, local: bool, force: bool) -> Result<()> {
     }
 
     println!();
-    println!("{} Nothung installed successfully!", "✓".green().bold());
+    println!("{} Gramr installed successfully!", "✓".green().bold());
     println!();
     println!("Get started with:");
     println!(
@@ -148,11 +146,11 @@ fn install(skip_checks: bool, local: bool, force: bool) -> Result<()> {
         "→".cyan()
     );
     println!(
-        "  {} nothung wizard                           # Also launches wizard",
+        "  {} gramr wizard                           # Also launches wizard",
         "→".cyan()
     );
     println!(
-        "  {} nothung new contract MyToken --solidity --oz-erc20  # Direct CLI",
+        "  {} gramr new contract MyToken --solidity --oz-erc20  # Direct CLI",
         "→".cyan()
     );
     println!();
@@ -269,13 +267,13 @@ fn install_foundry() -> Result<()> {
 
 fn install_from_local() -> Result<()> {
     println!();
-    println!("{}", "Installing Nothung from local repository...".cyan());
+    println!("{}", "Installing Gramr from local repository...".cyan());
 
     // Build the project
     let output = Command::new("cargo")
-        .args(&["build", "--release", "--package", "nothung-cli"])
+        .args(&["build", "--release", "--package", "gramr-cli"])
         .status()
-        .context("Failed to build Nothung")?;
+        .context("Failed to build Gramr")?;
 
     if !output.success() {
         return Err(anyhow!("Build failed"));
@@ -285,10 +283,10 @@ fn install_from_local() -> Result<()> {
     let output = Command::new("cargo")
         .args(&["install", "--path", "cli", "--force"])
         .status()
-        .context("Failed to install Nothung CLI")?;
+        .context("Failed to install Gramr CLI")?;
 
     if !output.success() {
-        return Err(anyhow!("Nothung CLI installation failed"));
+        return Err(anyhow!("Gramr CLI installation failed"));
     }
 
     // Install Wotan wizard
@@ -311,34 +309,34 @@ fn install_from_local() -> Result<()> {
 
 fn install_from_github() -> Result<()> {
     println!();
-    println!("{}", "Installing Nothung from GitHub...".cyan());
+    println!("{}", "Installing Gramr from GitHub...".cyan());
 
     // Clone the repository
-    let temp_dir = std::env::temp_dir().join("nothung-install");
+    let temp_dir = std::env::temp_dir().join("gramr-install");
 
     // Remove temp dir if it exists
     let _ = std::fs::remove_dir_all(&temp_dir);
 
     let output = Command::new("git")
-        .args(&["clone", "https://github.com/pxlvre/nothung.git"])
+        .args(&["clone", "https://github.com/pxlvre/gramr.git"])
         .arg(&temp_dir)
         .status()
-        .context("Failed to clone Nothung repository")?;
+        .context("Failed to clone Gramr repository")?;
 
     if !output.success() {
         return Err(anyhow!("Failed to clone repository"));
     }
 
-    // Build and install Nothung CLI
+    // Build and install Gramr CLI
     let output = Command::new("cargo")
         .args(&["install", "--path"])
         .arg(temp_dir.join("cli"))
         .args(&["--force"])
         .status()
-        .context("Failed to install Nothung CLI")?;
+        .context("Failed to install Gramr CLI")?;
 
     if !output.success() {
-        return Err(anyhow!("Nothung CLI installation failed"));
+        return Err(anyhow!("Gramr CLI installation failed"));
     }
 
     // Build and install Wotan wizard
@@ -365,12 +363,12 @@ fn install_from_github() -> Result<()> {
 }
 
 fn update() -> Result<()> {
-    println!("{}", "⚔️  Updating Nothung...".cyan().bold());
+    println!("{}", "⚔️  Updating Gramr...".cyan().bold());
 
     // Check if installed
-    if which("nothung").is_err() {
-        println!("{} Nothung is not installed!", "✗".red().bold());
-        println!("Run 'nothungup install' to install it");
+    if which("gramr").is_err() {
+        println!("{} Gramr is not installed!", "✗".red().bold());
+        println!("Run 'gramrup install' to install it");
         return Ok(());
     }
 
@@ -378,38 +376,38 @@ fn update() -> Result<()> {
     install_from_github()?;
 
     println!();
-    println!("{} Nothung updated successfully!", "✓".green().bold());
+    println!("{} Gramr updated successfully!", "✓".green().bold());
 
     Ok(())
 }
 
 fn uninstall() -> Result<()> {
-    println!("{}", "⚔️  Uninstalling Nothung...".cyan().bold());
+    println!("{}", "⚔️  Uninstalling Gramr...".cyan().bold());
 
     // Check if installed
-    if which("nothung").is_err() {
-        println!("{} Nothung is not installed!", "✗".red().bold());
+    if which("gramr").is_err() {
+        println!("{} Gramr is not installed!", "✗".red().bold());
         return Ok(());
     }
 
     // Uninstall using cargo
     let output = Command::new("cargo")
-        .args(&["uninstall", "nothung-cli"])
+        .args(&["uninstall", "gramr-cli"])
         .status()
-        .context("Failed to uninstall Nothung")?;
+        .context("Failed to uninstall Gramr")?;
 
     if !output.success() {
         return Err(anyhow!("Uninstallation failed"));
     }
 
     println!();
-    println!("{} Nothung uninstalled successfully!", "✓".green().bold());
+    println!("{} Gramr uninstalled successfully!", "✓".green().bold());
 
     Ok(())
 }
 
 fn self_uninstall() -> Result<()> {
-    println!("{}", "⚔️  Uninstalling nothungup...".cyan().bold());
+    println!("{}", "⚔️  Uninstalling gramrup...".cyan().bold());
 
     // Get the current executable path
     let current_exe = std::env::current_exe().context("Failed to get current executable path")?;
@@ -417,7 +415,7 @@ fn self_uninstall() -> Result<()> {
     println!("Current executable: {}", current_exe.display());
 
     // Confirm with user
-    print!("{} Are you sure you want to uninstall nothungup? This will remove the nothungup binary. (yes/no): ", 
+    print!("{} Are you sure you want to uninstall gramrup? This will remove the gramrup binary. (yes/no): ", 
            "?".yellow().bold());
     io::stdout().flush()?;
 
@@ -433,7 +431,7 @@ fn self_uninstall() -> Result<()> {
     // So we create a temporary script to delete it after we exit
     #[cfg(unix)]
     {
-        let temp_script = std::env::temp_dir().join("nothungup_uninstall.sh");
+        let temp_script = std::env::temp_dir().join("gramrup_uninstall.sh");
         let script_content = format!(
             "#!/bin/bash\nsleep 1\nrm -f '{}'\nrm -f '{}'\n",
             current_exe.display(),
@@ -451,7 +449,7 @@ fn self_uninstall() -> Result<()> {
             .context("Failed to make uninstall script executable")?;
 
         println!(
-            "{} nothungup will be uninstalled after this process exits.",
+            "{} gramrup will be uninstalled after this process exits.",
             "✓".green().bold()
         );
 
@@ -468,7 +466,7 @@ fn self_uninstall() -> Result<()> {
     #[cfg(windows)]
     {
         // On Windows, we can use a batch script
-        let temp_script = std::env::temp_dir().join("nothungup_uninstall.bat");
+        let temp_script = std::env::temp_dir().join("gramrup_uninstall.bat");
         let script_content = format!(
             "@echo off\ntimeout /t 1 /nobreak >nul\ndel /f \"{}\"\ndel /f \"{}\"\n",
             current_exe.display(),
@@ -479,7 +477,7 @@ fn self_uninstall() -> Result<()> {
             .context("Failed to create uninstall script")?;
 
         println!(
-            "{} nothungup will be uninstalled after this process exits.",
+            "{} gramrup will be uninstalled after this process exits.",
             "✓".green().bold()
         );
 

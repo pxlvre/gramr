@@ -723,3 +723,420 @@ impl Template for SolidityTemplate {
         self.generate_abstract_contract()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn create_test_template(contract_type: ContractType) -> SolidityTemplate {
+        SolidityTemplate::new(
+            "TestContract".to_string(),
+            contract_type,
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        )
+    }
+
+    #[test]
+    fn test_solidity_template_new() {
+        let template = SolidityTemplate::new(
+            "MyContract".to_string(),
+            ContractType::Basic,
+            "0.8.25".to_string(),
+            "Apache-2.0".to_string(),
+        );
+        
+        assert_eq!(template.contract_name, "MyContract");
+        assert!(matches!(template.contract_type, ContractType::Basic));
+        assert_eq!(template.pragma, "0.8.25");
+        assert_eq!(template.license, "Apache-2.0");
+    }
+
+    #[test]
+    fn test_generate_basic_contract() {
+        let template = create_test_template(ContractType::Basic);
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("// SPDX-License-Identifier: MIT"));
+        assert!(contract.contains("pragma solidity ^0.8.30"));
+        assert!(contract.contains("contract TestContract {"));
+        assert!(contract.contains("constructor() {}"));
+        assert!(!contract.contains("import"));
+    }
+
+    #[test]
+    fn test_generate_erc20_contract() {
+        let template = create_test_template(ContractType::ERC20);
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("// SPDX-License-Identifier: MIT"));
+        assert!(contract.contains("pragma solidity ^0.8.30"));
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC20/ERC20.sol\""));
+        assert!(contract.contains("contract TestContract is ERC20"));
+        assert!(contract.contains("constructor(uint256 initialSupply)"));
+        assert!(contract.contains("_mint(msg.sender, initialSupply)"));
+    }
+
+    #[test]
+    fn test_generate_erc721_contract() {
+        let template = create_test_template(ContractType::ERC721);
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC721/ERC721.sol\""));
+        assert!(contract.contains("contract TestContract is ERC721"));
+        assert!(contract.contains("constructor() ERC721(\"TestContract\", \"TST\")"));
+        assert!(contract.contains("function safeMint"));
+    }
+
+    #[test]
+    fn test_generate_erc1155_contract() {
+        let template = create_test_template(ContractType::ERC1155);
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC1155/ERC1155.sol\""));
+        assert!(contract.contains("contract TestContract is ERC1155"));
+        assert!(contract.contains("function mint"));
+        assert!(contract.contains("function mintBatch"));
+    }
+
+    #[test]
+    fn test_generate_interface() {
+        let template = create_test_template(ContractType::Interface);
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("interface ITestContract"));
+        assert!(contract.contains("/// @title ITestContract"));
+        assert!(contract.contains("/// @notice Interface for TestContract"));
+        assert!(!contract.contains("import"));
+    }
+
+    #[test]
+    fn test_generate_abstract_contract() {
+        let template = create_test_template(ContractType::Abstract);
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("abstract contract TestContract"));
+        assert!(contract.contains("/// @title TestContract"));
+        assert!(contract.contains("function concreteFunction"));
+        assert!(!contract.contains("import"));
+    }
+
+    #[test]
+    fn test_generate_library() {
+        let template = create_test_template(ContractType::Basic);
+        let library = template.generate_library();
+        
+        assert!(library.contains("library TestContract"));
+        assert!(library.contains("function exampleFunction"));
+        assert!(library.contains("struct Data"));
+        assert!(library.contains("function validateData"));
+    }
+
+    #[test]
+    fn test_generate_test_basic() {
+        let template = create_test_template(ContractType::Basic);
+        let test = template.generate_test();
+        
+        assert!(test.contains("import \"forge-std/Test.sol\""));
+        assert!(test.contains("import \"../src/TestContract.sol\""));
+        assert!(test.contains("contract TestContractTest is Test"));
+        assert!(test.contains("TestContract public instance"));
+        assert!(test.contains("instance = new TestContract()"));
+        assert!(test.contains("function test_Deployment()"));
+    }
+
+    #[test]
+    fn test_generate_test_erc20() {
+        let template = create_test_template(ContractType::ERC20);
+        let test = template.generate_test();
+        
+        assert!(test.contains("instance = new TestContract(1000000 * 10 ** 18)"));
+    }
+
+    #[test]
+    fn test_generate_script_basic() {
+        let template = create_test_template(ContractType::Basic);
+        let script = template.generate_script();
+        
+        assert!(script.contains("import \"forge-std/Script.sol\""));
+        assert!(script.contains("import \"../src/TestContract.sol\""));
+        assert!(script.contains("contract DeployTestContract is Script"));
+        assert!(script.contains("function run() external returns (TestContract)"));
+        assert!(script.contains("vm.envUint(\"PRIVATE_KEY\")"));
+        assert!(script.contains("vm.startBroadcast"));
+        assert!(script.contains("vm.stopBroadcast"));
+        assert!(script.contains("TestContract instance = new TestContract()"));
+    }
+
+    #[test]
+    fn test_generate_script_erc20() {
+        let template = create_test_template(ContractType::ERC20);
+        let script = template.generate_script();
+        
+        assert!(script.contains("TestContract instance = new TestContract(1000000 * 10 ** 18)"));
+    }
+
+    #[test]
+    fn test_multi_inheritance_contract() {
+        let template = SolidityTemplate::new(
+            "MultiToken".to_string(),
+            ContractType::MultiInheritance {
+                base_type: Box::new(ContractType::ERC20),
+                extensions: vec![TokenExtension::ERC20Burnable, TokenExtension::ERC20Pausable],
+            },
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC20/ERC20.sol\""));
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol\""));
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol\""));
+        assert!(contract.contains("contract MultiToken is ERC20, ERC20Burnable, ERC20Pausable"));
+        assert!(contract.contains("function pause() public onlyOwner"));
+        assert!(contract.contains("function unpause() public onlyOwner"));
+    }
+
+    #[test]
+    fn test_erc721_with_extensions() {
+        let template = SolidityTemplate::new(
+            "NFTCollection".to_string(),
+            ContractType::MultiInheritance {
+                base_type: Box::new(ContractType::ERC721),
+                extensions: vec![TokenExtension::ERC721Enumerable, TokenExtension::ERC721Burnable],
+            },
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol\""));
+        assert!(contract.contains("import \"@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol\""));
+        assert!(contract.contains("contract NFTCollection is ERC721, ERC721Enumerable, ERC721Burnable"));
+        assert!(contract.contains("uint256 private _tokenIdCounter"));
+        assert!(contract.contains("function supportsInterface"));
+        assert!(contract.contains("function _update"));
+        assert!(contract.contains("function _increaseBalance"));
+    }
+
+    #[test]
+    fn test_extension_conversion() {
+        let template = SolidityTemplate::new(
+            "TestNFT".to_string(),
+            ContractType::MultiInheritance {
+                base_type: Box::new(ContractType::ERC721),
+                extensions: vec![TokenExtension::ERC20Burnable, TokenExtension::ERC20Pausable],
+            },
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let contract = template.generate_contract();
+        
+        // Should convert ERC20 extensions to ERC721 equivalents
+        assert!(contract.contains("ERC721Burnable"));
+        assert!(contract.contains("ERC721Pausable"));
+        assert!(!contract.contains("ERC20Burnable"));
+        assert!(!contract.contains("ERC20Pausable"));
+    }
+
+    #[test]
+    fn test_get_symbol() {
+        let template = SolidityTemplate::new(
+            "MyTokenName".to_string(),
+            ContractType::ERC20,
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let symbol = template.get_symbol();
+        assert_eq!(symbol, "MTN");
+    }
+
+    #[test]
+    fn test_get_symbol_single_word() {
+        let template = SolidityTemplate::new(
+            "Token".to_string(),
+            ContractType::ERC20,
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let symbol = template.get_symbol();
+        assert_eq!(symbol, "T");
+    }
+
+    #[test]
+    fn test_generate_state_variables() {
+        let template = create_test_template(ContractType::Basic);
+        
+        let state_vars = template.generate_state_variables(&[TokenExtension::ERC721Enumerable]);
+        assert!(state_vars.contains("uint256 private _tokenIdCounter"));
+        
+        let empty_state_vars = template.generate_state_variables(&[TokenExtension::ERC20Pausable]);
+        assert!(empty_state_vars.is_empty());
+    }
+
+    #[test]
+    fn test_extension_components_erc20_burnable() {
+        let template = create_test_template(ContractType::Basic);
+        let (import, inherit, init, func) = template.get_extension_components(&TokenExtension::ERC20Burnable);
+        
+        assert!(import.contains("ERC20Burnable.sol"));
+        assert_eq!(inherit, "ERC20Burnable");
+        assert!(init.is_empty());
+        assert!(func.is_empty());
+    }
+
+    #[test]
+    fn test_extension_components_pausable() {
+        let template = create_test_template(ContractType::Basic);
+        let (import, inherit, init, func) = template.get_extension_components(&TokenExtension::ERC20Pausable);
+        
+        assert!(import.contains("ERC20Pausable.sol"));
+        assert_eq!(inherit, "ERC20Pausable");
+        assert!(init.is_empty());
+        assert!(func.contains("function pause()"));
+        assert!(func.contains("function unpause()"));
+    }
+
+    #[test]
+    fn test_extension_components_enumerable() {
+        let template = create_test_template(ContractType::Basic);
+        let (import, inherit, init, func) = template.get_extension_components(&TokenExtension::ERC721Enumerable);
+        
+        assert!(import.contains("ERC721Enumerable.sol"));
+        assert_eq!(inherit, "ERC721Enumerable");
+        assert!(init.is_empty());
+        assert!(func.contains("function supportsInterface"));
+        assert!(func.contains("function _update"));
+        assert!(func.contains("function _increaseBalance"));
+    }
+
+    #[test]
+    fn test_erc1155_uristorage() {
+        let template = SolidityTemplate::new(
+            "MultiToken".to_string(),
+            ContractType::MultiInheritance {
+                base_type: Box::new(ContractType::ERC1155),
+                extensions: vec![TokenExtension::ERC1155URIStorage],
+            },
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("ERC1155URIStorage"));
+        assert!(contract.contains("function uri(uint256 tokenId)"));
+    }
+
+    #[test]
+    fn test_template_trait_implementation() {
+        let template = create_test_template(ContractType::Basic);
+        
+        // Test that Template trait methods work
+        let contract = Template::generate_contract(&template);
+        let test = Template::generate_test(&template);
+        let script = Template::generate_script(&template);
+        let library = Template::generate_library(&template);
+        let interface = Template::generate_interface(&template);
+        let abstract_contract = Template::generate_abstract_contract(&template);
+        
+        assert!(contract.contains("contract TestContract"));
+        assert!(test.contains("TestContractTest"));
+        assert!(script.contains("DeployTestContract"));
+        assert!(library.contains("library TestContract"));
+        assert!(interface.contains("interface ITestContract"));
+        assert!(abstract_contract.contains("abstract contract TestContract"));
+    }
+
+    #[test]
+    fn test_upgradeable_contracts() {
+        let template = create_test_template(ContractType::ERC20Upgradeable);
+        let contract = template.generate_contract();
+        
+        assert!(contract.contains("import \"@openzeppelin/contracts-upgradeable"));
+        assert!(contract.contains("Initializable"));
+        assert!(contract.contains("function initialize"));
+        assert!(!contract.contains("constructor"));
+    }
+
+    #[test]
+    fn test_all_erc20_extensions() {
+        let extensions = vec![
+            TokenExtension::ERC20Permit,
+            TokenExtension::ERC20Burnable,
+            TokenExtension::ERC20Capped,
+            TokenExtension::ERC20Pausable,
+            TokenExtension::ERC20Votes,
+            TokenExtension::ERC20Wrapper,
+            TokenExtension::ERC20FlashMint,
+            TokenExtension::ERC20TemporaryApproval,
+            TokenExtension::ERC20Bridgeable,
+            TokenExtension::ERC1363,
+            TokenExtension::ERC4626,
+        ];
+        
+        for extension in extensions {
+            let template = SolidityTemplate::new(
+                "TestToken".to_string(),
+                ContractType::MultiInheritance {
+                    base_type: Box::new(ContractType::ERC20),
+                    extensions: vec![extension.clone()],
+                },
+                "0.8.30".to_string(),
+                "MIT".to_string(),
+            );
+            
+            let contract = template.generate_contract();
+            assert!(contract.contains("TestToken"));
+            assert!(contract.contains("import"));
+        }
+    }
+
+    #[test]
+    fn test_contract_name_with_special_characters() {
+        let template = SolidityTemplate::new(
+            "My_Token_123".to_string(),
+            ContractType::Basic,
+            "0.8.30".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let contract = template.generate_contract();
+        assert!(contract.contains("contract My_Token_123"));
+    }
+
+    #[test]
+    fn test_different_pragma_versions() {
+        let template = SolidityTemplate::new(
+            "TestContract".to_string(),
+            ContractType::Basic,
+            "0.8.19".to_string(),
+            "MIT".to_string(),
+        );
+        
+        let contract = template.generate_contract();
+        assert!(contract.contains("pragma solidity ^0.8.19"));
+    }
+
+    #[test]
+    fn test_different_licenses() {
+        let licenses = vec!["MIT", "Apache-2.0", "GPL-3.0", "UNLICENSED"];
+        
+        for license in licenses {
+            let template = SolidityTemplate::new(
+                "TestContract".to_string(),
+                ContractType::Basic,
+                "0.8.30".to_string(),
+                license.to_string(),
+            );
+            
+            let contract = template.generate_contract();
+            assert!(contract.contains(&format!("// SPDX-License-Identifier: {}", license)));
+        }
+    }
+}

@@ -20,7 +20,7 @@ jobs:
         rust: [stable, nightly]
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -28,39 +28,39 @@ jobs:
           profile: minimal
           override: true
           components: rustfmt, clippy
-      
+
       - name: Cache cargo registry
         uses: actions/cache@v3
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-      
+
       - name: Cache cargo index
         uses: actions/cache@v3
         with:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
-      
+
       - name: Cache cargo build
         uses: actions/cache@v3
         with:
           path: target
           key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-      
+
       - name: Check formatting
         run: cargo fmt -- --check
         continue-on-error: ${{ matrix.rust == 'nightly' }}
-      
+
       - name: Run clippy
         run: cargo clippy --all-targets --all-features -- -D warnings
         continue-on-error: ${{ matrix.rust == 'nightly' }}
-      
+
       - name: Build
         run: cargo build --verbose --all
-      
+
       - name: Run tests
         run: cargo test --verbose --all
-      
+
       - name: Build release
         run: cargo build --release --all
 
@@ -69,29 +69,69 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           profile: minimal
           override: true
-      
+
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      
-      - name: Build nothung
+
+      - name: Build gramr
         run: cargo build --release --all
-      
+
       - name: Test contract generation
         run: |
           mkdir test-project && cd test-project
           forge init --force
-          ../target/release/nothung new contract TestToken --solidity --oz-erc20
+          ../target/release/gramr new contract TestToken --solidity --oz-erc20
           forge build
-      
+
       - name: Test wotan wizard (smoke test)
         run: |
           timeout 5 ../target/release/wotan --help || true
+
+  coverage:
+    name: Test Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install cargo-tarpaulin
+        run: cargo install cargo-tarpaulin
+
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-git-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Generate code coverage
+        run: |
+          cargo tarpaulin --config tarpaulin.toml --workspace --lib --out xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./cobertura.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false

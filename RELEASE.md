@@ -3,6 +3,7 @@
 ## Version Management
 
 We follow [Semantic Versioning](https://semver.org/):
+
 - **MAJOR.MINOR.PATCH** (e.g., 1.2.3)
 - All crates in workspace share the same version
 - Version bumps are automated via GitHub Actions
@@ -10,16 +11,19 @@ We follow [Semantic Versioning](https://semver.org/):
 ## Branch Strategy
 
 ### Protected Branches
+
 - **`main`** - Production ready code, protected
 - **`develop`** - Integration branch for features
 
 ### Feature Branches
+
 - **`feature/*`** - New features
 - **`fix/*`** - Bug fixes
 - **`docs/*`** - Documentation updates
 - **`release/*`** - Release preparation
 
 ### Workflow
+
 1. Create feature branch from `develop`
 2. Make changes and test locally
 3. Create PR to `develop`
@@ -31,14 +35,16 @@ We follow [Semantic Versioning](https://semver.org/):
 ## Release Process
 
 ### Automated via GitHub Actions
+
 1. Push tag `v*.*.*` to trigger release
 2. CI builds all targets
 3. Creates GitHub Release with binaries
-4. Publishes `nothung` crate to crates.io
+4. Publishes `gramr` crate to crates.io
 5. Updates installation script
 6. Deploys docs to GitHub Pages
 
 ### Manual Release Steps
+
 ```bash
 # 1. Update version in Cargo.toml
 # 2. Update CHANGELOG.md
@@ -54,16 +60,19 @@ git push origin v0.2.0
 ## Publishing Strategy
 
 ### Crates.io
-- Only `nothung` library crate is published
+
+- Only `gramr` library crate is published
 - CLI and other binaries distributed via GitHub Releases
 - Auto-published on version tags
 
 ### GitHub Releases
+
 - Pre-built binaries for all platforms
 - Installation script included
 - Release notes auto-generated from commits
 
 ### Installation Script
-- Hosted at `https://getnothung.pxlvre.dev`
+
+- Hosted at `https://getgramr.pxlvre.dev`
 - Auto-updated on new releases
 - Detects platform and downloads appropriate binary

@@ -2,7 +2,7 @@
 
 > The wise wizard that guides you through smart contract creation
 
-Wotan is the interactive wizard companion to Nothung that makes creating smart contracts as easy as answering a few questions. No need to memorize CLI flags or options - just follow the guided prompts!
+Wotan is the interactive wizard companion to Gramr that makes creating smart contracts as easy as answering a few questions. No need to memorize CLI flags or options - just follow the guided prompts!
 
 ## ✨ Features
 
@@ -15,22 +15,22 @@ Wotan is the interactive wizard companion to Nothung that makes creating smart c
 
 ## 📦 Installation
 
-### Via NothungUp (Recommended)
+### Via gramrup (Recommended)
 
 ```bash
 # Install everything including Wotan
-nothungup install
+gramrup install
 ```
 
 ### Manual Installation
 
 ```bash
 # Install Wotan directly
-cargo install --git https://github.com/pxlvre/nothung wotan
+cargo install --git https://github.com/pxlvre/gramr wotan
 
 # Or build from source
-git clone https://github.com/pxlvre/nothung
-cd nothung
+git clone https://github.com/pxlvre/gramr
+cd gramr
 cargo install --path wotan
 ```
 
@@ -42,8 +42,8 @@ cargo install --path wotan
 # Direct command
 wotan
 
-# Or via nothung CLI
-nothung wizard
+# Or via gramr CLI
+gramr wizard
 ```
 
 ### Non-Interactive Mode
@@ -93,10 +93,10 @@ wotan --non-interactive
 
 ## 🔗 Integration
 
-Wotan seamlessly integrates with the Nothung ecosystem:
+Wotan seamlessly integrates with the Gramr ecosystem:
 
 - Uses the same core library for generation
-- Supports all Nothung features through interactive prompts
+- Supports all Gramr features through interactive prompts
 - Generates the same high-quality contracts as CLI
 
 ## 📄 License
@@ -105,6 +105,6 @@ MIT OR Apache-2.0
 
 ## 📚 Related
 
-- **[Nothung](../README.md)** - The main project
-- **[Nothung CLI](../cli/README.md)** - Direct command-line interface
-- **[NothungUp](../nothungup/README.md)** - The installer utility
+- **[Gramr](../README.md)** - The main project
+- **[Gramr CLI](../cli/README.md)** - Direct command-line interface
+- **[gramrup](../gramrup/README.md)** - The installer utility

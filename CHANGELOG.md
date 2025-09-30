@@ -8,21 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial release of Nothung CLI tool
+
+- Initial release of Gramr CLI tool
 - Support for Solidity smart contract generation
 - Support for Rust/Stylus contract generation
 - OpenZeppelin templates for ERC20, ERC721, and ERC1155
 - Upgradeable contract patterns
 - Token extensions (burnable, pausable, votes, etc.)
 - Wotan interactive wizard for guided contract creation
-- Nothungup installer for easy setup
+- gramrup installer for easy setup
 - Interface and abstract contract generation
 - Test and deployment script generation
 - Automatic dependency management (OpenZeppelin installation)
 - Multi-platform support (Linux, macOS)
 
 ### Features
+
 - **Smart Contract Templates**
+
   - Basic contracts
   - ERC20, ERC721, ERC1155 tokens
   - Upgradeable patterns
@@ -30,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Extensive extension library
 
 - **Developer Experience**
+
   - Interactive wizard (Wotan)
   - Direct CLI commands
   - Automatic Foundry project detection
@@ -46,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 First public release.
 
 ### Installation
+
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
 ```

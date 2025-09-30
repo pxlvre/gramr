@@ -1,7 +1,7 @@
 use anyhow::Result;
 use colored::*;
-use inquire::{Select, Text, MultiSelect, Confirm, validator::Validation};
-use nothung::{Language, ContractType, TokenExtension};
+use gramr::{ContractType, Language, TokenExtension};
+use inquire::{validator::Validation, Confirm, MultiSelect, Select, Text};
 
 pub struct WizardState {
     pub resource_type: String,
@@ -40,7 +40,7 @@ impl ContractWizard {
 
     pub fn run(&self) -> Result<WizardState> {
         self.print_welcome();
-        
+
         let mut state = WizardState::new();
 
         // Step 1: Choose resource type
@@ -77,14 +77,22 @@ impl ContractWizard {
     }
 
     fn print_welcome(&self) {
-        println!("\n{}", "🧙‍♂️ Welcome to Wotan - The Nothung Smart Contract Wizard!".bold().cyan());
-        println!("{}", "⚔️  Let's forge your smart contract step by step...\n");
+        println!(
+            "\n{}",
+            "🧙‍♂️ Welcome to Wotan - The Gramr Smart Contract Wizard!"
+                .bold()
+                .cyan()
+        );
+        println!(
+            "{}",
+            "⚔️  Let's forge your smart contract step by step...\n"
+        );
     }
 
     fn choose_resource_type(&self) -> Result<String> {
         let options = vec![
             "contract - Smart contract with optional token standards",
-            "library - Reusable utility functions", 
+            "library - Reusable utility functions",
             "script - Deployment script (Solidity only)",
             "test - Test file (Solidity only)",
         ];
@@ -95,18 +103,21 @@ impl ContractWizard {
 
     fn get_name(&self, resource_type: &str) -> Result<String> {
         let prompt = format!("Enter the {} name:", resource_type);
-        let validator = |input: &str| -> Result<Validation, Box<dyn std::error::Error + Send + Sync>> {
-            if input.is_empty() {
-                return Ok(Validation::Invalid("Name cannot be empty".into()));
-            }
-            if !input.chars().next().unwrap().is_alphabetic() {
-                return Ok(Validation::Invalid("Name must start with a letter".into()));
-            }
-            if !input.chars().all(|c| c.is_alphanumeric() || c == '_') {
-                return Ok(Validation::Invalid("Name can only contain letters, numbers, and underscores".into()));
-            }
-            Ok(Validation::Valid)
-        };
+        let validator =
+            |input: &str| -> Result<Validation, Box<dyn std::error::Error + Send + Sync>> {
+                if input.is_empty() {
+                    return Ok(Validation::Invalid("Name cannot be empty".into()));
+                }
+                if !input.chars().next().unwrap().is_alphabetic() {
+                    return Ok(Validation::Invalid("Name must start with a letter".into()));
+                }
+                if !input.chars().all(|c| c.is_alphanumeric() || c == '_') {
+                    return Ok(Validation::Invalid(
+                        "Name can only contain letters, numbers, and underscores".into(),
+                    ));
+                }
+                Ok(Validation::Valid)
+            };
 
         Text::new(&prompt)
             .with_validator(validator)
@@ -122,11 +133,14 @@ impl ContractWizard {
         ];
 
         let answer = Select::new("Choose your language:", options).prompt()?;
-        
+
         if answer.starts_with("Solidity") {
             Ok(Language::Solidity)
         } else {
-            println!("\n{}", "ℹ️  Note: Rust/Stylus support is experimental with limited features".yellow());
+            println!(
+                "\n{}",
+                "ℹ️  Note: Rust/Stylus support is experimental with limited features".yellow()
+            );
             Ok(Language::RustStylus)
         }
     }
@@ -141,7 +155,7 @@ impl ContractWizard {
         ];
 
         let token_choice = Select::new("Choose token standard:", token_options).prompt()?;
-        
+
         let base_type = match token_choice.split(" - ").next().unwrap() {
             "Basic contract" => ContractType::Basic,
             "ERC20" => ContractType::ERC20,
@@ -157,7 +171,10 @@ impl ContractWizard {
                 .with_default(false)
                 .prompt()?;
         } else if state.language == Language::RustStylus && base_type != ContractType::Basic {
-            println!("{}", "ℹ️  Upgradeable contracts are not yet supported for Rust/Stylus".yellow());
+            println!(
+                "{}",
+                "ℹ️  Upgradeable contracts are not yet supported for Rust/Stylus".yellow()
+            );
         }
 
         // Set contract type
@@ -173,7 +190,10 @@ impl ContractWizard {
         if state.language == Language::Solidity && base_type != ContractType::Basic {
             self.choose_extensions(state, &base_type)?;
         } else if state.language == Language::RustStylus && base_type != ContractType::Basic {
-            println!("{}", "ℹ️  Token extensions are not yet supported for Rust/Stylus".yellow());
+            println!(
+                "{}",
+                "ℹ️  Token extensions are not yet supported for Rust/Stylus".yellow()
+            );
         }
 
         Ok(())
@@ -183,7 +203,7 @@ impl ContractWizard {
         let available_extensions = match base_type {
             ContractType::ERC20 => vec![
                 "burnable - Token burning capability",
-                "pausable - Emergency pause functionality", 
+                "pausable - Emergency pause functionality",
                 "permit - Gasless approvals (EIP-2612)",
                 "capped - Maximum supply limit",
                 "votes - On-chain voting & delegation",
@@ -194,7 +214,7 @@ impl ContractWizard {
                 "burnable - NFT burning capability",
                 "pausable - Emergency pause functionality",
                 "enumerable - Token enumeration",
-                "uristorage - Dynamic metadata URIs", 
+                "uristorage - Dynamic metadata URIs",
                 "royalty - ERC2981 royalty standard",
                 "votes - NFT-based voting",
             ],
@@ -216,8 +236,7 @@ impl ContractWizard {
             .prompt()?;
 
         if add_extensions {
-            let selected = MultiSelect::new("Select extensions:", available_extensions)
-                .prompt()?;
+            let selected = MultiSelect::new("Select extensions:", available_extensions).prompt()?;
 
             for extension in selected {
                 let ext_name = extension.split(" - ").next().unwrap();
@@ -232,7 +251,7 @@ impl ContractWizard {
 
     fn parse_extension(&self, name: &str, base_type: &ContractType) -> Result<TokenExtension> {
         use TokenExtension::*;
-        
+
         let extension = match (name, base_type) {
             ("burnable", ContractType::ERC20) => ERC20Burnable,
             ("pausable", ContractType::ERC20) => ERC20Pausable,
@@ -241,33 +260,38 @@ impl ContractWizard {
             ("votes", ContractType::ERC20) => ERC20Votes,
             ("wrapper", ContractType::ERC20) => ERC20Wrapper,
             ("flashmint", ContractType::ERC20) => ERC20FlashMint,
-            
+
             ("burnable", ContractType::ERC721) => ERC721Burnable,
             ("pausable", ContractType::ERC721) => ERC721Pausable,
             ("enumerable", ContractType::ERC721) => ERC721Enumerable,
             ("uristorage", ContractType::ERC721) => ERC721URIStorage,
             ("royalty", ContractType::ERC721) => ERC721Royalty,
             ("votes", ContractType::ERC721) => ERC721Votes,
-            
+
             ("burnable", ContractType::ERC1155) => ERC1155Burnable,
             ("pausable", ContractType::ERC1155) => ERC1155Pausable,
             ("supply", ContractType::ERC1155) => ERC1155Supply,
             ("uristorage", ContractType::ERC1155) => ERC1155URIStorage,
-            
+
             _ => return Err(anyhow::anyhow!("Unknown extension: {}", name)),
         };
-        
+
         Ok(extension)
     }
 
     fn configure_library(&self, _state: &mut WizardState) -> Result<()> {
-        println!("{}", "ℹ️  Libraries will contain basic utility functions and data structures");
+        println!(
+            "{}",
+            "ℹ️  Libraries will contain basic utility functions and data structures"
+        );
         Ok(())
     }
 
     fn configure_script_or_test(&self, state: &mut WizardState) -> Result<()> {
         if state.language == Language::RustStylus {
-            return Err(anyhow::anyhow!("Scripts and tests are only supported for Solidity projects"));
+            return Err(anyhow::anyhow!(
+                "Scripts and tests are only supported for Solidity projects"
+            ));
         }
         println!("{}", "ℹ️  Basic script/test file will be generated");
         Ok(())
@@ -280,7 +304,7 @@ impl ContractWizard {
                 .prompt()?;
 
             state.with_script = Confirm::new("Generate deployment script?")
-                .with_default(false) 
+                .with_default(false)
                 .prompt()?;
         } else if state.language == Language::RustStylus {
             println!("{}", "ℹ️  Test and script generation not supported for Rust/Stylus (use cargo test and stylus deploy)".yellow());
@@ -306,15 +330,16 @@ impl ContractWizard {
 
             let license_options = vec![
                 "UNLICENSED",
-                "MIT", 
+                "MIT",
                 "Apache-2.0",
                 "GPL-3.0",
                 "BSD-3-Clause",
                 "Custom...",
             ];
 
-            let license_choice = Select::new("SPDX License Identifier:", license_options).prompt()?;
-            
+            let license_choice =
+                Select::new("SPDX License Identifier:", license_options).prompt()?;
+
             if license_choice == "Custom..." {
                 state.license = Text::new("Enter custom license:")
                     .with_placeholder("e.g., GPL-2.0")
@@ -332,19 +357,19 @@ impl ContractWizard {
         println!("  {} {}", "Type:".bold(), state.resource_type);
         println!("  {} {}", "Name:".bold(), state.name);
         println!("  {} {:?}", "Language:".bold(), state.language);
-        
+
         if let Some(ref contract_type) = state.contract_type {
             println!("  {} {:?}", "Contract Type:".bold(), contract_type);
         }
-        
+
         if !state.extensions.is_empty() {
             println!("  {} {:?}", "Extensions:".bold(), state.extensions);
         }
-        
+
         if state.language == Language::Solidity {
             println!("  {} {}", "Pragma:".bold(), state.pragma);
             println!("  {} {}", "License:".bold(), state.license);
-            
+
             if state.with_test {
                 println!("  {} Yes", "Generate Test:".bold());
             }

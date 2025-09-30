@@ -4,10 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - 'book/**'
-      - '**.md'
-      - 'Cargo.toml'
-      - '.github/workflows/docs.yml'
+      - "book/**"
+      - "**.md"
+      - "Cargo.toml"
+      - ".github/workflows/docs.yml"
 
 permissions:
   contents: read
@@ -24,41 +24,41 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           profile: minimal
           override: true
-      
+
       - name: Install mdBook
         run: |
           cargo install mdbook --no-default-features --features search
-      
+
       - name: Build Rust docs
         run: |
           cargo doc --no-deps --all-features --workspace
-          echo '<meta http-equiv="refresh" content="0; url=nothung">' > target/doc/index.html
-      
+          echo '<meta http-equiv="refresh" content="0; url=gramr">' > target/doc/index.html
+
       - name: Build documentation
         run: |
           cd book
           mdbook build
           cd ..
-          
+
           # Copy Rust docs into the built documentation
           mkdir -p docs/api
           cp -r target/doc/* docs/api/
-      
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs
-      
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

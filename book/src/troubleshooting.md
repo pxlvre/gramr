@@ -1,24 +1,26 @@
 # Troubleshooting
 
-Common issues and solutions for Nothung users.
+Common issues and solutions for Gramr users.
 
 ## Installation Issues
 
 ### "Command not found" after installation
 
-**Problem:** After running the installer, `nothung`, `wotan`, or `nothungup` commands are not found.
+**Problem:** After running the installer, `gramr`, `wotan`, or `gramrup` commands are not found.
 
 **Solutions:**
 
 1. **Check PATH configuration:**
+
    ```bash
-   echo $PATH | grep nothung
+   echo $PATH | grep gramr
    ```
 
 2. **Add to PATH manually:**
+
    ```bash
    # Add to your shell profile
-   echo 'export PATH="$HOME/.nothung/bin:$PATH"' >> ~/.bashrc
+   echo 'export PATH="$HOME/.gramr/bin:$PATH"' >> ~/.bashrc
    source ~/.bashrc
    ```
 
@@ -26,7 +28,7 @@ Common issues and solutions for Nothung users.
 
 4. **Verify installation location:**
    ```bash
-   ls -la ~/.nothung/bin/
+   ls -la ~/.gramr/bin/
    ```
 
 ### Permission denied errors during installation
@@ -36,23 +38,25 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Don't use sudo** with the installer:
+
    ```bash
    # Wrong
    sudo curl ... | sh
-   
+
    # Correct
-   curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+   curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
    ```
 
 2. **Check directory permissions:**
+
    ```bash
-   ls -la ~/.nothung/
-   chown -R $USER:$USER ~/.nothung/
+   ls -la ~/.gramr/
+   chown -R $USER:$USER ~/.gramr/
    ```
 
 3. **Use custom install directory:**
    ```bash
-   NOTHUNG_INSTALL_DIR=$HOME/tools/nothung curl ... | sh
+   GRAMR_INSTALL_DIR=$HOME/tools/gramr curl ... | sh
    ```
 
 ### Download fails with SSL/TLS errors
@@ -62,10 +66,11 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Update certificates:**
+
    ```bash
    # Ubuntu/Debian
    sudo apt update && sudo apt install ca-certificates
-   
+
    # macOS
    brew install ca-certificates
    ```
@@ -75,7 +80,7 @@ Common issues and solutions for Nothung users.
 3. **Try alternative installation:**
    ```bash
    # Use cargo instead
-   cargo install --git https://github.com/pxlvre/nothung nothung-cli
+   cargo install --git https://github.com/pxlvre/gramr gramr-cli
    ```
 
 ## Dependency Issues
@@ -87,12 +92,14 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Install Foundry:**
+
    ```bash
    curl -L https://foundry.paradigm.xyz | bash
    foundryup
    ```
 
 2. **Add Foundry to PATH:**
+
    ```bash
    echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> ~/.bashrc
    source ~/.bashrc
@@ -112,12 +119,14 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Install Rust:**
+
    ```bash
    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
    source ~/.cargo/env
    ```
 
 2. **Update existing Rust:**
+
    ```bash
    rustup update
    ```
@@ -129,22 +138,25 @@ Common issues and solutions for Nothung users.
 
 ### OpenZeppelin contracts not installing
 
-**Problem:** `nothung` fails to install OpenZeppelin dependencies.
+**Problem:** `gramr` fails to install OpenZeppelin dependencies.
 
 **Solutions:**
 
 1. **Check Foundry is working:**
+
    ```bash
    forge install openzeppelin/openzeppelin-contracts
    ```
 
 2. **Check git configuration:**
+
    ```bash
    git config --global user.name "Your Name"
    git config --global user.email "your.email@example.com"
    ```
 
 3. **Manual installation:**
+
    ```bash
    forge install openzeppelin/openzeppelin-contracts
    ```
@@ -158,16 +170,18 @@ Common issues and solutions for Nothung users.
 
 ### "Project not detected" error
 
-**Problem:** Nothung can't detect the project type.
+**Problem:** Gramr can't detect the project type.
 
 **Solutions:**
 
 1. **Initialize Foundry project:**
+
    ```bash
    forge init --force
    ```
 
 2. **Check for foundry.toml:**
+
    ```bash
    ls -la foundry.toml
    ```
@@ -176,7 +190,7 @@ Common issues and solutions for Nothung users.
 
 4. **Force project type:**
    ```bash
-   NOTHUNG_PROJECT_DIR=$(pwd) nothung new contract MyToken --solidity --oz-erc20
+   GRAMR_PROJECT_DIR=$(pwd) gramr new contract MyToken --solidity --oz-erc20
    ```
 
 ### "Invalid contract name" error
@@ -191,12 +205,14 @@ Common issues and solutions for Nothung users.
 4. **Use alphanumeric + underscores only:** `My_Token_V2` is ok
 
 **Valid names:**
+
 - ✅ `MyToken`
 - ✅ `ERC20Token`
 - ✅ `MyToken_V2`
 - ✅ `AdvancedNFT`
 
 **Invalid names:**
+
 - ❌ `my-token` (contains hyphen)
 - ❌ `2Token` (starts with number)
 - ❌ `contract` (Solidity keyword)
@@ -217,12 +233,13 @@ Common issues and solutions for Nothung users.
    | `permit` | ✅ | ❌ | ❌ |
 
 2. **Use correct extensions for token type:**
+
    ```bash
    # Wrong
-   nothung new contract MyNFT --solidity --oz-erc721 --extensions permit
-   
+   gramr new contract MyNFT --solidity --oz-erc721 --extensions permit
+
    # Correct
-   nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable
+   gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable
    ```
 
 ### Compilation errors after generation
@@ -232,17 +249,20 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Check Foundry version:**
+
    ```bash
    foundryup  # Update to latest
    ```
 
 2. **Clean and rebuild:**
+
    ```bash
    forge clean
    forge build
    ```
 
 3. **Check Solidity version compatibility:**
+
    ```bash
    # In foundry.toml
    [profile.default]
@@ -263,12 +283,14 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Install nightly:**
+
    ```bash
    rustup install nightly
    rustup default nightly
    ```
 
 2. **Set nightly for project:**
+
    ```bash
    rustup override set nightly
    ```
@@ -285,11 +307,13 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Add WASM target:**
+
    ```bash
    rustup target add wasm32-unknown-unknown
    ```
 
 2. **Build with correct target:**
+
    ```bash
    cargo build --release --target wasm32-unknown-unknown
    ```
@@ -307,11 +331,13 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Update Cargo.lock:**
+
    ```bash
    cargo update
    ```
 
 2. **Clean and rebuild:**
+
    ```bash
    cargo clean
    cargo build
@@ -327,11 +353,12 @@ Common issues and solutions for Nothung users.
 
 ### Slow contract generation
 
-**Problem:** Nothung takes a long time to generate contracts.
+**Problem:** Gramr takes a long time to generate contracts.
 
 **Solutions:**
 
 1. **Check disk space:**
+
    ```bash
    df -h
    ```
@@ -352,6 +379,7 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Enable parallel compilation:**
+
    ```bash
    # In foundry.toml
    [profile.default]
@@ -360,6 +388,7 @@ Common issues and solutions for Nothung users.
    ```
 
 2. **Use faster linker:**
+
    ```bash
    # Linux only
    sudo apt install lld
@@ -380,16 +409,19 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Check connectivity:**
+
    ```bash
    curl -I https://github.com
    ```
 
 2. **Configure git for HTTPS:**
+
    ```bash
    git config --global url."https://github.com/".insteadOf git@github.com:
    ```
 
 3. **Use SSH instead:**
+
    ```bash
    git config --global url."git@github.com:".insteadOf https://github.com/
    ```
@@ -403,11 +435,13 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Update registry:**
+
    ```bash
    cargo update
    ```
 
 2. **Clear cargo cache:**
+
    ```bash
    rm -rf ~/.cargo/registry/cache/
    ```
@@ -428,17 +462,20 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Check Docker is running:**
+
    ```bash
    docker --version
    docker system info
    ```
 
 2. **Pull latest image:**
+
    ```bash
-   docker pull ghcr.io/pxlvre/nothung:latest
+   docker pull ghcr.io/pxlvre/gramr:latest
    ```
 
 3. **Check logs:**
+
    ```bash
    docker logs <container-id>
    ```
@@ -455,19 +492,21 @@ Common issues and solutions for Nothung users.
 **Solutions:**
 
 1. **Fix ownership after container use:**
+
    ```bash
    sudo chown -R $USER:$USER .
    ```
 
 2. **Run with user mapping:**
+
    ```bash
-   docker run --user $(id -u):$(id -g) -v $(pwd):/workspace ghcr.io/pxlvre/nothung:latest
+   docker run --user $(id -u):$(id -g) -v $(pwd):/workspace ghcr.io/pxlvre/gramr:latest
    ```
 
 3. **Use Docker Compose with user setting:**
    ```yaml
    services:
-     nothung:
+     gramr:
        user: "${UID}:${GID}"
    ```
 
@@ -476,7 +515,7 @@ Common issues and solutions for Nothung users.
 ### Enable verbose logging
 
 ```bash
-NOTHUNG_LOG_LEVEL=debug nothung new contract MyToken --solidity --oz-erc20
+GRAMR_LOG_LEVEL=debug gramr new contract MyToken --solidity --oz-erc20
 ```
 
 ### Check generated files
@@ -500,14 +539,14 @@ tree . -I "lib|cache|out"
 
 ```bash
 # Try simplest possible generation
-nothung new contract Test --solidity
+gramr new contract Test --solidity
 ```
 
 ## Getting Help
 
 If you can't resolve an issue:
 
-1. **Check existing issues:** [GitHub Issues](https://github.com/pxlvre/nothung/issues)
+1. **Check existing issues:** [GitHub Issues](https://github.com/pxlvre/gramr/issues)
 2. **Search documentation:** Use search in these docs
 3. **Create minimal reproduction:** Test with simplest case
 4. **Report bug:** Include version info and exact commands used
@@ -519,10 +558,10 @@ If you can't resolve an issue:
 uname -a
 rustc --version
 forge --version
-nothung --version
+gramr --version
 
 # Exact command that failed
-nothung new contract MyToken --solidity --oz-erc20
+gramr new contract MyToken --solidity --oz-erc20
 
 # Error output
 [paste full error here]
@@ -534,13 +573,13 @@ cat foundry.toml
 
 ## Common Error Codes
 
-| Exit Code | Meaning | Common Cause |
-|-----------|---------|--------------|
-| `0` | Success | - |
-| `1` | General error | Invalid arguments or configuration |
-| `2` | Invalid arguments | Wrong command syntax |
-| `3` | Project detection failed | Not in Foundry project or missing foundry.toml |
-| `4` | File generation failed | Permissions or disk space |
-| `5` | Dependency installation failed | Network or git issues |
+| Exit Code | Meaning                        | Common Cause                                   |
+| --------- | ------------------------------ | ---------------------------------------------- |
+| `0`       | Success                        | -                                              |
+| `1`       | General error                  | Invalid arguments or configuration             |
+| `2`       | Invalid arguments              | Wrong command syntax                           |
+| `3`       | Project detection failed       | Not in Foundry project or missing foundry.toml |
+| `4`       | File generation failed         | Permissions or disk space                      |
+| `5`       | Dependency installation failed | Network or git issues                          |
 
 Most issues are resolved by ensuring dependencies are properly installed and you're in a valid Foundry project directory.

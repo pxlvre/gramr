@@ -443,6 +443,42 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e629b9b98ef3dd8afe6ca2bd0f89306cec16d43d907889945bc5d6687f2f13c7"
 
 [[package]]
+name = "gramr"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "colored",
+ "fs_extra",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror",
+ "which",
+]
+
+[[package]]
+name = "gramr-cli"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "colored",
+ "gramr",
+]
+
+[[package]]
+name = "gramrup"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "colored",
+ "reqwest",
+ "tokio",
+ "which",
+]
+
+[[package]]
 name = "h2"
 version = "0.4.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -899,41 +935,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "47b6b097ecb1cbfed438542d16e84fd7ad9b0c76c8a65b7f9039212a3d14dc7f"
 dependencies = [
  "unicode-segmentation",
-]
-
-[[package]]
-name = "nothung"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "colored",
- "fs_extra",
- "serde",
- "serde_json",
- "thiserror",
- "which",
-]
-
-[[package]]
-name = "nothung-cli"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "colored",
- "nothung",
-]
-
-[[package]]
-name = "nothungup"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "colored",
- "reqwest",
- "tokio",
- "which",
 ]
 
 [[package]]
@@ -2124,8 +2125,8 @@ dependencies = [
  "anyhow",
  "clap",
  "colored",
+ "gramr",
  "inquire",
- "nothung",
  "serde",
  "serde_json",
 ]

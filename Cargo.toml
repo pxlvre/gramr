@@ -3,7 +3,7 @@ resolver = "2"
 members = [
     "lib",
     "cli", 
-    "nothungup",
+    "gramrup",
     "wotan"
 ]
 
@@ -12,7 +12,7 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Pol Vidal <pxlvre.eth>"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/pxlvre/nothung"
+repository = "https://github.com/pxlvre/gramr"
 
 [workspace.dependencies]
 # Common dependencies
@@ -27,3 +27,4 @@ which = "6.0"
 tokio = { version = "1.40", features = ["full"] }
 reqwest = { version = "0.12", features = ["blocking", "json"] }
 inquire = "0.7"
+tempfile = "3.8"

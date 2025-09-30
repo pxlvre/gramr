@@ -3,7 +3,10 @@ mod wizard;
 use anyhow::Result;
 use clap::{Arg, Command};
 use colored::*;
-use nothung::{ProjectType, GenericContractGenerator, LibraryGenerator, ScriptGenerator, TestGenerator, ContractType};
+use gramr::{
+    ContractType, GenericContractGenerator, LibraryGenerator, ProjectType, ScriptGenerator,
+    TestGenerator,
+};
 use wizard::{ContractWizard, WizardState};
 
 fn main() {
@@ -16,8 +19,8 @@ fn main() {
 fn run() -> Result<()> {
     let app = Command::new("wotan")
         .version(env!("CARGO_PKG_VERSION"))
-        .about("🧙‍♂️ Interactive wizard for generating smart contracts with Nothung")
-        .long_about("Wotan is the interactive wizard companion to Nothung that guides you through creating smart contracts, libraries, scripts, and tests step by step.")
+        .about("🧙‍♂️ Interactive wizard for generating smart contracts with Gramr")
+        .long_about("Wotan is the interactive wizard companion to Gramr that guides you through creating smart contracts, libraries, scripts, and tests step by step.")
         .arg(
             Arg::new("non-interactive")
                 .long("non-interactive")
@@ -27,7 +30,7 @@ fn run() -> Result<()> {
         );
 
     let matches = app.try_get_matches();
-    
+
     match matches {
         Ok(matches) => {
             if matches.get_flag("non-interactive") {
@@ -44,15 +47,18 @@ fn run() -> Result<()> {
     // Run the interactive wizard
     let wizard = ContractWizard::new();
     let state = wizard.run()?;
-    
+
     // Generate the files based on wizard choices
     generate_from_state(state)?;
-    
+
     Ok(())
 }
 
 fn print_non_interactive_help() {
-    println!("{}", "🧙‍♂️ Wotan - Interactive Smart Contract Wizard".bold().cyan());
+    println!(
+        "{}",
+        "🧙‍♂️ Wotan - Interactive Smart Contract Wizard".bold().cyan()
+    );
     println!();
     println!("{}", "USAGE:".bold());
     println!("    wotan                    # Start interactive wizard");
@@ -63,8 +69,14 @@ fn print_non_interactive_help() {
     println!("    scripts, and tests with an easy-to-use interactive interface.");
     println!();
     println!("{}", "SUPPORTED LANGUAGES:".bold());
-    println!("    • {} - Full support (contracts, libraries, scripts, tests)", "Solidity".green());
-    println!("    • {} - Experimental (contracts, libraries only)", "Rust/Stylus".yellow());
+    println!(
+        "    • {} - Full support (contracts, libraries, scripts, tests)",
+        "Solidity".green()
+    );
+    println!(
+        "    • {} - Experimental (contracts, libraries only)",
+        "Rust/Stylus".yellow()
+    );
     println!();
     println!("{}", "FEATURES:".bold());
     println!("    • Interactive prompts with validation");
@@ -73,26 +85,30 @@ fn print_non_interactive_help() {
     println!("    • Upgradeable contract support (Solidity)");
     println!("    • Automatic dependency management");
     println!();
-    println!("{}", "For non-interactive usage, use the nothung CLI directly:");
-    println!("    {}", "nothung new contract MyToken --solidity --oz-erc20");
+    println!(
+        "{}",
+        "For non-interactive usage, use the gramr CLI directly:"
+    );
+    println!("    {}", "gramr new contract MyToken --solidity --oz-erc20");
 }
 
 fn generate_from_state(state: WizardState) -> Result<()> {
     println!("\n{} Generating files...", "🔨".bold());
-    
+
     // Detect project
     let project = ProjectType::detect(&state.language)?;
-    
+
     match state.resource_type.as_str() {
         "contract" => {
             let contract_type = state.contract_type.unwrap_or(ContractType::Basic);
-            
+
             // Convert our extensions to strings for the generator
-            let _extension_strings: Vec<String> = state.extensions
+            let _extension_strings: Vec<String> = state
+                .extensions
                 .into_iter()
                 .map(|ext| extension_to_string(ext))
                 .collect();
-            
+
             let generator = GenericContractGenerator::new(
                 project,
                 state.language,
@@ -105,7 +121,7 @@ fn generate_from_state(state: WizardState) -> Result<()> {
             );
             generator.generate()?;
         }
-        
+
         "library" => {
             let generator = LibraryGenerator::new(
                 project,
@@ -116,48 +132,49 @@ fn generate_from_state(state: WizardState) -> Result<()> {
             );
             generator.generate()?;
         }
-        
-        "script" => {
-            match project {
-                ProjectType::Foundry(foundry_project) => {
-                    let generator = ScriptGenerator::new(
-                        foundry_project,
-                        state.name,
-                        state.pragma,
-                        state.license,
-                    );
-                    generator.generate()?;
-                }
-                _ => return Err(anyhow::anyhow!("Script generation is only supported for Foundry projects")),
+
+        "script" => match project {
+            ProjectType::Foundry(foundry_project) => {
+                let generator =
+                    ScriptGenerator::new(foundry_project, state.name, state.pragma, state.license);
+                generator.generate()?;
             }
-        }
-        
-        "test" => {
-            match project {
-                ProjectType::Foundry(foundry_project) => {
-                    let generator = TestGenerator::new(
-                        foundry_project,
-                        state.name,
-                        state.pragma,
-                        state.license,
-                    );
-                    generator.generate()?;
-                }
-                _ => return Err(anyhow::anyhow!("Test generation is only supported for Foundry projects")),
+            _ => {
+                return Err(anyhow::anyhow!(
+                    "Script generation is only supported for Foundry projects"
+                ))
             }
+        },
+
+        "test" => match project {
+            ProjectType::Foundry(foundry_project) => {
+                let generator =
+                    TestGenerator::new(foundry_project, state.name, state.pragma, state.license);
+                generator.generate()?;
+            }
+            _ => {
+                return Err(anyhow::anyhow!(
+                    "Test generation is only supported for Foundry projects"
+                ))
+            }
+        },
+
+        _ => {
+            return Err(anyhow::anyhow!(
+                "Unsupported resource type: {}",
+                state.resource_type
+            ))
         }
-        
-        _ => return Err(anyhow::anyhow!("Unsupported resource type: {}", state.resource_type)),
     }
-    
+
     println!("\n{} Generation complete! Happy coding! ⚔️", "🎉".bold());
-    
+
     Ok(())
 }
 
-fn extension_to_string(extension: nothung::TokenExtension) -> String {
-    use nothung::TokenExtension::*;
-    
+fn extension_to_string(extension: gramr::TokenExtension) -> String {
+    use gramr::TokenExtension::*;
+
     match extension {
         // ERC20
         ERC20Permit => "permit",
@@ -171,7 +188,7 @@ fn extension_to_string(extension: nothung::TokenExtension) -> String {
         ERC20Bridgeable => "bridgeable",
         ERC1363 => "erc1363",
         ERC4626 => "erc4626",
-        
+
         // ERC721
         ERC721Pausable => "pausable",
         ERC721Burnable => "burnable",
@@ -181,11 +198,12 @@ fn extension_to_string(extension: nothung::TokenExtension) -> String {
         ERC721Royalty => "royalty",
         ERC721Wrapper => "wrapper",
         ERC721Enumerable => "enumerable",
-        
+
         // ERC1155
         ERC1155Pausable => "pausable",
         ERC1155Burnable => "burnable",
         ERC1155Supply => "supply",
         ERC1155URIStorage => "uristorage",
-    }.to_string()
+    }
+    .to_string()
 }

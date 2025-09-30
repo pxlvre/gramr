@@ -3,7 +3,7 @@ name: Docker
 on:
   push:
     branches: [main, develop]
-    tags: ['v*.*.*']
+    tags: ["v*.*.*"]
   pull_request:
     branches: [main]
 
@@ -81,29 +81,29 @@ jobs:
 
       - name: Test docker-compose build
         run: |
-          docker-compose build nothung
-          
-      - name: Test Nothung in container
+          docker-compose build gramr
+
+      - name: Test Gramr in container
         run: |
           # Start the container
-          docker-compose up -d nothung
-          
+          docker-compose up -d gramr
+
           # Wait a moment for container to be ready
           sleep 5
-          
-          # Test nothung commands
-          docker-compose exec -T nothung nothung --version
-          docker-compose exec -T nothung wotan --help
-          
+
+          # Test gramr commands
+          docker-compose exec -T gramr gramr --version
+          docker-compose exec -T gramr wotan --help
+
           # Test contract generation
-          docker-compose exec -T nothung bash -c "
+          docker-compose exec -T gramr bash -c "
             cd /workspace &&
             forge init --force test-project &&
             cd test-project &&
-            nothung new contract TestToken --solidity --oz-erc20 &&
+            gramr new contract TestToken --solidity --oz-erc20 &&
             forge build
           "
-          
+
           # Clean up
           docker-compose down
 
@@ -116,11 +116,11 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: "sarif"
+          output: "trivy-results.sarif"
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"

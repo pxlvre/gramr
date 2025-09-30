@@ -3,7 +3,7 @@ authors = ["Pol Vidal <pxlvre.eth>"]
 language = "en"
 multilingual = false
 src = "src"
-title = "Nothung Documentation"
+title = "Gramr Documentation"
 description = "The legendary sword that forges smart contracts"
 
 [build]
@@ -15,10 +15,10 @@ default-theme = "light"
 preferred-dark-theme = "coal"
 copy-fonts = true
 no-section-label = false
-git-repository-url = "https://github.com/pxlvre/nothung"
+git-repository-url = "https://github.com/pxlvre/gramr"
 git-repository-icon = "fa-github"
-edit-url-template = "https://github.com/pxlvre/nothung/edit/main/book/src/{path}"
-site-url = "https://getnothung.pxlvre.dev/docs/"
+edit-url-template = "https://github.com/pxlvre/gramr/edit/main/book/src/{path}"
+site-url = "https://getgramr.pxlvre.dev/docs/"
 
 [output.html.playground]
 editable = false

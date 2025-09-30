@@ -10,20 +10,20 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create app directory
-WORKDIR /usr/src/nothung
+WORKDIR /usr/src/gramr
 
 # Copy manifests
 COPY Cargo.toml Cargo.lock ./
 COPY lib/Cargo.toml lib/
 COPY cli/Cargo.toml cli/
 COPY wotan/Cargo.toml wotan/
-COPY nothungup/Cargo.toml nothungup/
+COPY gramrup/Cargo.toml gramrup/
 
 # Copy source code
 COPY lib/src lib/src
 COPY cli/src cli/src
 COPY wotan/src wotan/src
-COPY nothungup/src nothungup/src
+COPY gramrup/src gramrup/src
 
 # Build for release
 RUN cargo build --release --all
@@ -43,9 +43,9 @@ RUN curl -L https://foundry.paradigm.xyz | bash && \
     /root/.foundry/bin/foundryup
 
 # Copy binaries from builder
-COPY --from=builder /usr/src/nothung/target/release/nothung /usr/local/bin/
-COPY --from=builder /usr/src/nothung/target/release/wotan /usr/local/bin/
-COPY --from=builder /usr/src/nothung/target/release/nothungup /usr/local/bin/
+COPY --from=builder /usr/src/gramr/target/release/gramr /usr/local/bin/
+COPY --from=builder /usr/src/gramr/target/release/wotan /usr/local/bin/
+COPY --from=builder /usr/src/gramr/target/release/gramrup /usr/local/bin/
 
 # Add foundry to PATH
 ENV PATH="/root/.foundry/bin:${PATH}"
@@ -54,9 +54,9 @@ ENV PATH="/root/.foundry/bin:${PATH}"
 WORKDIR /workspace
 
 # Verify installations
-RUN nothung --version && \
+RUN gramr --version && \
     wotan --help > /dev/null && \
     forge --version
 
 # Default command
-CMD ["nothung", "--help"]
+CMD ["gramr", "--help"]

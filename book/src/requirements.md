@@ -1,12 +1,13 @@
 # System Requirements
 
-This page outlines the system requirements and dependencies for using Nothung effectively.
+This page outlines the system requirements and dependencies for using Gramr effectively.
 
 ## Minimum Requirements
 
 ### Operating System
 
 **Supported Platforms:**
+
 - ✅ **Linux** - All major distributions (Ubuntu, Fedora, Arch, etc.)
 - ✅ **macOS** - Intel (x86_64) and Apple Silicon (ARM64)
 - ❌ **Windows** - Planned for v0.2.0 (use WSL2 for now)
@@ -14,6 +15,7 @@ This page outlines the system requirements and dependencies for using Nothung ef
 ### Core Dependencies
 
 #### Rust & Cargo
+
 **Required for all functionality**
 
 ```bash
@@ -25,7 +27,8 @@ rustc --version  # Should be 1.70+
 ```
 
 **Why needed:**
-- Nothung is built in Rust
+
+- Gramr is built in Rust
 - Required for building from source
 - Needed for Rust/Stylus contract generation
 
@@ -34,17 +37,20 @@ rustc --version  # Should be 1.70+
 ### Foundry (Highly Recommended)
 
 **Components:**
+
 - `forge` - Solidity compiler and test runner
-- `anvil` - Local blockchain for testing  
+- `anvil` - Local blockchain for testing
 - `cast` - Command-line tool for Ethereum interaction
 
 **Installation:**
+
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
 **Verification:**
+
 ```bash
 forge --version
 anvil --version
@@ -52,6 +58,7 @@ cast --version
 ```
 
 **Why needed:**
+
 - Primary target for Solidity contract generation
 - Automatic dependency management (OpenZeppelin installation)
 - Test compilation and execution
@@ -59,13 +66,14 @@ cast --version
 
 ### Alternative: Hardhat (Limited Support)
 
-While Nothung generates Foundry-compatible code, you can use generated contracts in Hardhat projects:
+While Gramr generates Foundry-compatible code, you can use generated contracts in Hardhat projects:
 
 ```bash
 npm install --save-dev hardhat @openzeppelin/contracts
 ```
 
 **Limitations:**
+
 - No automatic OpenZeppelin installation
 - Generated tests are Foundry-specific
 - Deployment scripts require adaptation
@@ -86,6 +94,7 @@ rustup override set nightly
 ```
 
 **Why nightly:**
+
 - OpenZeppelin Stylus contracts require nightly features
 - WASM compilation optimizations
 - Latest language features for smart contracts
@@ -105,6 +114,7 @@ cargo install cargo-stylus
 ```
 
 **Features:**
+
 - Deploy contracts to Arbitrum Stylus
 - Local testing and simulation
 - Contract interaction tools
@@ -112,6 +122,7 @@ cargo install cargo-stylus
 ## Development Tools (Optional)
 
 ### Version Control
+
 ```bash
 # Git (usually pre-installed)
 git --version
@@ -120,11 +131,13 @@ git --version
 ### Code Editors
 
 **VS Code (Recommended)**
+
 - Rust Analyzer extension
 - Solidity extensions
 - Foundry extensions
 
 **Other Options:**
+
 - Vim/Neovim with rust-analyzer
 - IntelliJ IDEA with Rust plugin
 - Emacs with rust-mode
@@ -132,6 +145,7 @@ git --version
 ### Container Runtime (Optional)
 
 **Docker (for containerized development)**
+
 ```bash
 # Docker Engine
 docker --version
@@ -161,19 +175,22 @@ docker-compose --version
 ### Required Connections
 
 **For Installation:**
+
 - `sh.rustup.rs` - Rust installation
 - `foundry.paradigm.xyz` - Foundry installation
-- `getnothung.pxlvre.dev` - Nothung installer
+- `getgramr.pxlvre.dev` - Gramr installer
 - `github.com` - Source code and releases
 - `crates.io` - Rust dependencies
 
 **For Development:**
+
 - `github.com` - OpenZeppelin contract downloads
 - `registry.npmjs.org` - Node.js dependencies (if using Hardhat)
 
 ### Firewall Considerations
 
 Ensure outbound HTTPS (443) access to:
+
 - GitHub (github.com)
 - Rust registry (crates.io)
 - NPM registry (registry.npmjs.org)
@@ -184,6 +201,7 @@ Ensure outbound HTTPS (443) access to:
 ### Linux
 
 **Debian/Ubuntu:**
+
 ```bash
 # Required packages for compilation
 sudo apt update
@@ -194,6 +212,7 @@ sudo apt install pkg-config libssl-dev
 ```
 
 **Fedora/RHEL:**
+
 ```bash
 # Development tools
 sudo dnf groupinstall "Development Tools"
@@ -201,6 +220,7 @@ sudo dnf install curl git openssl-devel
 ```
 
 **Arch Linux:**
+
 ```bash
 # Base development packages
 sudo pacman -S base-devel curl git openssl
@@ -209,11 +229,13 @@ sudo pacman -S base-devel curl git openssl
 ### macOS
 
 **Xcode Command Line Tools:**
+
 ```bash
 xcode-select --install
 ```
 
 **Homebrew (recommended for additional tools):**
+
 ```bash
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -223,7 +245,8 @@ brew install git
 ```
 
 **Apple Silicon Notes:**
-- All Nothung binaries support ARM64
+
+- All Gramr binaries support ARM64
 - Foundry supports Apple Silicon natively
 - Rust compilation is optimized for M1/M2/M3
 
@@ -247,7 +270,7 @@ Use this script to check all requirements:
 
 ```bash
 #!/bin/bash
-echo "🔍 Checking Nothung requirements..."
+echo "🔍 Checking Gramr requirements..."
 
 # Check Rust
 if command -v rustc &> /dev/null; then
@@ -294,6 +317,7 @@ echo "🎯 Requirements check complete!"
 ```
 
 Save as `check-requirements.sh` and run:
+
 ```bash
 chmod +x check-requirements.sh
 ./check-requirements.sh
@@ -304,18 +328,22 @@ chmod +x check-requirements.sh
 ### Common Issues
 
 **"rustc: command not found"**
+
 - Install Rust via rustup: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 - Restart terminal or run: `source ~/.cargo/env`
 
 **"forge: command not found"**
+
 - Install Foundry: `curl -L https://foundry.paradigm.xyz | bash && foundryup`
 - Check PATH includes `~/.foundry/bin`
 
 **Compilation errors with Stylus**
+
 - Ensure using Rust nightly: `rustup default nightly`
 - Add WASM target: `rustup target add wasm32-unknown-unknown`
 
 **Permission denied errors**
+
 - Check file permissions for installation directories
 - Use package managers (apt, brew) for system dependencies
 - Avoid using `sudo` with Rust/Cargo commands
@@ -323,6 +351,7 @@ chmod +x check-requirements.sh
 ### Performance Optimization
 
 **Faster Rust Compilation:**
+
 ```bash
 # Use more CPU cores
 export CARGO_BUILD_JOBS=8
@@ -336,6 +365,7 @@ export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
 ```
 
 **SSD Storage:**
+
 - Install dependencies on SSD storage
 - Use SSD for Cargo cache (`~/.cargo`)
 - Place project files on SSD
@@ -343,30 +373,33 @@ export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
 ## Upgrading Dependencies
 
 ### Keep Rust Updated
+
 ```bash
 rustup update stable
 rustup update nightly
 ```
 
 ### Keep Foundry Updated
+
 ```bash
 foundryup
 ```
 
-### Keep Nothung Updated
+### Keep Gramr Updated
+
 ```bash
 # Using installer
-curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
 
-# Using nothungup
-nothungup update
+# Using gramrup
+gramrup update
 ```
 
 ## Next Steps
 
 Once you have the requirements installed:
 
-1. **Install Nothung** - Follow the [Installation Guide](./installation.md)
+1. **Install Gramr** - Follow the [Installation Guide](./installation.md)
 2. **Test Installation** - Try the [Quick Start](./quick-start.md)
 3. **Explore Features** - Read about [CLI Reference](./cli-reference.md)
 4. **Get Help** - Check [Troubleshooting](./troubleshooting.md) if needed

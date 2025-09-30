@@ -1,4 +1,4 @@
-use crate::error::{NothungError, Result};
+use crate::error::{GramrError, Result};
 use crate::language::Language;
 use crate::project::{Project, ProjectType};
 use crate::templates::{Template, SolidityTemplate, StylusTemplate, ContractType};
@@ -61,17 +61,17 @@ impl LibraryGenerator {
 
     fn validate_name(&self) -> Result<()> {
         if self.library_name.is_empty() {
-            return Err(NothungError::Other("Library name cannot be empty".to_string()));
+            return Err(GramrError::Other("Library name cannot be empty".to_string()));
         }
 
         if !self.library_name.chars().next().unwrap().is_alphabetic() {
-            return Err(NothungError::Other(
+            return Err(GramrError::Other(
                 "Library name must start with a letter".to_string()
             ));
         }
 
         if !self.library_name.chars().all(|c| c.is_alphanumeric() || c == '_') {
-            return Err(NothungError::Other(
+            return Err(GramrError::Other(
                 "Library name can only contain letters, numbers, and underscores".to_string()
             ));
         }
@@ -86,7 +86,7 @@ impl LibraryGenerator {
         };
 
         fs::create_dir_all(&libraries_dir)
-            .map_err(|e| NothungError::Other(format!("Failed to create libraries directory: {}", e)))?;
+            .map_err(|e| GramrError::Other(format!("Failed to create libraries directory: {}", e)))?;
         
         Ok(())
     }
@@ -109,7 +109,7 @@ impl LibraryGenerator {
         };
         
         fs::write(&file_path, content)
-            .map_err(|e| NothungError::Other(format!("Failed to write library file: {}", e)))?;
+            .map_err(|e| GramrError::Other(format!("Failed to write library file: {}", e)))?;
         
         println!("{} Created library: {}", "✓".green(), relative_path);
         Ok(())

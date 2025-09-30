@@ -1,14 +1,14 @@
 #!/bin/sh
-# Nothung installer script
-# Usage: curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+# Gramr installer script
+# Usage: curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh
 
 set -e
 
 # Configuration
-NOTHUNG_VERSION="${NOTHUNG_VERSION:-latest}"
-INSTALL_DIR="${NOTHUNG_INSTALL_DIR:-$HOME/.nothung}"
+GRAMR_VERSION="${GRAMR_VERSION:-latest}"
+INSTALL_DIR="${GRAMR_INSTALL_DIR:-$HOME/.gramr}"
 BIN_DIR="$INSTALL_DIR/bin"
-REPO_URL="https://github.com/pxlvre/nothung"
+REPO_URL="https://github.com/pxlvre/gramr"
 
 # Colors for output
 RED='\033[0;31m'
@@ -77,34 +77,34 @@ check_requirements() {
 
 # Get the latest version from GitHub
 get_latest_version() {
-    if [ "$NOTHUNG_VERSION" = "latest" ]; then
+    if [ "$GRAMR_VERSION" = "latest" ]; then
         info "Fetching latest version..."
         if [ "$DOWNLOADER" = "curl" ]; then
-            NOTHUNG_VERSION=$(curl -sL "$REPO_URL/releases/latest" | grep -o 'tag/[v.0-9]*' | head -1 | cut -d/ -f2)
+            GRAMR_VERSION=$(curl -sL "$REPO_URL/releases/latest" | grep -o 'tag/[v.0-9]*' | head -1 | cut -d/ -f2)
         else
-            NOTHUNG_VERSION=$(wget -qO- "$REPO_URL/releases/latest" | grep -o 'tag/[v.0-9]*' | head -1 | cut -d/ -f2)
+            GRAMR_VERSION=$(wget -qO- "$REPO_URL/releases/latest" | grep -o 'tag/[v.0-9]*' | head -1 | cut -d/ -f2)
         fi
         
-        if [ -z "$NOTHUNG_VERSION" ]; then
+        if [ -z "$GRAMR_VERSION" ]; then
             err "Failed to fetch latest version"
         fi
     fi
     
-    info "Installing Nothung $NOTHUNG_VERSION"
+    info "Installing Gramr $GRAMR_VERSION"
 }
 
 # Download and install binaries
-install_nothung() {
-    DOWNLOAD_URL="$REPO_URL/releases/download/$NOTHUNG_VERSION/nothung-$PLATFORM.tar.gz"
+install_gramr() {
+    DOWNLOAD_URL="$REPO_URL/releases/download/$GRAMR_VERSION/gramr-$PLATFORM.tar.gz"
     TMP_DIR="$(mktemp -d)"
     
     info "Downloading from $DOWNLOAD_URL"
     
     # Download the archive
     if [ "$DOWNLOADER" = "curl" ]; then
-        curl -SfL "$DOWNLOAD_URL" -o "$TMP_DIR/nothung.tar.gz" || err "Failed to download Nothung"
+        curl -SfL "$DOWNLOAD_URL" -o "$TMP_DIR/gramr.tar.gz" || err "Failed to download Gramr"
     else
-        wget -q "$DOWNLOAD_URL" -O "$TMP_DIR/nothung.tar.gz" || err "Failed to download Nothung"
+        wget -q "$DOWNLOAD_URL" -O "$TMP_DIR/gramr.tar.gz" || err "Failed to download Gramr"
     fi
     
     # Create installation directory
@@ -112,10 +112,10 @@ install_nothung() {
     
     # Extract binaries
     info "Extracting binaries to $BIN_DIR"
-    tar -xzf "$TMP_DIR/nothung.tar.gz" -C "$TMP_DIR"
+    tar -xzf "$TMP_DIR/gramr.tar.gz" -C "$TMP_DIR"
     
     # Move binaries to installation directory
-    for binary in nothung wotan nothungup; do
+    for binary in gramr wotan gramrup; do
         if [ -f "$TMP_DIR/$binary" ]; then
             mv "$TMP_DIR/$binary" "$BIN_DIR/"
             chmod +x "$BIN_DIR/$binary"
@@ -154,7 +154,7 @@ check_path() {
             esac
             
             echo ""
-            echo "To add Nothung to your PATH, run:"
+            echo "To add Gramr to your PATH, run:"
             echo ""
             echo "    echo 'export PATH=\"$BIN_DIR:\$PATH\"' >> $PROFILE"
             echo "    source $PROFILE"
@@ -166,24 +166,24 @@ check_path() {
 # Main installation flow
 main() {
     echo ""
-    echo "⚔️  Nothung Installer"
+    echo "⚔️  Gramr Installer"
     echo "===================="
     echo ""
     
     detect_platform
     check_requirements
     get_latest_version
-    install_nothung
+    install_gramr
     check_path
     
     echo ""
     info "Installation complete!"
     echo ""
     echo "Get started with:"
-    echo "    nothung --help    # CLI usage"
+    echo "    gramr --help    # CLI usage"
     echo "    wotan            # Interactive wizard"
     echo ""
-    echo "Documentation: https://getnothung.pxlvre.dev/docs"
+    echo "Documentation: https://getgramr.pxlvre.dev/docs"
     echo ""
 }
 

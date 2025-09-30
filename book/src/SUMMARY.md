@@ -45,6 +45,6 @@
 
 # External Links
 
-- [GitHub Repository](https://github.com/pxlvre/nothung)
-- [Rust API Documentation](https://docs.rs/nothung)
-- [Release Notes](https://github.com/pxlvre/nothung/releases)
+- [GitHub Repository](https://github.com/pxlvre/gramr)
+- [Rust API Documentation](https://docs.rs/gramr)
+- [Release Notes](https://github.com/pxlvre/gramr/releases)

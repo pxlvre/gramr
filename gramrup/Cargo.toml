@@ -1,16 +1,16 @@
 [package]
-name = "nothungup"
+name = "gramrup"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "⚔️ Installer for the Nothung smart contract scaffolding tool"
+description = "⚔️ Installer for the Gramr smart contract scaffolding tool"
 keywords = ["installer", "smart-contracts", "solidity", "foundry"]
 categories = ["command-line-utilities", "development-tools::build-utils"]
 
 [[bin]]
-name = "nothungup"
+name = "gramrup"
 path = "src/main.rs"
 
 [dependencies]

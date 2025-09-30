@@ -1,6 +1,6 @@
 # 🧙‍♂️ Wotan Interactive Wizard
 
-Wotan is Nothung's interactive wizard that guides you through smart contract creation step-by-step. Perfect for beginners and faster for experienced developers who want to explore options.
+Wotan is Gramr's interactive wizard that guides you through smart contract creation step-by-step. Perfect for beginners and faster for experienced developers who want to explore options.
 
 ## Starting the Wizard
 
@@ -8,8 +8,8 @@ Wotan is Nothung's interactive wizard that guides you through smart contract cre
 # Direct command
 wotan
 
-# Or via nothung CLI
-nothung wizard
+# Or via gramr CLI
+gramr wizard
 ```
 
 ## Wizard Flow
@@ -19,13 +19,13 @@ nothung wizard
 The wizard starts by asking what you want to create:
 
 ```
-🧙‍♂️ Welcome to Wotan - The Nothung Smart Contract Wizard!
+🧙‍♂️ Welcome to Wotan - The Gramr Smart Contract Wizard!
 ⚔️  Let's forge your smart contract step by step...
 
 ? What type of resource would you like to create?
 ❯ Contract    - Smart contract with optional extensions
   Library     - Reusable utility functions
-  Script      - Deployment or interaction script  
+  Script      - Deployment or interaction script
   Test        - Test file for existing contract
 ```
 
@@ -41,13 +41,13 @@ Choose your target platform:
 
 **Language Features:**
 
-| Feature | Solidity | Rust/Stylus |
-|---------|----------|--------------|
-| Basic Contracts | ✅ | ✅ |
-| Extensions | ✅ | ❌ |
-| Upgradeable | ✅ | ❌ |
-| Tests | ✅ | ❌ |
-| Scripts | ✅ | ❌ |
+| Feature         | Solidity | Rust/Stylus |
+| --------------- | -------- | ----------- |
+| Basic Contracts | ✅       | ✅          |
+| Extensions      | ✅       | ❌          |
+| Upgradeable     | ✅       | ❌          |
+| Tests           | ✅       | ❌          |
+| Scripts         | ✅       | ❌          |
 
 ### 3. Contract Type Selection (for Contracts)
 
@@ -68,7 +68,7 @@ For token contracts, select extensions:
 ```
 ? Select extensions for your ERC20 token: (Press <space> to select)
 ❯ ◯ burnable           - Allow token burning
-  ◯ pausable           - Emergency pause functionality  
+  ◯ pausable           - Emergency pause functionality
   ◯ mintable           - Additional minting capability
   ◯ capped             - Maximum supply limit
   ◯ permit             - Gasless approvals
@@ -152,7 +152,7 @@ The wizard prevents invalid combinations:
 Smart extension filtering based on token type:
 
 - **ERC20**: Shows ERC20-specific extensions (permit, votes, flashmint, etc.)
-- **ERC721**: Shows NFT extensions (enumerable, royalty, uristorage, etc.)  
+- **ERC721**: Shows NFT extensions (enumerable, royalty, uristorage, etc.)
 - **ERC1155**: Shows multi-token extensions (supply, uristorage, etc.)
 
 ## Advanced Usage
@@ -194,35 +194,39 @@ wotan --load-config my-token-config.toml
 
 ## Wizard Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `↑/↓` | Navigate options |
-| `Space` | Select/deselect (multi-select) |
-| `Enter` | Confirm selection |
-| `Ctrl+C` | Exit wizard |
-| `?` | Show help (context-dependent) |
+| Key      | Action                         |
+| -------- | ------------------------------ |
+| `↑/↓`    | Navigate options               |
+| `Space`  | Select/deselect (multi-select) |
+| `Enter`  | Confirm selection              |
+| `Ctrl+C` | Exit wizard                    |
+| `?`      | Show help (context-dependent)  |
 
 ## Integration with Development Workflow
 
 ### 1. Project Setup
+
 ```bash
 mkdir my-project && cd my-project
 forge init --force
 ```
 
 ### 2. Run Wizard
+
 ```bash
 wotan
 # Follow prompts to create your contract
 ```
 
 ### 3. Verify Generation
+
 ```bash
 forge build
 forge test
 ```
 
 ### 4. Customize as Needed
+
 Edit the generated files to add your specific business logic.
 
 ## Troubleshooting
@@ -230,14 +234,17 @@ Edit the generated files to add your specific business logic.
 ### Common Issues
 
 **"Project not detected"**
+
 - Make sure you're in a Foundry project directory
 - Run `forge init` if needed
 
 **"Foundry not found"**
+
 - Install Foundry: `curl -L https://foundry.paradigm.xyz | bash && foundryup`
 - Ensure `forge` is in your PATH
 
 **"Invalid contract name"**
+
 - Contract names must start with a letter
 - Use only letters, numbers, and underscores
 - Avoid Solidity reserved keywords
@@ -247,30 +254,30 @@ Edit the generated files to add your specific business logic.
 If you encounter issues:
 
 1. **Check Requirements** - Ensure Rust and Foundry are installed
-2. **Update Nothung** - Run the installer again to get the latest version
-3. **File Issues** - Report bugs on [GitHub Issues](https://github.com/pxlvre/nothung/issues)
+2. **Update Gramr** - Run the installer again to get the latest version
+3. **File Issues** - Report bugs on [GitHub Issues](https://github.com/pxlvre/gramr/issues)
 
 ## Comparison: Wizard vs CLI
 
-| Aspect | Wotan Wizard | Direct CLI |
-|--------|--------------|------------|
-| **Speed** | Slower (guided) | Faster (direct) |
-| **Discovery** | Excellent | Requires knowledge |
-| **Beginners** | Perfect | Challenging |
-| **Automation** | Manual | Scriptable |
-| **Exploration** | Great for trying options | Need to know options |
-| **Complex Configs** | Step-by-step guidance | Single command |
+| Aspect              | Wotan Wizard             | Direct CLI           |
+| ------------------- | ------------------------ | -------------------- |
+| **Speed**           | Slower (guided)          | Faster (direct)      |
+| **Discovery**       | Excellent                | Requires knowledge   |
+| **Beginners**       | Perfect                  | Challenging          |
+| **Automation**      | Manual                   | Scriptable           |
+| **Exploration**     | Great for trying options | Need to know options |
+| **Complex Configs** | Step-by-step guidance    | Single command       |
 
 ## Next Steps
 
 After using Wotan:
 
 1. **Examine Generated Code** - Understand OpenZeppelin patterns
-2. **Try Different Extensions** - Explore various token capabilities  
+2. **Try Different Extensions** - Explore various token capabilities
 3. **Learn CLI** - Graduate to direct CLI usage for speed
 4. **Customize Contracts** - Add your business logic to generated templates
 5. **Deploy and Test** - Use generated deployment scripts
 
-The wizard is designed to be your learning companion and rapid prototyping tool. As you become more familiar with Nothung, you might find yourself using the direct CLI more often, but Wotan remains invaluable for exploring new extensions and teaching others.
+The wizard is designed to be your learning companion and rapid prototyping tool. As you become more familiar with Gramr, you might find yourself using the direct CLI more often, but Wotan remains invaluable for exploring new extensions and teaching others.
 
 Happy wizarding! 🧙‍♂️✨

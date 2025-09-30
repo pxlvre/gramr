@@ -1,4 +1,6 @@
-use crate::{Result, NothungError, ProjectType, Language, templates::SolidityTemplate, project::Project};
+use crate::{
+    project::Project, templates::SolidityTemplate, GramrError, Language, ProjectType, Result,
+};
 
 /// Abstract contract generator for creating empty abstract contracts
 pub struct AbstractContractGenerator {
@@ -52,22 +54,23 @@ impl AbstractContractGenerator {
             ProjectType::Foundry(foundry) => {
                 let abstracts_dir = foundry.src_dir().join("abstracts");
                 std::fs::create_dir_all(&abstracts_dir)?;
-                
+
                 let file_path = abstracts_dir.join(format!("{}.sol", self.name));
                 std::fs::write(file_path, content)?;
-                
+
                 println!("✅ Abstract contract {} created successfully!", self.name);
                 Ok(())
             }
-            ProjectType::Cargo(_) => Err(NothungError::Other(
-                "Abstract contract generation for Rust/Stylus projects is not yet supported".to_string()
-            ))
+            ProjectType::Cargo(_) => Err(GramrError::Other(
+                "Abstract contract generation for Rust/Stylus projects is not yet supported"
+                    .to_string(),
+            )),
         }
     }
 
     fn generate_rust_abstract(&self) -> Result<()> {
         // For now, return an error since Rust/Stylus abstract contracts might work differently
-        Err(NothungError::Other(
+        Err(GramrError::Other(
             "Abstract contract generation for Rust/Stylus projects is not yet supported. Use traits for similar patterns.".to_string()
         ))
     }

@@ -1,16 +1,19 @@
 # CLI Reference
 
-Complete reference for the Nothung command-line interface.
+Complete reference for the Gramr command-line interface.
 
 ## Global Commands
 
-### `nothung --help`
+### `gramr --help`
+
 Display help information for all commands.
 
-### `nothung --version`  
+### `gramr --version`
+
 Display version information.
 
-### `nothung wizard`
+### `gramr wizard`
+
 Launch the Wotan interactive wizard.
 
 ## Main Command: `new`
@@ -18,40 +21,45 @@ Launch the Wotan interactive wizard.
 Create new smart contract resources.
 
 ```bash
-nothung new <TYPE> <NAME> [OPTIONS]
+gramr new <TYPE> <NAME> [OPTIONS]
 ```
 
 ### Resource Types
 
-| Type | Description | Example |
-|------|-------------|---------|
-| `contract` | Smart contract | `nothung new contract MyToken` |
-| `library` | Reusable library | `nothung new library MathUtils` |
-| `interface` | Contract interface | `nothung new interface IMyToken` |
-| `abstract` | Abstract contract | `nothung new abstract BaseToken` |
-| `test` | Test file | `nothung new test TokenTest` |
-| `script` | Deployment script | `nothung new script DeployToken` |
+| Type        | Description        | Example                        |
+| ----------- | ------------------ | ------------------------------ |
+| `contract`  | Smart contract     | `gramr new contract MyToken`   |
+| `library`   | Reusable library   | `gramr new library MathUtils`  |
+| `interface` | Contract interface | `gramr new interface IMyToken` |
+| `abstract`  | Abstract contract  | `gramr new abstract BaseToken` |
+| `test`      | Test file          | `gramr new test TokenTest`     |
+| `script`    | Deployment script  | `gramr new script DeployToken` |
 
 ## Language Options
 
 ### `--solidity`
+
 Generate Solidity code for Foundry projects.
 
 **Supports:**
+
 - All token standards and extensions
 - Upgradeable patterns
 - Test and script generation
 - Complete OpenZeppelin integration
 
 ### `--rust-stylus`
+
 Generate Rust code for Arbitrum Stylus projects.
 
 **Supports:**
+
 - Basic ERC20, ERC721, ERC1155 contracts
 - Library generation
 - OpenZeppelin Stylus integration
 
 **Limitations:**
+
 - No extensions support yet
 - No upgradeable patterns
 - No test/script generation
@@ -59,13 +67,15 @@ Generate Rust code for Arbitrum Stylus projects.
 ## Token Standards
 
 ### `--oz-erc20`
+
 Generate OpenZeppelin ERC20 token contract.
 
 ```bash
-nothung new contract MyToken --solidity --oz-erc20
+gramr new contract MyToken --solidity --oz-erc20
 ```
 
 **Available Extensions:**
+
 - `burnable` - Token burning capability
 - `pausable` - Emergency pause functionality
 - `capped` - Maximum supply limit
@@ -79,13 +89,15 @@ nothung new contract MyToken --solidity --oz-erc20
 - `erc4626` - Tokenized vault standard
 
 ### `--oz-erc721`
+
 Generate OpenZeppelin ERC721 NFT contract.
 
 ```bash
-nothung new contract MyNFT --solidity --oz-erc721
+gramr new contract MyNFT --solidity --oz-erc721
 ```
 
 **Available Extensions:**
+
 - `enumerable` - Token enumeration and totalSupply
 - `burnable` - NFT burning capability
 - `pausable` - Emergency pause functionality
@@ -96,13 +108,15 @@ nothung new contract MyNFT --solidity --oz-erc721
 - `wrapper` - Wrap other NFTs
 
 ### `--oz-erc1155`
+
 Generate OpenZeppelin ERC1155 multi-token contract.
 
 ```bash
-nothung new contract GameAssets --solidity --oz-erc1155
+gramr new contract GameAssets --solidity --oz-erc1155
 ```
 
 **Available Extensions:**
+
 - `burnable` - Multi-token burning
 - `pausable` - Emergency pause functionality
 - `supply` - Track token supplies
@@ -111,95 +125,107 @@ nothung new contract GameAssets --solidity --oz-erc1155
 ## Upgrade Patterns
 
 ### `--oz-upgradeable`
+
 Use OpenZeppelin upgradeable contract patterns.
 
 ```bash
-nothung new contract MyToken --solidity --oz-erc20 --oz-upgradeable
+gramr new contract MyToken --solidity --oz-erc20 --oz-upgradeable
 ```
 
 **Features:**
+
 - Proxy-based upgradeability
 - Storage layout protection
 - Initializer patterns
 - Gap variables for future upgrades
 
 **Compatibility:**
+
 - ✅ Solidity contracts
 - ❌ Rust/Stylus (not yet supported)
 
 ## Extension Configuration
 
 ### `--extensions <LIST>`
+
 Add comma-separated extensions to token contracts.
 
 ```bash
 # Single extension
-nothung new contract MyToken --solidity --oz-erc20 --extensions burnable
+gramr new contract MyToken --solidity --oz-erc20 --extensions burnable
 
 # Multiple extensions
-nothung new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable,royalty
+gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable,royalty
 
 # All compatible extensions
-nothung new contract AdvancedToken --solidity --oz-erc20 --extensions burnable,pausable,permit,votes,capped
+gramr new contract AdvancedToken --solidity --oz-erc20 --extensions burnable,pausable,permit,votes,capped
 ```
 
 **Extension Compatibility:**
 
-| Extension | ERC20 | ERC721 | ERC1155 |
-|-----------|-------|--------|---------|
-| `burnable` | ✅ | ✅ | ✅ |
-| `pausable` | ✅ | ✅ | ✅ |
-| `enumerable` | ❌ | ✅ | ❌ |
-| `uristorage` | ❌ | ✅ | ✅ |
-| `supply` | ❌ | ❌ | ✅ |
-| `votes` | ✅ | ✅ | ❌ |
-| `permit` | ✅ | ❌ | ❌ |
-| `royalty` | ❌ | ✅ | ❌ |
+| Extension    | ERC20 | ERC721 | ERC1155 |
+| ------------ | ----- | ------ | ------- |
+| `burnable`   | ✅    | ✅     | ✅      |
+| `pausable`   | ✅    | ✅     | ✅      |
+| `enumerable` | ❌    | ✅     | ❌      |
+| `uristorage` | ❌    | ✅     | ✅      |
+| `supply`     | ❌    | ❌     | ✅      |
+| `votes`      | ✅    | ✅     | ❌      |
+| `permit`     | ✅    | ❌     | ❌      |
+| `royalty`    | ❌    | ✅     | ❌      |
 
 ## Generation Options
 
 ### `--with-test`
+
 Generate a corresponding test file.
 
 ```bash
-nothung new contract MyToken --solidity --oz-erc20 --with-test
+gramr new contract MyToken --solidity --oz-erc20 --with-test
 ```
 
 **Creates:**
+
 - `src/MyToken.sol` - The contract
 - `test/MyToken.t.sol` - Foundry test suite
 
 **Test Features:**
+
 - Basic functionality tests
 - Extension-specific tests
 - Deployment tests
 - Integration test examples
 
 ### `--with-script`
+
 Generate a deployment script.
 
 ```bash
-nothung new contract MyToken --solidity --oz-erc20 --with-script
+gramr new contract MyToken --solidity --oz-erc20 --with-script
 ```
 
 **Creates:**
+
 - `src/MyToken.sol` - The contract
 - `script/MyToken.s.sol` - Foundry deployment script
 
 **Script Features:**
+
 - Deployment logic
 - Constructor parameter configuration
 - Post-deployment verification
 - Multi-network support
 
 ### `--with-section-markers`
+
 Add organized comment sections to contracts.
 
 ```bash
-nothung new contract MyToken --solidity --oz-erc20 --with-section-markers
+gramr new contract MyToken --solidity --oz-erc20 --with-section-markers
 ```
 
 **Adds Sections:**
+
 ```solidity
 // ========================================
 // IMPORTS
@@ -229,23 +255,26 @@ nothung new contract MyToken --solidity --oz-erc20 --with-section-markers
 ## Configuration Options
 
 ### `--pragma <VERSION>`
+
 Set Solidity pragma version.
 
 ```bash
-nothung new contract MyToken --solidity --oz-erc20 --pragma 0.8.25
+gramr new contract MyToken --solidity --oz-erc20 --pragma 0.8.25
 ```
 
 **Default:** `0.8.30`
 **Format:** `X.Y.Z` (semantic versioning)
 
 ### `--license <LICENSE>`
+
 Set SPDX license identifier.
 
 ```bash
-nothung new contract MyToken --solidity --oz-erc20 --license MIT
+gramr new contract MyToken --solidity --oz-erc20 --license MIT
 ```
 
 **Common Options:**
+
 - `MIT` - MIT License
 - `GPL-3.0` - GNU General Public License v3.0
 - `Apache-2.0` - Apache License 2.0
@@ -258,32 +287,32 @@ nothung new contract MyToken --solidity --oz-erc20 --license MIT
 
 ```bash
 # Minimal ERC20
-nothung new contract SimpleToken --solidity --oz-erc20
+gramr new contract SimpleToken --solidity --oz-erc20
 
 # Basic NFT
-nothung new contract BasicNFT --solidity --oz-erc721
+gramr new contract BasicNFT --solidity --oz-erc721
 
 # Multi-token
-nothung new contract GameItems --solidity --oz-erc1155
+gramr new contract GameItems --solidity --oz-erc1155
 ```
 
 ### Advanced Contract Generation
 
 ```bash
 # Feature-rich ERC20 token
-nothung new contract AdvancedToken --solidity --oz-erc20 \
+gramr new contract AdvancedToken --solidity --oz-erc20 \
   --extensions burnable,pausable,permit,votes \
   --with-test --with-script \
   --pragma 0.8.25 --license MIT
 
 # Complete NFT collection
-nothung new contract NFTCollection --solidity --oz-erc721 \
+gramr new contract NFTCollection --solidity --oz-erc721 \
   --extensions enumerable,burnable,royalty,uristorage \
   --with-test --with-script \
   --with-section-markers
 
 # Upgradeable gaming token
-nothung new contract GameToken --solidity --oz-erc20 \
+gramr new contract GameToken --solidity --oz-erc20 \
   --oz-upgradeable \
   --extensions burnable,pausable \
   --with-test --with-script
@@ -293,32 +322,32 @@ nothung new contract GameToken --solidity --oz-erc20 \
 
 ```bash
 # Library
-nothung new library MathUtils --solidity
+gramr new library MathUtils --solidity
 
 # Interface
-nothung new interface IGovernance --solidity
+gramr new interface IGovernance --solidity
 
 # Abstract contract
-nothung new abstract BaseVault --solidity
+gramr new abstract BaseVault --solidity
 
 # Standalone test
-nothung new test MyContractTest --solidity
+gramr new test MyContractTest --solidity
 
 # Deployment script
-nothung new script DeployAll --solidity
+gramr new script DeployAll --solidity
 ```
 
 ### Rust/Stylus Generation
 
 ```bash
 # Basic Stylus contracts
-nothung new contract MyToken --rust-stylus --oz-erc20
-nothung new contract MyNFT --rust-stylus --oz-erc721
-nothung new library Utils --rust-stylus
+gramr new contract MyToken --rust-stylus --oz-erc20
+gramr new contract MyNFT --rust-stylus --oz-erc721
+gramr new library Utils --rust-stylus
 
 # Note: Extensions not yet supported
 # This will show helpful error:
-nothung new contract MyToken --rust-stylus --oz-erc20 --extensions burnable
+gramr new contract MyToken --rust-stylus --oz-erc20 --extensions burnable
 ```
 
 ## Error Handling
@@ -326,21 +355,25 @@ nothung new contract MyToken --rust-stylus --oz-erc20 --extensions burnable
 ### Common Errors
 
 **Invalid Contract Name**
+
 ```
 Error: Contract name must start with a letter and contain only alphanumeric characters and underscores
 ```
 
 **Unsupported Extension Combination**
+
 ```
 Error: Extension 'permit' is not supported for ERC721 contracts
 ```
 
 **Missing Language Flag**
+
 ```
 Error: Must specify either --solidity or --rust-stylus
 ```
 
 **Rust/Stylus Limitations**
+
 ```
 Error: Extensions are not yet supported for Rust/Stylus contracts
 Help: Use basic token generation or switch to --solidity
@@ -348,29 +381,31 @@ Help: Use basic token generation or switch to --solidity
 
 ## Exit Codes
 
-| Code | Meaning |
-|------|---------|
-| `0` | Success |
-| `1` | General error |
-| `2` | Invalid arguments |
-| `3` | Project detection failed |
-| `4` | File generation failed |
-| `5` | Dependency installation failed |
+| Code | Meaning                        |
+| ---- | ------------------------------ |
+| `0`  | Success                        |
+| `1`  | General error                  |
+| `2`  | Invalid arguments              |
+| `3`  | Project detection failed       |
+| `4`  | File generation failed         |
+| `5`  | Dependency installation failed |
 
 ## Environment Variables
 
-### `NOTHUNG_PROJECT_DIR`
+### `gramr_PROJECT_DIR`
+
 Override project directory detection.
 
 ```bash
-NOTHUNG_PROJECT_DIR=/path/to/project nothung new contract MyToken --solidity --oz-erc20
+gramr_PROJECT_DIR=/path/to/project gramr new contract MyToken --solidity --oz-erc20
 ```
 
-### `NOTHUNG_LOG_LEVEL`
+### `gramr_LOG_LEVEL`
+
 Set logging level.
 
 ```bash
-NOTHUNG_LOG_LEVEL=debug nothung new contract MyToken --solidity --oz-erc20
+gramr_LOG_LEVEL=debug gramr new contract MyToken --solidity --oz-erc20
 ```
 
 **Levels:** `error`, `warn`, `info`, `debug`, `trace`
@@ -381,7 +416,7 @@ NOTHUNG_LOG_LEVEL=debug nothung new contract MyToken --solidity --oz-erc20
 
 ```bash
 # Generate and build
-nothung new contract MyToken --solidity --oz-erc20 --with-test
+gramr new contract MyToken --solidity --oz-erc20 --with-test
 forge build
 
 # Generate and test
@@ -397,7 +432,7 @@ forge script script/MyToken.s.sol --rpc-url $RPC_URL --broadcast
 # GitHub Actions example
 - name: Generate contracts
   run: |
-    nothung new contract ProductionToken --solidity --oz-erc20 \
+    gramr new contract ProductionToken --solidity --oz-erc20 \
       --extensions burnable,pausable --with-test
     forge build
     forge test
@@ -407,8 +442,8 @@ forge script script/MyToken.s.sol --rpc-url $RPC_URL --broadcast
 
 ```bash
 # Using Docker image
-docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/nothung:latest \
-  nothung new contract MyToken --solidity --oz-erc20
+docker run --rm -v $(pwd):/workspace ghcr.io/pxlvre/gramr:latest \
+  gramr new contract MyToken --solidity --oz-erc20
 ```
 
 ## Tips & Best Practices

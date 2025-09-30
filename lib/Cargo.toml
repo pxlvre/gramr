@@ -1,5 +1,5 @@
 [package]
-name = "nothung"
+name = "gramr"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -18,8 +18,11 @@ which = { workspace = true }
 colored = { workspace = true }
 fs_extra = { workspace = true }
 
+[dev-dependencies]
+tempfile = { workspace = true }
+
 [lib]
-name = "nothung"
+name = "gramr"
 path = "src/lib.rs"
 
 [features]

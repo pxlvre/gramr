@@ -1,4 +1,4 @@
-use crate::{Result, NothungError, ProjectType, Language, templates::SolidityTemplate, project::Project};
+use crate::{Result, GramrError, ProjectType, Language, templates::SolidityTemplate, project::Project};
 
 /// Interface generator for creating empty interfaces
 pub struct InterfaceGenerator {
@@ -59,7 +59,7 @@ impl InterfaceGenerator {
                 println!("✅ Interface I{} created successfully!", self.name);
                 Ok(())
             }
-            ProjectType::Cargo(_) => Err(NothungError::Other(
+            ProjectType::Cargo(_) => Err(GramrError::Other(
                 "Interface generation for Rust/Stylus projects is not yet supported".to_string()
             ))
         }
@@ -67,7 +67,7 @@ impl InterfaceGenerator {
 
     fn generate_rust_interface(&self) -> Result<()> {
         // For now, return an error since Rust/Stylus interfaces might work differently
-        Err(NothungError::Other(
+        Err(GramrError::Other(
             "Interface generation for Rust/Stylus projects is not yet supported. Use traits instead.".to_string()
         ))
     }

@@ -1,34 +1,34 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # Production Nothung container
-  nothung:
+  # Production Gramr container
+  gramr:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nothung
+    container_name: gramr
     volumes:
       - ./workspace:/workspace
-      - nothung_cache:/root/.cargo
+      - gramr_cache:/root/.cargo
     working_dir: /workspace
-    command: tail -f /dev/null  # Keep container running
+    command: tail -f /dev/null # Keep container running
     restart: unless-stopped
 
   # Development environment
-  nothung-dev:
+  gramr-dev:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    container_name: nothung-dev
+    container_name: gramr-dev
     volumes:
       - .:/workspace
-      - nothung_dev_cache:/usr/local/cargo
-      - /workspace/target  # Anonymous volume for target directory
+      - gramr_dev_cache:/usr/local/cargo
+      - /workspace/target # Anonymous volume for target directory
     working_dir: /workspace
     command: tail -f /dev/null
     restart: unless-stopped
     ports:
-      - "8545:8545"  # For anvil local blockchain
+      - "8545:8545" # For anvil local blockchain
     environment:
       - RUST_LOG=debug
       - CARGO_TERM_COLOR=always
@@ -47,7 +47,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.docs
-    container_name: nothung-docs
+    container_name: gramr-docs
     ports:
       - "3000:3000"
     volumes:
@@ -56,6 +56,6 @@ services:
     restart: unless-stopped
 
 volumes:
-  nothung_cache:
-  nothung_dev_cache:
+  gramr_cache:
+  gramr_dev_cache:
   workspace:

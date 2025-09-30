@@ -1,4 +1,4 @@
-use crate::error::{NothungError, Result};
+use crate::error::{GramrError, Result};
 use crate::foundry::FoundryProject;
 use colored::*;
 use std::fs;
@@ -35,13 +35,13 @@ impl ScriptGenerator {
 
     fn validate_name(&self) -> Result<()> {
         if self.script_name.is_empty() {
-            return Err(NothungError::InvalidContractName(
+            return Err(GramrError::InvalidContractName(
                 "Script name cannot be empty".to_string(),
             ));
         }
 
         if !self.script_name.chars().next().unwrap().is_alphabetic() {
-            return Err(NothungError::InvalidContractName(
+            return Err(GramrError::InvalidContractName(
                 "Script name must start with a letter".to_string(),
             ));
         }
@@ -51,7 +51,7 @@ impl ScriptGenerator {
             .chars()
             .all(|c| c.is_alphanumeric() || c == '_')
         {
-            return Err(NothungError::InvalidContractName(
+            return Err(GramrError::InvalidContractName(
                 "Script name can only contain letters, numbers, and underscores".to_string(),
             ));
         }
@@ -66,7 +66,7 @@ impl ScriptGenerator {
             .join(format!("{}.s.sol", self.script_name));
 
         if file_path.exists() {
-            return Err(NothungError::FileExists(file_path.display().to_string()));
+            return Err(GramrError::FileExists(file_path.display().to_string()));
         }
 
         let content = self.generate_script_content();
