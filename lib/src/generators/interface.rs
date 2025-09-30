@@ -1,4 +1,4 @@
-use crate::{Result, NothungError, ProjectType, Language, templates::{SolidityTemplate, Template}, project::Project};
+use crate::{Result, NothungError, ProjectType, Language, templates::SolidityTemplate, project::Project};
 
 /// Interface generator for creating empty interfaces
 pub struct InterfaceGenerator {

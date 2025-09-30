@@ -3,7 +3,7 @@ mod wizard;
 use anyhow::Result;
 use clap::{Arg, Command};
 use colored::*;
-use nothung::{Language, ProjectType, GenericContractGenerator, LibraryGenerator, ScriptGenerator, TestGenerator, ContractType};
+use nothung::{ProjectType, GenericContractGenerator, LibraryGenerator, ScriptGenerator, TestGenerator, ContractType};
 use wizard::{ContractWizard, WizardState};
 
 fn main() {
@@ -73,8 +73,8 @@ fn print_non_interactive_help() {
     println!("    • Upgradeable contract support (Solidity)");
     println!("    • Automatic dependency management");
     println!();
-    println!("{}", "For non-interactive usage, use the nothung CLI directly:".dim());
-    println!("{}", "    nothung new contract MyToken --solidity --oz-erc20".dim());
+    println!("{}", "For non-interactive usage, use the nothung CLI directly:");
+    println!("    {}", "nothung new contract MyToken --solidity --oz-erc20");
 }
 
 fn generate_from_state(state: WizardState) -> Result<()> {
@@ -88,7 +88,7 @@ fn generate_from_state(state: WizardState) -> Result<()> {
             let contract_type = state.contract_type.unwrap_or(ContractType::Basic);
             
             // Convert our extensions to strings for the generator
-            let extension_strings: Vec<String> = state.extensions
+            let _extension_strings: Vec<String> = state.extensions
                 .into_iter()
                 .map(|ext| extension_to_string(ext))
                 .collect();

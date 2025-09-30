@@ -1,0 +1,27 @@
+# Dockerfile for serving documentation locally
+FROM rust:1.75-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install mdBook
+RUN cargo install mdbook mdbook-mermaid
+
+# Create workspace
+WORKDIR /workspace
+
+# Copy documentation files
+COPY book/ book/
+COPY README.md .
+COPY RELEASE.md .
+COPY DEPLOYMENT.md .
+
+# Build documentation
+RUN cd book && mdbook build
+
+# Serve documentation
+EXPOSE 3000
+CMD ["mdbook", "serve", "book", "--hostname", "0.0.0.0", "--port", "3000"]

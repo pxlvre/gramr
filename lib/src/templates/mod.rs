@@ -5,7 +5,7 @@ pub use solidity::SolidityTemplate;
 pub use stylus::StylusTemplate;
 
 // Move these to a common location since they're shared
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum ContractType {
     Basic,
     ERC20,
@@ -22,7 +22,7 @@ pub enum ContractType {
     },
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum TokenExtension {
     // ERC20 Extensions
     ERC20Permit,

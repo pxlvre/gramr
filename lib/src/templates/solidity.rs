@@ -30,6 +30,8 @@ impl SolidityTemplate {
             ContractType::MultiInheritance { base_type, extensions } => {
                 self.generate_multi_inheritance_contract(base_type, extensions)
             }
+            ContractType::Interface => self.generate_interface(),
+            ContractType::Abstract => self.generate_abstract_contract(),
         }
     }
 

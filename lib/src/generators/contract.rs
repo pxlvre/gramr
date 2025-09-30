@@ -139,7 +139,7 @@ impl ContractGenerator {
                 }
                 _ => {}
             },
-            ContractType::Basic => {}
+            ContractType::Basic | ContractType::Interface | ContractType::Abstract => {}
         }
         Ok(())
     }

@@ -1,4 +1,4 @@
-use crate::{Result, NothungError, ProjectType, Language, templates::{SolidityTemplate, Template}, project::Project};
+use crate::{Result, NothungError, ProjectType, Language, templates::SolidityTemplate, project::Project};
 
 /// Abstract contract generator for creating empty abstract contracts
 pub struct AbstractContractGenerator {

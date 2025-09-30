@@ -14,7 +14,7 @@ Nothung is organized as a Rust workspace with four distinct components:
 
 - **`nothung`** (library) - Core functionality for contract generation that can be used programmatically
 - **`nothung-cli`** - Command-line interface built on top of the library
-- **`wotan`** - 🧙‍♂️ Interactive wizard for guided smart contract creation
+- **`wotan`** - Interactive wizard for guided smart contract creation
 - **`nothungup`** - Installer utility for Unix-based systems (Linux/macOS) with dependency checking
 
 ## 🚀 Installation
@@ -73,8 +73,9 @@ nothung wizard  # Via nothung CLI
 ```
 
 The wizard guides you through:
+
 - **Resource selection** - Contract, library, script, or test
-- **Language choice** - Solidity (full support) or Rust/Stylus (experimental)  
+- **Language choice** - Solidity (full support) or Rust/Stylus (experimental)
 - **Token standards** - ERC20, ERC721, ERC1155 with extensions
 - **Generation options** - Tests, scripts, upgradeable contracts
 - **Configuration** - Pragma versions, licenses, and more
@@ -130,7 +131,7 @@ nothung new contract MyToken --rust-stylus --oz-erc20
 nothung new contract MyNFT --rust-stylus --oz-erc721
 nothung new contract MyMultiToken --rust-stylus --oz-erc1155
 
-# Generate libraries  
+# Generate libraries
 nothung new library DataUtils --rust-stylus
 
 # Note: Limited support - see Rust/Stylus section below
@@ -155,7 +156,7 @@ nothung new <TYPE> <NAME> [OPTIONS]
 **Token Options:**
 
 - `--oz-erc20` - Inherit from OpenZeppelin ERC20
-- `--oz-erc721` - Inherit from OpenZeppelin ERC721  
+- `--oz-erc721` - Inherit from OpenZeppelin ERC721
 - `--oz-erc1155` - Inherit from OpenZeppelin ERC1155
 - `--upgradeable` - Use upgradeable contracts (Solidity only)
 - `--extensions <LIST>` - Comma-separated token extensions
@@ -214,6 +215,7 @@ fn main() -> nothung::Result<()> {
 ### Languages Supported
 
 #### Solidity (Full Support)
+
 - ✅ **Contracts** - ERC20, ERC721, ERC1155 tokens
 - ✅ **Libraries** - Reusable utility functions
 - ✅ **Interfaces** - Contract interface definitions
@@ -227,6 +229,7 @@ fn main() -> nothung::Result<()> {
 - ✅ **Interactive wizard** - Guided creation process
 
 #### Rust/Stylus (Experimental)
+
 - ✅ **Contracts** - Basic ERC20, ERC721, ERC1155 tokens
 - ✅ **Libraries** - Trait-based reusable patterns
 - ❌ **Interfaces** - Use traits instead (guided by error messages)
@@ -315,7 +318,7 @@ Nothung provides clear error messages for unsupported combinations:
 nothung new contract MyToken --rust-stylus --oz-erc20 --upgradeable
 # Error: "Upgradeable contracts are not yet supported for Rust/Stylus..."
 
-nothung new contract MyToken --rust-stylus --oz-erc20 --with-test  
+nothung new contract MyToken --rust-stylus --oz-erc20 --with-test
 # Error: "Test generation is not supported for Rust/Stylus projects. Use 'cargo test' instead."
 ```
 
@@ -329,7 +332,7 @@ nothung new contract MyToken --rust-stylus --oz-erc20 --with-test
 ### Future Roadmap
 
 - 🔮 **Extension support** - Token extensions like burnable, pausable
-- 🔮 **Upgradeable patterns** - When OpenZeppelin Stylus adds support  
+- 🔮 **Upgradeable patterns** - When OpenZeppelin Stylus adds support
 - 🔮 **Test generation** - Stylus-specific test templates
 - 🔮 **Better Cargo integration** - Automatic toolchain setup
 

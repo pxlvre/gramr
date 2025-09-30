@@ -1,0 +1,30 @@
+{
+  "name": "nothung-installer",
+  "alias": ["getnothung.pxlvre.dev"],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/install.sh",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "s-maxage=300, stale-while-revalidate"
+      }
+    },
+    {
+      "src": "/sh",
+      "dest": "/install.sh",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "s-maxage=300, stale-while-revalidate"
+      }
+    },
+    {
+      "src": "/install.sh",
+      "dest": "/install.sh",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "s-maxage=300, stale-while-revalidate"
+      }
+    }
+  ]
+}

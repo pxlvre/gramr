@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Production Nothung container
+  nothung:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nothung
+    volumes:
+      - ./workspace:/workspace
+      - nothung_cache:/root/.cargo
+    working_dir: /workspace
+    command: tail -f /dev/null  # Keep container running
+    restart: unless-stopped
+
+  # Development environment
+  nothung-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: nothung-dev
+    volumes:
+      - .:/workspace
+      - nothung_dev_cache:/usr/local/cargo
+      - /workspace/target  # Anonymous volume for target directory
+    working_dir: /workspace
+    command: tail -f /dev/null
+    restart: unless-stopped
+    ports:
+      - "8545:8545"  # For anvil local blockchain
+    environment:
+      - RUST_LOG=debug
+      - CARGO_TERM_COLOR=always
+
+  # Anvil local blockchain (useful for testing)
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:latest
+    container_name: anvil
+    command: anvil --host 0.0.0.0 --port 8545
+    ports:
+      - "8545:8545"
+    restart: unless-stopped
+
+  # Documentation server
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile.docs
+    container_name: nothung-docs
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    restart: unless-stopped
+
+volumes:
+  nothung_cache:
+  nothung_dev_cache:
+  workspace:

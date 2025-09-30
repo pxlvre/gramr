@@ -1,0 +1,211 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.rs'
+      - '**.md'
+      - 'Cargo.toml'
+      - '.github/workflows/docs.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+      
+      - name: Install mdBook
+        run: |
+          cargo install mdbook --no-default-features --features search
+          cargo install mdbook-mermaid
+      
+      - name: Build Rust docs
+        run: |
+          cargo doc --no-deps --all-features
+          echo '<meta http-equiv="refresh" content="0; url=nothung">' > target/doc/index.html
+      
+      - name: Create book structure
+        run: |
+          mkdir -p book/src
+          
+          # Create SUMMARY.md
+          cat > book/src/SUMMARY.md << 'EOF'
+          # Summary
+          
+          [Introduction](./introduction.md)
+          
+          # User Guide
+          
+          - [Installation](./installation.md)
+          - [Quick Start](./quick-start.md)
+          - [CLI Reference](./cli-reference.md)
+          - [Wotan Wizard](./wotan.md)
+          
+          # Features
+          
+          - [Smart Contract Templates](./templates.md)
+          - [OpenZeppelin Integration](./openzeppelin.md)
+          - [Rust/Stylus Support](./stylus.md)
+          
+          # Development
+          
+          - [Architecture](./architecture.md)
+          - [Contributing](./contributing.md)
+          - [Release Process](./release-process.md)
+          
+          # API Documentation
+          
+          - [Rust Docs](./api/index.html)
+          EOF
+          
+          # Copy and adapt existing markdown files
+          cp README.md book/src/introduction.md
+          cp nothungup/README.md book/src/installation.md
+          cp RELEASE.md book/src/release-process.md
+          
+          # Create additional documentation files
+          cat > book/src/quick-start.md << 'EOF'
+          # Quick Start
+          
+          ## Installation
+          
+          ```bash
+          curl --proto '=https' --tlsv1.2 -sSf https://getnothung.pxlvre.dev | sh
+          ```
+          
+          ## Create Your First Contract
+          
+          ### Using Wotan (Interactive)
+          
+          ```bash
+          wotan
+          ```
+          
+          ### Using CLI (Direct)
+          
+          ```bash
+          # ERC20 Token
+          nothung new contract MyToken --solidity --oz-erc20
+          
+          # ERC721 NFT
+          nothung new contract MyNFT --solidity --oz-erc721
+          
+          # Custom Contract
+          nothung new contract MyContract --solidity
+          ```
+          EOF
+          
+          cat > book/src/cli-reference.md << 'EOF'
+          # CLI Reference
+          
+          ## Commands
+          
+          ### nothung new contract
+          
+          Create a new smart contract.
+          
+          ```bash
+          nothung new contract <NAME> [OPTIONS]
+          ```
+          
+          **Options:**
+          - `--solidity` - Generate Solidity contract
+          - `--rust-stylus` - Generate Rust/Stylus contract
+          - `--oz-erc20` - Use OpenZeppelin ERC20 template
+          - `--oz-erc721` - Use OpenZeppelin ERC721 template
+          - `--oz-erc1155` - Use OpenZeppelin ERC1155 template
+          - `--upgradeable` - Make contract upgradeable
+          - `--extensions <EXT>` - Add extensions (burnable,pausable,etc)
+          
+          ### nothung new test
+          
+          Create a test file.
+          
+          ```bash
+          nothung new test <NAME> [OPTIONS]
+          ```
+          
+          ### nothung new script
+          
+          Create a deployment script.
+          
+          ```bash
+          nothung new script <NAME> [OPTIONS]
+          ```
+          
+          ### nothung wizard
+          
+          Launch the interactive Wotan wizard.
+          
+          ```bash
+          nothung wizard
+          ```
+          EOF
+          
+          # Create book.toml
+          cat > book/book.toml << 'EOF'
+          [book]
+          authors = ["Nothung Contributors"]
+          language = "en"
+          multilingual = false
+          src = "src"
+          title = "Nothung Documentation"
+          
+          [build]
+          build-dir = "../docs"
+          
+          [output.html]
+          theme = "light"
+          default-theme = "light"
+          preferred-dark-theme = "coal"
+          copy-fonts = true
+          no-section-label = false
+          git-repository-url = "https://github.com/pxlvre/nothung"
+          git-repository-icon = "fa-github"
+          
+          [output.html.playground]
+          editable = false
+          copy-js = true
+          
+          [output.html.search]
+          enable = true
+          EOF
+      
+      - name: Build documentation book
+        run: |
+          cd book
+          mdbook build
+          cd ..
+          
+          # Copy Rust docs into book
+          mkdir -p docs/api
+          cp -r target/doc/* docs/api/
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./docs
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

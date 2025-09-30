@@ -1,0 +1,38 @@
+# Build artifacts
+target/
+.cargo/
+
+# Version control
+.git/
+.gitignore
+
+# Documentation build
+book/target/
+docs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Runtime
+test-here/
+workspace/
+
+# CI/CD
+.github/
+
+# Vercel
+.vercel/
+public/
+
+# Node modules (if any)
+node_modules/

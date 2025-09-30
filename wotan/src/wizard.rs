@@ -1,6 +1,6 @@
 use anyhow::Result;
 use colored::*;
-use inquire::{Select, Text, MultiSelect, Confirm};
+use inquire::{Select, Text, MultiSelect, Confirm, validator::Validation};
 use nothung::{Language, ContractType, TokenExtension};
 
 pub struct WizardState {
@@ -78,7 +78,7 @@ impl ContractWizard {
 
     fn print_welcome(&self) {
         println!("\n{}", "🧙‍♂️ Welcome to Wotan - The Nothung Smart Contract Wizard!".bold().cyan());
-        println!("{}", "⚔️  Let's forge your smart contract step by step...\n".dim());
+        println!("{}", "⚔️  Let's forge your smart contract step by step...\n");
     }
 
     fn choose_resource_type(&self) -> Result<String> {
@@ -95,17 +95,17 @@ impl ContractWizard {
 
     fn get_name(&self, resource_type: &str) -> Result<String> {
         let prompt = format!("Enter the {} name:", resource_type);
-        let validator = |input: &str| {
+        let validator = |input: &str| -> Result<Validation, Box<dyn std::error::Error + Send + Sync>> {
             if input.is_empty() {
-                return Err("Name cannot be empty".to_string());
+                return Ok(Validation::Invalid("Name cannot be empty".into()));
             }
             if !input.chars().next().unwrap().is_alphabetic() {
-                return Err("Name must start with a letter".to_string());
+                return Ok(Validation::Invalid("Name must start with a letter".into()));
             }
             if !input.chars().all(|c| c.is_alphanumeric() || c == '_') {
-                return Err("Name can only contain letters, numbers, and underscores".to_string());
+                return Ok(Validation::Invalid("Name can only contain letters, numbers, and underscores".into()));
             }
-            Ok(())
+            Ok(Validation::Valid)
         };
 
         Text::new(&prompt)
@@ -161,7 +161,7 @@ impl ContractWizard {
         }
 
         // Set contract type
-        state.contract_type = Some(match (base_type, is_upgradeable) {
+        state.contract_type = Some(match (base_type.clone(), is_upgradeable) {
             (ContractType::ERC20, true) => ContractType::ERC20Upgradeable,
             (ContractType::ERC721, true) => ContractType::ERC721Upgradeable,
             (ContractType::ERC1155, true) => ContractType::ERC1155Upgradeable,
@@ -261,7 +261,7 @@ impl ContractWizard {
     }
 
     fn configure_library(&self, _state: &mut WizardState) -> Result<()> {
-        println!("{}", "ℹ️  Libraries will contain basic utility functions and data structures".dim());
+        println!("{}", "ℹ️  Libraries will contain basic utility functions and data structures");
         Ok(())
     }
 
@@ -269,7 +269,7 @@ impl ContractWizard {
         if state.language == Language::RustStylus {
             return Err(anyhow::anyhow!("Scripts and tests are only supported for Solidity projects"));
         }
-        println!("{}", "ℹ️  Basic script/test file will be generated".dim());
+        println!("{}", "ℹ️  Basic script/test file will be generated");
         Ok(())
     }
 
