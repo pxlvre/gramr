@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Foundry integration
   - Future: Hardhat support planned
 
-## [0.1.0] - 2024-XX-XX (Upcoming)
+## [0.0.1]
 
 First public release.
 
