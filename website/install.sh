@@ -80,9 +80,9 @@ get_latest_version() {
     if [ "$GRAMR_VERSION" = "latest" ]; then
         info "Fetching latest version..."
         if [ "$DOWNLOADER" = "curl" ]; then
-            GRAMR_VERSION=$(curl -sL "https://api.github.com/repos/pxlvre/gramr/releases/latest" | grep '"tag_name"' | sed -E 's/.*"tag_name":\s*"([^"]+)".*/\1/')
+            GRAMR_VERSION=$(curl -sL "https://api.github.com/repos/pxlvre/gramr/releases/latest" | grep '"tag_name":' | cut -d'"' -f4)
         else
-            GRAMR_VERSION=$(wget -qO- "https://api.github.com/repos/pxlvre/gramr/releases/latest" | grep '"tag_name"' | sed -E 's/.*"tag_name":\s*"([^"]+)".*/\1/')
+            GRAMR_VERSION=$(wget -qO- "https://api.github.com/repos/pxlvre/gramr/releases/latest" | grep '"tag_name":' | cut -d'"' -f4)
         fi
         
         if [ -z "$GRAMR_VERSION" ]; then
