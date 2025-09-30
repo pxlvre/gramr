@@ -1,5 +1,34 @@
-.tmp
+# Build artifacts
 /target
+.tmp
+
+# IDE files
 .idea
 .claude
 .vscode
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Testing
+test-here/
+workspace/
+
+# Internal documentation (not for public repo)
+docs/internal/
+
+# Vercel
+.vercel/
+
+# Environment files
+.env
+.env.local
+
+# Cargo
+Cargo.lock
