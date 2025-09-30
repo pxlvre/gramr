@@ -5,6 +5,10 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: write
+  packages: write
+
 env:
   CARGO_TERM_COLOR: always
 
@@ -13,7 +17,6 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
       version: ${{ steps.get_version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
@@ -36,25 +39,47 @@ jobs:
 
           # Create release body
           echo "BODY<<EOF" >> $GITHUB_OUTPUT
-          echo "## What's Changed" >> $GITHUB_OUTPUT
+          echo "## 🎉 Gramr v${{ steps.get_version.outputs.version }}" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
-          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "The legendary sword that forges smart contracts!" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
-          echo "## Installation" >> $GITHUB_OUTPUT
+          echo "### ✨ Features" >> $GITHUB_OUTPUT
+          echo "- ⚡ Lightning Fast CLI - Generate complete contracts in seconds" >> $GITHUB_OUTPUT
+          echo "- 🧙‍♂️ Interactive Wizard - Wotan guides you through contract creation" >> $GITHUB_OUTPUT
+          echo "- 🛡️ OpenZeppelin Powered - Uses official templates and best practices" >> $GITHUB_OUTPUT
+          echo "- 🔄 Multi-Language - Solidity (Foundry) and Rust (Arbitrum Stylus)" >> $GITHUB_OUTPUT
+          echo "- 🎛️ Rich Extensions - Burnable, pausable, votes, upgradeable, and more" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 📦 Installation" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo '```bash' >> $GITHUB_OUTPUT
-          echo 'curl --proto "=https" --tlsv1.2 -sSf https://getgramr.pxlvre.dev | sh' >> $GITHUB_OUTPUT
+          echo 'curl --proto "=https" --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh' >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 🚀 Quick Start" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo '```bash' >> $GITHUB_OUTPUT
+          echo '# Interactive wizard' >> $GITHUB_OUTPUT
+          echo 'wotan' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '# Direct CLI' >> $GITHUB_OUTPUT
+          echo 'gramr new contract MyToken --solidity --oz-erc20 --extensions burnable,pausable' >> $GITHUB_OUTPUT
+          echo '```' >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 📚 Documentation" >> $GITHUB_OUTPUT
+          echo "- [Documentation](https://getgramr.pxlvre.dev/docs)" >> $GITHUB_OUTPUT
+          echo "- [Library on crates.io](https://crates.io/crates/gramr)" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 📋 What's Changed" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ steps.get_version.outputs.version }}
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: Release v${{ steps.get_version.outputs.version }}
           body: ${{ steps.changelog.outputs.BODY }}
           draft: false
           prerelease: false
@@ -64,89 +89,54 @@ jobs:
     needs: create-release
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            binary_name: gramr
             asset_name: gramr-linux-amd64
-          - os: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
-            binary_name: gramr
-            asset_name: gramr-linux-arm64
           - os: macos-latest
             target: x86_64-apple-darwin
-            binary_name: gramr
             asset_name: gramr-darwin-amd64
           - os: macos-latest
             target: aarch64-apple-darwin
-            binary_name: gramr
             asset_name: gramr-darwin-arm64
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          target: ${{ matrix.target }}
-          profile: minimal
-          override: true
+          targets: ${{ matrix.target }}
 
-      - name: Install cross-compilation tools
-        if: matrix.target == 'aarch64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu
+      - name: Build binaries
+        run: cargo build --release --target ${{ matrix.target }}
 
-      - name: Build release binary
+      - name: Package binaries
         run: |
-          if [[ "${{ matrix.target }}" == "aarch64-unknown-linux-gnu" ]]; then
-            cargo install cross
-            cross build --release --target ${{ matrix.target }} --bin gramr
-            cross build --release --target ${{ matrix.target }} --bin wotan
-            cross build --release --target ${{ matrix.target }} --bin gramrup
-          else
-            cargo build --release --target ${{ matrix.target }} --bin gramr
-            cargo build --release --target ${{ matrix.target }} --bin wotan
-            cargo build --release --target ${{ matrix.target }} --bin gramrup
-          fi
-
-      - name: Create archive
-        run: |
-          mkdir -p dist
-          cp target/${{ matrix.target }}/release/gramr dist/
-          cp target/${{ matrix.target }}/release/wotan dist/
-          cp target/${{ matrix.target }}/release/gramrup dist/
-          cp README.md LICENSE dist/
-          cd dist
-          tar -czf ../${{ matrix.asset_name }}.tar.gz *
-          cd ..
+          mkdir -p package
+          cp target/${{ matrix.target }}/release/gramr package/
+          cp target/${{ matrix.target }}/release/wotan package/
+          cp target/${{ matrix.target }}/release/gramrup package/
+          tar -czf ${{ matrix.asset_name }}.tar.gz -C package .
 
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./${{ matrix.asset_name }}.tar.gz
-          asset_name: ${{ matrix.asset_name }}.tar.gz
-          asset_content_type: application/gzip
+          tag_name: v${{ needs.create-release.outputs.version }}
+          files: ${{ matrix.asset_name }}.tar.gz
 
-  publish-crate:
+  publish-crates:
     name: Publish to crates.io
     needs: create-release
     runs-on: ubuntu-latest
+    if: needs.create-release.result == 'success'
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Login to crates.io
         run: cargo login ${{ secrets.CRATES_TOKEN }}
@@ -156,141 +146,3 @@ jobs:
           cd lib
           cargo publish --allow-dirty
         continue-on-error: true # In case version already exists
-
-  publish-docker-images:
-    name: Publish Docker Images
-    needs: create-release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract version
-        id: version
-        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
-      - name: Build and push production image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ steps.version.outputs.version }}
-
-      - name: Build and push dev image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: Dockerfile.dev
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository }}-dev:latest
-            ghcr.io/${{ github.repository }}-dev:${{ steps.version.outputs.version }}
-
-  update-installation-script:
-    name: Update Installation Script
-    needs: [create-release, build-binaries]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Create installation script
-        run: |
-          cat > install.sh << 'EOF'
-          #!/bin/sh
-          set -e
-
-          # Gramr installer script
-          # This script installs gramr, wotan, and gramrup
-
-          VERSION="${1:-latest}"
-          INSTALL_DIR="${GRAMR_INSTALL_DIR:-$HOME/.gramr}"
-          BIN_DIR="$INSTALL_DIR/bin"
-
-          # Detect OS and architecture
-          OS="$(uname -s)"
-          ARCH="$(uname -m)"
-
-          case "$OS" in
-              Linux*)
-                  case "$ARCH" in
-                      x86_64) PLATFORM="linux-amd64" ;;
-                      aarch64) PLATFORM="linux-arm64" ;;
-                      *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
-                  esac
-                  ;;
-              Darwin*)
-                  case "$ARCH" in
-                      x86_64) PLATFORM="darwin-amd64" ;;
-                      arm64|aarch64) PLATFORM="darwin-arm64" ;;
-                      *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
-                  esac
-                  ;;
-              *)
-                  echo "Unsupported OS: $OS"
-                  exit 1
-                  ;;
-          esac
-
-          # Get latest version if not specified
-          if [ "$VERSION" = "latest" ]; then
-              VERSION=$(curl -s https://api.github.com/repos/pxlvre/gramr/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-          fi
-
-          echo "Installing Gramr $VERSION for $PLATFORM..."
-
-          # Download and extract
-          DOWNLOAD_URL="https://github.com/pxlvre/gramr/releases/download/$VERSION/gramr-$PLATFORM.tar.gz"
-
-          mkdir -p "$BIN_DIR"
-          curl -L "$DOWNLOAD_URL" | tar -xz -C "$BIN_DIR"
-
-          # Make binaries executable
-          chmod +x "$BIN_DIR/gramr"
-          chmod +x "$BIN_DIR/wotan"
-          chmod +x "$BIN_DIR/gramrup"
-
-          # Add to PATH instruction
-          echo ""
-          echo "Gramr installed successfully to $BIN_DIR"
-          echo ""
-          echo "To add gramr to your PATH, run:"
-          echo "  export PATH=\"$BIN_DIR:\$PATH\""
-          echo ""
-          echo "You may want to add this to your shell profile (.bashrc, .zshrc, etc.)"
-          echo ""
-          echo "Get started with:"
-          echo "  gramr --help"
-          echo "  wotan"
-          EOF
-
-      - name: Deploy to Vercel
-        run: |
-          # This will be configured to deploy the script to getgramr.pxlvre.dev
-          echo "Script deployment will be configured with Vercel"
-
-      - name: Upload installation script as release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./install.sh
-          asset_name: install.sh
-          asset_content_type: text/plain

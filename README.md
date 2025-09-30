@@ -172,7 +172,7 @@ gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
 gramr new contract GameAssets --solidity --oz-erc1155 --extensions supply,pausable
 
 # Upgradeable contract
-gramr new contract MyToken --solidity --oz-erc20 --oz-upgradeable
+gramr new contract MyToken --solidity --oz-erc20 --upgradeable
 
 # With tests and deployment script
 gramr new contract MyToken --solidity --oz-erc20 --with-test --with-script
@@ -221,7 +221,7 @@ gramr new library Utils --rust-stylus
 
 **Patterns:**
 
-- `--oz-upgradeable` - Use upgradeable contract patterns
+- `--upgradeable` - Use upgradeable contract patterns
 - `--extensions <LIST>` - Comma-separated extensions
 
 **Generation:**

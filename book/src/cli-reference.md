@@ -124,12 +124,12 @@ gramr new contract GameAssets --solidity --oz-erc1155
 
 ## Upgrade Patterns
 
-### `--oz-upgradeable`
+### `--upgradeable`
 
 Use OpenZeppelin upgradeable contract patterns.
 
 ```bash
-gramr new contract MyToken --solidity --oz-erc20 --oz-upgradeable
+gramr new contract MyToken --solidity --oz-erc20 --upgradeable
 ```
 
 **Features:**
@@ -313,7 +313,7 @@ gramr new contract NFTCollection --solidity --oz-erc721 \
 
 # Upgradeable gaming token
 gramr new contract GameToken --solidity --oz-erc20 \
-  --oz-upgradeable \
+  --upgradeable \
   --extensions burnable,pausable \
   --with-test --with-script
 ```

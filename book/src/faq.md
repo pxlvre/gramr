@@ -119,7 +119,7 @@ Arbitrum Stylus is a new platform, and the OpenZeppelin Stylus contracts are sti
 Yes, for Solidity contracts:
 
 ```bash
-gramr new contract MyToken --solidity --oz-erc20 --oz-upgradeable
+gramr new contract MyToken --solidity --oz-erc20 --upgradeable
 ```
 
 This uses OpenZeppelin's proxy patterns for safe upgradeability.
