@@ -127,10 +127,10 @@ gramr new contract AdvancedAssets --solidity --oz-erc1155 --extensions supply,bu
 
 ```bash
 # Upgradeable ERC20
-gramr new contract UpgradeableToken --solidity --oz-erc20 --oz-upgradeable
+gramr new contract UpgradeableToken --solidity --oz-erc20 --upgradeable
 
 # Upgradeable NFT
-gramr new contract UpgradeableNFT --solidity --oz-erc721 --oz-upgradeable --extensions enumerable
+gramr new contract UpgradeableNFT --solidity --oz-erc721 --upgradeable --extensions enumerable
 ```
 
 ## 🛠️ Development Workflow

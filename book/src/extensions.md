@@ -546,7 +546,7 @@ gramr new contract AdvancedToken --solidity --oz-erc20 \
 ```bash
 # Extensions + upgradeable
 gramr new contract UpgradeableToken --solidity --oz-erc20 \
-  --oz-upgradeable --extensions burnable,pausable
+  --upgradeable --extensions burnable,pausable
 ```
 
 ### Extension Order
