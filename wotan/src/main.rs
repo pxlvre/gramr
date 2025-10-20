@@ -1,7 +1,7 @@
 mod wizard;
 
 use anyhow::Result;
-use clap::{Arg, Command};
+use clap::Command;
 use colored::*;
 use gramr::{
     ContractType, GenericContractGenerator, LibraryGenerator, ProjectType, ScriptGenerator,
@@ -17,32 +17,11 @@ fn main() {
 }
 
 fn run() -> Result<()> {
-    let app = Command::new("wotan")
+    let _app = Command::new("wotan")
         .version(env!("CARGO_PKG_VERSION"))
         .about("🧙‍♂️ Interactive wizard for generating smart contracts with Gramr")
         .long_about("Wotan is the interactive wizard companion to Gramr that guides you through creating smart contracts, libraries, scripts, and tests step by step.")
-        .arg(
-            Arg::new("non-interactive")
-                .long("non-interactive")
-                .short('n')
-                .help("Skip interactive mode and show help")
-                .action(clap::ArgAction::SetTrue)
-        );
-
-    let matches = app.try_get_matches();
-
-    match matches {
-        Ok(matches) => {
-            if matches.get_flag("non-interactive") {
-                print_non_interactive_help();
-                return Ok(());
-            }
-        }
-        Err(_) => {
-            // If argument parsing fails, still run the wizard
-            // This allows running `wotan` without any arguments
-        }
-    }
+        .get_matches();
 
     // Run the interactive wizard
     let wizard = ContractWizard::new();
@@ -54,43 +33,6 @@ fn run() -> Result<()> {
     Ok(())
 }
 
-fn print_non_interactive_help() {
-    println!(
-        "{}",
-        "🧙‍♂️ Wotan - Interactive Smart Contract Wizard".bold().cyan()
-    );
-    println!();
-    println!("{}", "USAGE:".bold());
-    println!("    wotan                    # Start interactive wizard");
-    println!("    wotan --non-interactive  # Show this help");
-    println!();
-    println!("{}", "DESCRIPTION:".bold());
-    println!("    Wotan guides you through creating smart contracts, libraries,");
-    println!("    scripts, and tests with an easy-to-use interactive interface.");
-    println!();
-    println!("{}", "SUPPORTED LANGUAGES:".bold());
-    println!(
-        "    • {} - Full support (contracts, libraries, scripts, tests)",
-        "Solidity".green()
-    );
-    println!(
-        "    • {} - Experimental (contracts, libraries only)",
-        "Rust/Stylus".yellow()
-    );
-    println!();
-    println!("{}", "FEATURES:".bold());
-    println!("    • Interactive prompts with validation");
-    println!("    • Token standard selection (ERC20, ERC721, ERC1155)");
-    println!("    • Extension selection (burnable, pausable, etc.)");
-    println!("    • Upgradeable contract support (Solidity)");
-    println!("    • Automatic dependency management");
-    println!();
-    println!(
-        "{}",
-        "For non-interactive usage, use the gramr CLI directly:"
-    );
-    println!("    {}", "gramr new contract MyToken --solidity --oz-erc20");
-}
 
 fn generate_from_state(state: WizardState) -> Result<()> {
     println!("\n{} Generating files...", "🔨".bold());
@@ -100,14 +42,17 @@ fn generate_from_state(state: WizardState) -> Result<()> {
 
     match state.resource_type.as_str() {
         "contract" => {
-            let contract_type = state.contract_type.unwrap_or(ContractType::Basic);
-
-            // Convert our extensions to strings for the generator
-            let _extension_strings: Vec<String> = state
-                .extensions
-                .into_iter()
-                .map(|ext| extension_to_string(ext))
-                .collect();
+            let base_contract_type = state.contract_type.unwrap_or(ContractType::Basic);
+            
+            // If extensions are present, use MultiInheritance contract type
+            let contract_type = if !state.extensions.is_empty() {
+                ContractType::MultiInheritance {
+                    base_type: Box::new(base_contract_type),
+                    extensions: state.extensions,
+                }
+            } else {
+                base_contract_type
+            };
 
             let generator = GenericContractGenerator::new(
                 project,
@@ -172,38 +117,3 @@ fn generate_from_state(state: WizardState) -> Result<()> {
     Ok(())
 }
 
-fn extension_to_string(extension: gramr::TokenExtension) -> String {
-    use gramr::TokenExtension::*;
-
-    match extension {
-        // ERC20
-        ERC20Permit => "permit",
-        ERC20Burnable => "burnable",
-        ERC20Capped => "capped",
-        ERC20Pausable => "pausable",
-        ERC20Votes => "votes",
-        ERC20Wrapper => "wrapper",
-        ERC20FlashMint => "flashmint",
-        ERC20TemporaryApproval => "temporaryapproval",
-        ERC20Bridgeable => "bridgeable",
-        ERC1363 => "erc1363",
-        ERC4626 => "erc4626",
-
-        // ERC721
-        ERC721Pausable => "pausable",
-        ERC721Burnable => "burnable",
-        ERC721Consecutive => "consecutive",
-        ERC721URIStorage => "uristorage",
-        ERC721Votes => "votes",
-        ERC721Royalty => "royalty",
-        ERC721Wrapper => "wrapper",
-        ERC721Enumerable => "enumerable",
-
-        // ERC1155
-        ERC1155Pausable => "pausable",
-        ERC1155Burnable => "burnable",
-        ERC1155Supply => "supply",
-        ERC1155URIStorage => "uristorage",
-    }
-    .to_string()
-}

@@ -444,7 +444,7 @@ checksum = "e629b9b98ef3dd8afe6ca2bd0f89306cec16d43d907889945bc5d6687f2f13c7"
 
 [[package]]
 name = "gramr"
-version = "0.0.1"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "colored",
@@ -458,7 +458,7 @@ dependencies = [
 
 [[package]]
 name = "gramr-cli"
-version = "0.0.1"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -468,7 +468,7 @@ dependencies = [
 
 [[package]]
 name = "gramrup"
-version = "0.0.1"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -2120,7 +2120,7 @@ checksum = "f17a85883d4e6d00e8a97c586de764dabcc06133f7f1d55dce5cdc070ad7fe59"
 
 [[package]]
 name = "wotan"
-version = "0.0.1"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -2129,6 +2129,7 @@ dependencies = [
  "inquire",
  "serde",
  "serde_json",
+ "which",
 ]
 
 [[package]]

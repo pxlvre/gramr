@@ -1,7 +1,9 @@
 use anyhow::Result;
 use colored::*;
-use gramr::{ContractType, Language, TokenExtension};
+use gramr::{ContractType, Language, ProjectType, TokenExtension};
 use inquire::{validator::Validation, Confirm, MultiSelect, Select, Text};
+use std::fs;
+use std::process::Command;
 
 pub struct WizardState {
     pub resource_type: String,
@@ -52,7 +54,12 @@ impl ContractWizard {
         // Step 3: Choose language
         state.language = self.choose_language()?;
 
-        // Step 4: Contract-specific configuration
+        // Step 4: Check/initialize Foundry project if needed
+        if state.language == Language::Solidity {
+            self.ensure_foundry_project()?;
+        }
+
+        // Step 5: Contract-specific configuration
         if state.resource_type == "contract" {
             self.configure_contract(&mut state)?;
         } else if state.resource_type == "library" {
@@ -62,15 +69,15 @@ impl ContractWizard {
             self.configure_script_or_test(&mut state)?;
         }
 
-        // Step 5: Generation options (language-dependent)
+        // Step 6: Generation options (language-dependent)
         self.configure_generation_options(&mut state)?;
 
-        // Step 6: Solidity-specific options
+        // Step 7: Solidity-specific options
         if state.language == Language::Solidity {
             self.configure_solidity_options(&mut state)?;
         }
 
-        // Step 7: Confirm and summarize
+        // Step 8: Confirm and summarize
         self.confirm_generation(&state)?;
 
         Ok(state)
@@ -384,6 +391,158 @@ impl ContractWizard {
 
         if !confirmed {
             return Err(anyhow::anyhow!("Generation cancelled"));
+        }
+
+        Ok(())
+    }
+
+    fn ensure_foundry_project(&self) -> Result<()> {
+        // Try to detect if we're in a Foundry project
+        match ProjectType::detect(&Language::Solidity) {
+            Ok(_) => {
+                // Already in a Foundry project, no action needed
+                Ok(())
+            }
+            Err(_) => {
+                // Not in a Foundry project, ask user if they want to initialize one
+                println!(
+                    "\n{}",
+                    "⚠️  This directory is not a Foundry project."
+                        .yellow()
+                        .bold()
+                );
+
+                let should_init =
+                    Confirm::new("Would you like to initialize a Foundry project here?")
+                        .with_default(true)
+                        .prompt()?;
+
+                if !should_init {
+                    return Err(anyhow::anyhow!(
+                        "Cannot proceed without a Foundry project. Wizard cancelled."
+                    ));
+                }
+
+                self.initialize_foundry_project()
+            }
+        }
+    }
+
+    fn initialize_foundry_project(&self) -> Result<()> {
+        println!("\n{} Initializing Foundry project...", "🔨".bold());
+
+        // Check if forge is available
+        if which::which("forge").is_err() {
+            return Err(anyhow::anyhow!(
+                "Forge is not installed. Please install Foundry first: https://getfoundry.sh"
+            ));
+        }
+
+        // Try forge init first
+        let output = Command::new("forge").args(&["init", "."]).output()?;
+
+        if output.status.success() {
+            println!(
+                "{} Foundry project initialized successfully!",
+                "✓".green().bold()
+            );
+            self.handle_initial_files()?;
+            return Ok(());
+        }
+
+        // If forge init failed, it might be because directory is not empty
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        if stderr.contains("not empty") || stderr.contains("already exists") {
+            println!(
+                "\n{} Directory is not empty. Foundry init failed.",
+                "⚠️".yellow().bold()
+            );
+
+            let should_force = Confirm::new("Would you like to run 'forge init --force'?")
+                .with_default(false)
+                .with_help_message("This will overwrite existing files if there are conflicts")
+                .prompt()?;
+
+            if !should_force {
+                return Err(anyhow::anyhow!(
+                    "Cannot initialize Foundry project. Wizard cancelled."
+                ));
+            }
+
+            // Try forge init --force
+            let force_output = Command::new("forge")
+                .args(&["init", "--force", "."])
+                .output()?;
+
+            if !force_output.status.success() {
+                let force_stderr = String::from_utf8_lossy(&force_output.stderr);
+                return Err(anyhow::anyhow!(
+                    "Failed to initialize Foundry project: {}",
+                    force_stderr
+                ));
+            }
+
+            println!(
+                "{} Foundry project initialized with --force!",
+                "✓".green().bold()
+            );
+            self.handle_initial_files()?;
+            Ok(())
+        } else {
+            Err(anyhow::anyhow!(
+                "Failed to initialize Foundry project: {}",
+                stderr
+            ))
+        }
+    }
+
+    fn handle_initial_files(&self) -> Result<()> {
+        // Check if Counter.sol files exist (typical forge init files)
+        let counter_contract = std::path::Path::new("src/Counter.sol");
+        let counter_test = std::path::Path::new("test/Counter.t.sol");
+        let counter_script = std::path::Path::new("script/Counter.s.sol");
+
+        let has_counter_files =
+            counter_contract.exists() || counter_test.exists() || counter_script.exists();
+
+        if has_counter_files {
+            println!(
+                "\n{} Foundry created some initial files (Counter.sol, Counter.t.sol, Counter.s.sol)",
+                "ℹ️".blue().bold()
+            );
+
+            let should_delete =
+                Confirm::new("Would you like to delete these initial template files?")
+                    .with_default(true)
+                    .with_help_message("These are just examples, you can safely delete them")
+                    .prompt()?;
+
+            if should_delete {
+                let mut deleted_files = Vec::new();
+
+                if counter_contract.exists() {
+                    fs::remove_file(counter_contract)?;
+                    deleted_files.push("src/Counter.sol");
+                }
+
+                if counter_test.exists() {
+                    fs::remove_file(counter_test)?;
+                    deleted_files.push("test/Counter.t.sol");
+                }
+
+                if counter_script.exists() {
+                    fs::remove_file(counter_script)?;
+                    deleted_files.push("script/Counter.s.sol");
+                }
+
+                if !deleted_files.is_empty() {
+                    println!(
+                        "{} Deleted template files: {}",
+                        "✓".green().bold(),
+                        deleted_files.join(", ")
+                    );
+                }
+            }
         }
 
         Ok(())
