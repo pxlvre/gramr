@@ -23,12 +23,6 @@ jobs:
           - dockerfile: Dockerfile
             image-suffix: ""
             platforms: linux/amd64,linux/arm64
-          - dockerfile: Dockerfile.dev
-            image-suffix: "-dev"
-            platforms: linux/amd64,linux/arm64
-          - dockerfile: Dockerfile.docs
-            image-suffix: "-docs"
-            platforms: linux/amd64,linux/arm64
 
     steps:
       - name: Checkout repository
