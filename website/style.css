@@ -5,11 +5,84 @@
     box-sizing: border-box;
 }
 
+:root {
+    /* Light theme - warm beige with maximum contrast */
+    --bg-color: #fffbf7;      /* very light warm beige */
+    --text-color: #000000;     /* pure black for maximum contrast */
+    --border-color: #000000;   /* black borders for maximum contrast */
+    --input-bg: #f8f4f0;      /* slightly darker beige */
+    --input-focus-bg: #f0ebe6; /* focused input bg */
+    --button-bg: #f8f4f0;     /* button background */
+    --button-hover-bg: #000000; /* black hover */
+    --button-hover-text: #fffbf7; /* light text on hover */
+    --error-bg: #f8f4f0;      /* error background */
+    --shadow-color: #000000;   /* shadow color */
+}
+
+[data-theme="dark"] {
+    /* Dark theme - dark blue-gray with maximum contrast */
+    --bg-color: #0a0e14;      /* very dark blue-gray */
+    --text-color: #ffffff;     /* pure white for maximum contrast */
+    --border-color: #ffffff;   /* white borders for maximum contrast */
+    --input-bg: #1a202c;      /* dark blue */
+    --input-focus-bg: #2d3748; /* focused input bg */
+    --button-bg: #1a202c;     /* button background */
+    --button-hover-bg: #ffffff; /* white hover */
+    --button-hover-text: #0a0e14; /* very dark text on hover */
+    --error-bg: #1a202c;      /* error background */
+    --shadow-color: #ffffff;   /* shadow color */
+}
+
+html, body {
+    height: 100%;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'Courier New', monospace;
     line-height: 1.6;
-    color: #000;
-    background-color: #fff;
+    color: var(--text-color);
+    background: var(--bg-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Top controls for theme toggle */
+.top-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 1000;
+}
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border-color);
+    background: var(--button-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--button-hover-bg);
+    color: var(--button-hover-text);
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+}
+
+.theme-toggle:active {
+    transform: translate(0, 0);
+    box-shadow: 1px 1px 0 var(--shadow-color);
 }
 
 /* Container */
@@ -23,7 +96,7 @@ body {
 .hero {
     text-align: center;
     padding: 80px 0 60px;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid var(--border-color);
     margin-bottom: 60px;
 }
 
@@ -32,6 +105,7 @@ body {
     font-weight: 900;
     margin-bottom: 20px;
     letter-spacing: -2px;
+    color: var(--text-color);
 }
 
 .sword {
@@ -45,14 +119,16 @@ body {
     font-weight: 300;
     margin-bottom: 30px;
     font-style: italic;
-    color: #333;
+    color: var(--text-color);
+    opacity: 0.8;
 }
 
 .description {
     font-size: 1.2rem;
     max-width: 800px;
     margin: 0 auto;
-    color: #444;
+    color: var(--text-color);
+    opacity: 0.7;
     line-height: 1.7;
 }
 
@@ -66,17 +142,18 @@ body {
     font-size: 2.5rem;
     margin-bottom: 30px;
     font-weight: 700;
+    color: var(--text-color);
 }
 
 .install-box {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--input-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
     padding: 30px;
-    border-radius: 8px;
     margin: 0 auto;
     max-width: 800px;
     position: relative;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-family: 'Courier New', monospace;
 }
 
 .install-command {
@@ -90,24 +167,26 @@ body {
     position: absolute;
     top: 30px;
     right: 30px;
-    background-color: #fff;
-    color: #000;
-    border: none;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
     padding: 8px 16px;
-    border-radius: 4px;
     cursor: pointer;
     font-weight: 600;
+    font-family: 'Courier New', monospace;
     transition: all 0.2s ease;
 }
 
 .copy-btn:hover {
-    background-color: #f0f0f0;
-    transform: translateY(-1px);
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 var(--shadow-color);
 }
 
 .copy-btn.copied {
-    background-color: #28a745;
-    color: #fff;
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
 }
 
 /* Features section */
@@ -124,23 +203,26 @@ body {
 .feature {
     text-align: center;
     padding: 40px 20px;
-    border: 2px solid #000;
-    border-radius: 8px;
-    transition: transform 0.2s ease;
+    border: 2px solid var(--border-color);
+    background: var(--button-bg);
+    transition: all 0.2s ease;
 }
 
 .feature:hover {
-    transform: translateY(-5px);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--shadow-color);
 }
 
 .feature h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
     font-weight: 700;
+    color: var(--text-color);
 }
 
 .feature p {
-    color: #555;
+    color: var(--text-color);
+    opacity: 0.7;
     line-height: 1.6;
 }
 
@@ -154,15 +236,16 @@ body {
     font-size: 2.5rem;
     margin-bottom: 30px;
     font-weight: 700;
+    color: var(--text-color);
 }
 
 .code-block {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--input-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
     padding: 40px;
-    border-radius: 8px;
     text-align: left;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-family: 'Courier New', monospace;
     font-size: 1.1rem;
     line-height: 1.8;
     max-width: 800px;
@@ -171,11 +254,11 @@ body {
 }
 
 .prompt {
-    color: #888;
+    opacity: 0.6;
 }
 
 .command {
-    color: #fff;
+    color: var(--text-color);
     font-weight: 600;
 }
 
@@ -197,38 +280,45 @@ body {
     padding: 15px 30px;
     font-size: 1.1rem;
     font-weight: 600;
+    font-family: 'Courier New', monospace;
     text-decoration: none;
-    border-radius: 8px;
+    border: 2px solid var(--border-color);
     transition: all 0.2s ease;
-    border: 2px solid #000;
+    background: var(--button-bg);
+    color: var(--text-color);
 }
 
 .btn-primary {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--input-bg);
+    color: var(--text-color);
 }
 
 .btn-primary:hover {
-    background-color: #333;
-    transform: translateY(-2px);
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--shadow-color);
 }
 
 .btn-secondary {
-    background-color: #fff;
-    color: #000;
+    background-color: var(--button-bg);
+    color: var(--text-color);
 }
 
 .btn-secondary:hover {
-    background-color: #f0f0f0;
-    transform: translateY(-2px);
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--shadow-color);
 }
 
 /* Footer */
 .footer {
-    border-top: 2px solid #000;
+    border-top: 2px solid var(--border-color);
     padding: 40px 0;
     text-align: center;
-    color: #666;
+    color: var(--text-color);
+    opacity: 0.7;
 }
 
 .footer p {
@@ -236,13 +326,15 @@ body {
 }
 
 .footer a {
-    color: #000;
-    text-decoration: none;
+    color: var(--text-color);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
     font-weight: 600;
 }
 
 .footer a:hover {
-    text-decoration: underline;
+    text-decoration-thickness: 2px;
 }
 
 .links {
@@ -253,12 +345,13 @@ body {
 }
 
 .links a {
-    color: #666;
+    color: var(--text-color);
+    opacity: 0.6;
     font-weight: 400;
 }
 
 .links a:hover {
-    color: #000;
+    opacity: 1;
 }
 
 /* Responsive design */
@@ -322,6 +415,11 @@ body {
     .links {
         gap: 20px;
     }
+    
+    .top-controls {
+        top: 10px;
+        right: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -361,5 +459,20 @@ body {
     
     .feature h3 {
         font-size: 1.2rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .container {
+        background: #fff;
+    }
+    
+    .theme-toggle {
+        display: none;
+    }
+    
+    .top-controls {
+        display: none;
     }
 }
