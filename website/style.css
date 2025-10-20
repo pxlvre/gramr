@@ -39,7 +39,7 @@ html, body {
 
 body {
     font-family: 'Courier New', monospace;
-    line-height: 1.6;
+    line-height: 1.4;
     color: var(--text-color);
     background: var(--bg-color);
     -webkit-font-smoothing: antialiased;
@@ -87,7 +87,7 @@ body {
 
 /* Container */
 .container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -101,45 +101,45 @@ body {
 }
 
 .title {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 900;
     margin-bottom: 20px;
     letter-spacing: -2px;
     color: var(--text-color);
+    font-family: 'Courier New', monospace;
 }
 
 .sword {
     display: inline-block;
-    margin-right: 20px;
-    font-size: 4.5rem;
+    margin-right: 15px;
+    font-size: 3.5rem;
 }
 
 .subtitle {
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin-bottom: 30px;
-    font-style: italic;
+    font-size: 1.25rem;
+    font-weight: normal;
+    margin-bottom: 20px;
     color: var(--text-color);
     opacity: 0.8;
 }
 
 .description {
-    font-size: 1.2rem;
-    max-width: 800px;
+    font-size: 1rem;
+    max-width: 700px;
     margin: 0 auto;
     color: var(--text-color);
     opacity: 0.7;
-    line-height: 1.7;
+    line-height: 1.6;
 }
 
 /* Install section */
 .install-section {
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 }
 
 .install-section h2 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     margin-bottom: 30px;
     font-weight: 700;
     color: var(--text-color);
@@ -149,24 +149,26 @@ body {
     background-color: var(--input-bg);
     border: 2px solid var(--border-color);
     color: var(--text-color);
-    padding: 30px;
+    padding: 20px;
     margin: 0 auto;
-    max-width: 800px;
+    max-width: 700px;
     position: relative;
     font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .install-command {
-    font-size: 1.2rem;
-    display: block;
-    word-break: break-all;
-    padding-right: 80px;
+    font-size: 0.9rem;
+    flex: 1;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
+    white-space: pre-wrap;
 }
 
 .copy-btn {
-    position: absolute;
-    top: 30px;
-    right: 30px;
     background-color: var(--button-bg);
     color: var(--text-color);
     border: 2px solid var(--border-color);
@@ -174,7 +176,9 @@ body {
     cursor: pointer;
     font-weight: 600;
     font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
 .copy-btn:hover {
@@ -191,18 +195,18 @@ body {
 
 /* Features section */
 .features {
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 }
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
 
 .feature {
     text-align: center;
-    padding: 40px 20px;
+    padding: 30px 15px;
     border: 2px solid var(--border-color);
     background: var(--button-bg);
     transition: all 0.2s ease;
@@ -214,7 +218,7 @@ body {
 }
 
 .feature h3 {
-    font-size: 1.4rem;
+    font-size: 1rem;
     margin-bottom: 15px;
     font-weight: 700;
     color: var(--text-color);
@@ -223,17 +227,18 @@ body {
 .feature p {
     color: var(--text-color);
     opacity: 0.7;
-    line-height: 1.6;
+    line-height: 1.4;
+    font-size: 0.9rem;
 }
 
 /* Quick example section */
 .quick-example {
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 }
 
 .quick-example h2 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     margin-bottom: 30px;
     font-weight: 700;
     color: var(--text-color);
@@ -243,12 +248,12 @@ body {
     background-color: var(--input-bg);
     border: 2px solid var(--border-color);
     color: var(--text-color);
-    padding: 40px;
+    padding: 20px;
     text-align: left;
     font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    line-height: 1.8;
-    max-width: 800px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    max-width: 700px;
     margin: 0 auto;
     overflow-x: auto;
 }
@@ -265,20 +270,20 @@ body {
 /* CTA section */
 .cta-section {
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 60px;
 }
 
 .cta-buttons {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .btn {
     display: inline-block;
-    padding: 15px 30px;
-    font-size: 1.1rem;
+    padding: 12px 20px;
+    font-size: 0.9rem;
     font-weight: 600;
     font-family: 'Courier New', monospace;
     text-decoration: none;
@@ -323,6 +328,7 @@ body {
 
 .footer p {
     margin-bottom: 20px;
+    font-size: 0.9rem;
 }
 
 .footer a {
@@ -339,7 +345,7 @@ body {
 
 .links {
     display: flex;
-    gap: 30px;
+    gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
 }
@@ -348,64 +354,82 @@ body {
     color: var(--text-color);
     opacity: 0.6;
     font-weight: 400;
+    font-size: 0.85rem;
+    text-decoration: none;
 }
 
 .links a:hover {
     opacity: 1;
+    text-decoration: underline;
 }
 
 /* Responsive design */
+@media (max-width: 1000px) {
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
     .title {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
     
     .sword {
-        font-size: 3.5rem;
+        font-size: 2.5rem;
         margin-right: 10px;
     }
     
     .subtitle {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     
     .description {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
     }
     
     .install-section h2,
     .quick-example h2 {
-        font-size: 2rem;
+        font-size: 1.3rem;
     }
     
-    .install-box,
-    .code-block {
-        padding: 20px;
-        font-size: 1rem;
-    }
-    
-    .copy-btn {
-        position: static;
-        margin-top: 20px;
-        width: 100%;
+    .install-box {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
     }
     
     .install-command {
-        padding-right: 0;
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    
+    .copy-btn {
+        width: 100%;
+    }
+    
+    .code-block {
+        padding: 15px;
+        font-size: 0.75rem;
     }
     
     .feature-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 15px;
     }
     
     .feature {
-        padding: 30px 20px;
+        padding: 20px 15px;
     }
     
     .cta-buttons {
         flex-direction: column;
         align-items: center;
+        gap: 10px;
     }
     
     .btn {
@@ -413,7 +437,7 @@ body {
     }
     
     .links {
-        gap: 20px;
+        gap: 15px;
     }
     
     .top-controls {
@@ -423,49 +447,54 @@ body {
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 0 15px;
-    }
-    
     .hero {
         padding: 60px 0 40px;
     }
     
     .title {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
     
     .sword {
-        font-size: 3rem;
+        font-size: 2rem;
     }
     
     .subtitle {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
     
     .description {
-        font-size: 1rem;
+        font-size: 0.85rem;
     }
     
     .install-section h2,
     .quick-example h2 {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
+    }
+    
+    .install-command {
+        font-size: 0.7rem;
     }
     
     .code-block {
-        font-size: 0.9rem;
-        padding: 15px;
+        font-size: 0.7rem;
+        padding: 12px;
     }
     
     .feature h3 {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .feature p {
+        font-size: 0.8rem;
     }
 }
 
 /* Print styles */
 @media print {
-    .container {
-        background: #fff;
+    body {
+        background: #fff !important;
+        color: #000 !important;
     }
     
     .theme-toggle {

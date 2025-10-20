@@ -31,7 +31,7 @@
         <section class="install-section">
             <h2>Quick Install</h2>
             <div class="install-box">
-                <code class="install-command">curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh</code>
+                <code class="install-command">curl --proto '=https' --tlsv1.2 -sSf \<br>  https://gramr.pxlvre.eth.limo/install.sh | sh</code>
                 <button class="copy-btn" onclick="copyInstallCommand()">Copy</button>
             </div>
         </section>
@@ -75,10 +75,10 @@
 
         <section class="cta-section">
             <div class="cta-buttons">
-                <a href="https://getgramr.pxlvre.dev/install.sh" class="btn btn-primary" download>
+                <a href="https://gramr.pxlvre.eth.limo/install.sh" class="btn btn-primary" download>
                     Download Installer
                 </a>
-                <a href="https://getgramr.pxlvre.dev/docs" class="btn btn-secondary">
+                <a href="https://pxlvre.github.io/gramr/" class="btn btn-secondary">
                     Read Documentation
                 </a>
             </div>
@@ -99,7 +99,7 @@
 
     <script>
         function copyInstallCommand() {
-            const command = "curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh";
+            const command = "curl --proto '=https' --tlsv1.2 -sSf https://gramr.pxlvre.eth.limo/install.sh | sh";
             navigator.clipboard.writeText(command).then(() => {
                 const btn = document.querySelector('.copy-btn');
                 const originalText = btn.textContent;

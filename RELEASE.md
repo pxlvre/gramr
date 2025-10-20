@@ -73,6 +73,6 @@ git push origin v0.2.0
 
 ### Installation Script
 
-- Hosted at `https://getgramr.pxlvre.dev`
+- Hosted at `https://gramr.pxlvre.eth.limo`
 - Auto-updated on new releases
 - Detects platform and downloads appropriate binary

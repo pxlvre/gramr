@@ -10,7 +10,7 @@ keywords = ["smart-contracts", "solidity", "ethereum", "foundry", "scaffold"]
 categories = ["development-tools"]
 readme = "README.md"
 documentation = "https://docs.rs/gramr"
-homepage = "https://getgramr.pxlvre.dev"
+homepage = "https://gramr.pxlvre.eth.limo"
 
 [dependencies]
 anyhow = { workspace = true }

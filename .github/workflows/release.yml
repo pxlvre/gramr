@@ -53,7 +53,7 @@ jobs:
           echo "### 📦 Installation" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo '```bash' >> $GITHUB_OUTPUT
-          echo 'curl --proto "=https" --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh' >> $GITHUB_OUTPUT
+          echo 'curl --proto "=https" --tlsv1.2 -sSf https://gramr.pxlvre.eth.limo/install.sh | sh' >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "### 🚀 Quick Start" >> $GITHUB_OUTPUT
@@ -67,7 +67,7 @@ jobs:
           echo '```' >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "### 📚 Documentation" >> $GITHUB_OUTPUT
-          echo "- [Documentation](https://getgramr.pxlvre.dev/docs)" >> $GITHUB_OUTPUT
+          echo "- [Documentation](https://gramr.pxlvre.eth.limo/docs)" >> $GITHUB_OUTPUT
           echo "- [Library on crates.io](https://crates.io/crates/gramr)" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "### 📋 What's Changed" >> $GITHUB_OUTPUT

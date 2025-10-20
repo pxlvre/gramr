@@ -15,7 +15,7 @@ A blazing-fast toolkit for scaffolding OpenZeppelin-powered smart contracts, tes
 ### One-Line Installation
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
+curl --proto '=https' --tlsv1.2 -sSf https://gramr.pxlvre.eth.limo/install.sh | sh
 ```
 
 ### Interactive Wizard
@@ -38,10 +38,10 @@ gramr new contract MyNFT --solidity --oz-erc721 --extensions enumerable,burnable
 
 ## 📖 Documentation
 
-- **[Installation Guide](https://getgramr.pxlvre.dev/docs/installation)** - Complete installation instructions
-- **[Quick Start](https://getgramr.pxlvre.dev/docs/quick-start)** - Get up and running in 5 minutes
-- **[CLI Reference](https://getgramr.pxlvre.dev/docs/cli-reference)** - Complete command documentation
-- **[Wotan Wizard](https://getgramr.pxlvre.dev/docs/wotan)** - Interactive mode guide
+- **[Installation Guide](https://gramr.pxlvre.eth.limo/docs/installation)** - Complete installation instructions
+- **[Quick Start](https://gramr.pxlvre.eth.limo/docs/quick-start)** - Get up and running in 5 minutes
+- **[CLI Reference](https://gramr.pxlvre.eth.limo/docs/cli-reference)** - Complete command documentation
+- **[Wotan Wizard](https://gramr.pxlvre.eth.limo/docs/wotan)** - Interactive mode guide
 - **[API Documentation](https://docs.rs/gramr)** - Rust library docs
 
 ## 🏗️ Architecture
@@ -95,7 +95,7 @@ Gramr is organized as a Rust workspace with four components:
 ### Option 1: One-Line Installer (Recommended)
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
+curl --proto '=https' --tlsv1.2 -sSf https://gramr.pxlvre.eth.limo/install.sh | sh
 ```
 
 This installs `gramr`, `wotan`, and `gramrup` binaries.
@@ -319,15 +319,13 @@ fn main() -> gramr::Result<()> {
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Contributing Guide](https://getgramr.pxlvre.dev/docs/contributing).
+We welcome contributions! See our [Contributing Guide](https://gramr.pxlvre.eth.limo/docs/contributing).
 
 ## 📜 License
 
 MIT or Apache-2.0
 
-## 🙏 Acknowledgments
-
-Built with ❤️ by [Pol Vidal](https://github.com/pxlvre) • pxlvre.eth
+Built by [Pol Vidal](https://github.com/pxlvre) • [pxlvre.eth](https://pxlvre.eth.limo)
 
 Special thanks to the OpenZeppelin, Foundry, and Arbitrum teams.
 
@@ -335,7 +333,7 @@ Special thanks to the OpenZeppelin, Foundry, and Arbitrum teams.
 
 **Links:**
 
-- [Documentation](https://getgramr.pxlvre.dev/docs)
+- [Documentation](https://gramr.pxlvre.eth.limo/docs)
 - [GitHub Releases](https://github.com/pxlvre/gramr/releases)
 - [Docker Images](https://github.com/pxlvre/gramr/pkgs/container/gramr)
 - [Rust Docs](https://docs.rs/gramr)

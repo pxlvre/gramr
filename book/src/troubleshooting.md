@@ -44,7 +44,7 @@ Common issues and solutions for Gramr users.
    sudo curl ... | sh
 
    # Correct
-   curl --proto '=https' --tlsv1.2 -sSf https://getgramr.pxlvre.dev/install.sh | sh
+   curl --proto '=https' --tlsv1.2 -sSf https://gramr.pxlvre.eth.limo/install.sh | sh
    ```
 
 2. **Check directory permissions:**
