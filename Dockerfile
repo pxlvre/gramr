@@ -1,6 +1,6 @@
 # Multi-stage build for optimal image size
 # Stage 1: Builder
-FROM rust:1.75-slim as builder
+FROM rust:1.80-slim as builder
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
