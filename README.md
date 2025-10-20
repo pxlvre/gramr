@@ -302,7 +302,7 @@ fn main() -> gramr::Result<()> {
 
 ## 🗺️ Roadmap
 
-### v0.0.1 (Current)
+### v0.1.0 (Current)
 
 - ✅ Complete Solidity support
 - ✅ Interactive wizard (Wotan)

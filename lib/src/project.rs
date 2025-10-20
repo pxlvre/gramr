@@ -203,7 +203,7 @@ mod tests {
             project_path.join("Cargo.toml"),
             r#"[package]
 name = "test-project"
-version = "0.0.1"
+version = "0.1.0"
 edition = "2021"
 
 [dependencies]
